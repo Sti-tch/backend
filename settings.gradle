@@ -1,3 +1,10 @@
 rootProject.name = 'stitch'
 
 include 'stitch-api', 'stitch-domain'
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+        maven { url "https://jitpack.io" }
+    }
+}
