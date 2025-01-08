@@ -40,6 +40,7 @@ public class UnivCertService {
 
     public Map<String, Object> checkVerificationStatus(String email) {
         try {
+            // TODO: Implement UnivCert.status method
             Map<String, Object> response = UnivCert.status(univCertApiKey, email);
             if ((int)response.get("code") != 200) {
                 throw new RuntimeException("인증 상태 확인에 실패했습니다.");
