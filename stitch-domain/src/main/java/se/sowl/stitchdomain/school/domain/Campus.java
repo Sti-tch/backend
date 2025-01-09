@@ -1,10 +1,14 @@
 package se.sowl.stitchdomain.school.domain;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import se.sowl.stitchdomain.user.domain.User_Cam_Info;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,4 +26,20 @@ public class Campus {
 
     @OneToMany(mappedBy = "campus")
     private List<User_Cam_Info> user_cam_infos = new ArrayList<>();
+
+    @OneToMany(mappedBy = "campus")
+    private List<Major> majors = new ArrayList<>();
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    @Column(name = "updated_at")
+    private LocalDateTime updatedAt;
+
+    @Builder
+    public Campus(String name){
+        this.name = name;
+    }
 }
