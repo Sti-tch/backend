@@ -27,9 +27,6 @@ public class Campus {
     @OneToMany(mappedBy = "campus")
     private List<User_Cam_Info> user_cam_infos = new ArrayList<>();
 
-    @OneToMany(mappedBy = "campus")
-    private List<Major> majors = new ArrayList<>();
-
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;

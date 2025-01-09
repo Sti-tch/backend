@@ -27,10 +27,6 @@ public class Major {
     @OneToMany(mappedBy = "major")
     private List<User_Cam_Info> user_cam_infos = new ArrayList<>();
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "campus_id")
-    private Campus campus;
-
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
@@ -40,8 +36,7 @@ public class Major {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Major(String name, Campus campus){
+    public Major(String name){
         this.name = name;
-        this.campus = campus;
     }
 }
