@@ -11,4 +11,5 @@ public class CodeVerificationRequest {
     private String email;
     private String univName;
     private int code;
+    private Long majorId;
 }

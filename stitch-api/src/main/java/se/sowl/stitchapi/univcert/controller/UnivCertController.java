@@ -3,9 +3,12 @@ package se.sowl.stitchapi.univcert.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import se.sowl.stitchapi.exception.CampusException;
 import se.sowl.stitchapi.univcert.service.UnivCertService;
 import se.sowl.stitchapi.univcert.dto.EmailVerificationRequest;
 import se.sowl.stitchapi.univcert.dto.CodeVerificationRequest;
+import se.sowl.stitchapi.user_cam_info.service.UserCamInfoService;
+import se.sowl.stitchdomain.school.repository.CampusRepository;
 
 import java.util.Map;
 
@@ -14,6 +17,8 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class UnivCertController {
     private final UnivCertService univCertService;
+    private final CampusRepository campusRepository;
+    private final UserCamInfoService userCamInfoService;
 
     @PostMapping("/university/verify")
     public ResponseEntity<Map<String, Object>> sendVerificationEmail(
@@ -22,6 +27,7 @@ public class UnivCertController {
                 request.getEmail(),
                 request.getUnivName()
         );
+
         return ResponseEntity.ok(response);
     }
 
@@ -33,6 +39,15 @@ public class UnivCertController {
                 request.getUnivName(),
                 request.getCode()
         );
+
+        if (response.get("status").equals("success")) {
+            userCamInfoService.createUserCamInfo(
+                    request.getEmail(),
+                    request.getUnivName(),
+                    request.getMajorId()
+            );
+        }
+
         return ResponseEntity.ok(response);
     }
 
