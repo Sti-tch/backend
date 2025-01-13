@@ -60,4 +60,3 @@ public class User {
         this.campusCertified = true;
     }
 }
-//
