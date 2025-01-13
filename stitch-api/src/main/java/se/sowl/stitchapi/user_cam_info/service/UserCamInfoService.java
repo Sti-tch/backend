@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import se.sowl.stitchapi.exception.CampusException;
 import se.sowl.stitchapi.exception.MajorException;
 import se.sowl.stitchapi.exception.UserException;
+import se.sowl.stitchapi.user_cam_info.dto.UserCamInfoResponse;
 import se.sowl.stitchdomain.school.domain.Campus;
 import se.sowl.stitchdomain.school.domain.Major;
 import se.sowl.stitchdomain.school.repository.CampusRepository;
@@ -27,7 +28,7 @@ public class UserCamInfoService {
 
 
     @Transactional
-    public void createUserCamInfo(String email, String univName, Long majorId) {
+    public UserCamInfoResponse createUserCamInfo(String email, String univName, Long majorId) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(UserException.UserNotFoundException::new);
 
@@ -53,5 +54,6 @@ public class UserCamInfoService {
 
         userCamInfoRepository.save(userCamInfo);
 
+        return UserCamInfoResponse.from(userCamInfo);
     }
 }
