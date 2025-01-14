@@ -27,6 +27,13 @@ public class UnivCertController {
                 request.getEmail(),
                 request.getUnivName()
         );
+        if (response.get("status").equals("success")) {
+            userCamInfoService.createUserCamInfo(
+                    request.getEmail(),
+                    request.getUnivName(),
+                    request.getMajorId()
+            );
+        }
 
         return ResponseEntity.ok(response);
     }
@@ -39,15 +46,6 @@ public class UnivCertController {
                 request.getUnivName(),
                 request.getCode()
         );
-
-        if (response.get("status").equals("success")) {
-            userCamInfoService.createUserCamInfo(
-                    request.getEmail(),
-                    request.getUnivName(),
-                    request.getMajorId()
-            );
-        }
-
         return ResponseEntity.ok(response);
     }
 

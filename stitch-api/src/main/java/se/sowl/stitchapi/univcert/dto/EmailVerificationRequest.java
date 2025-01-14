@@ -10,4 +10,5 @@ import lombok.NoArgsConstructor;
 public class EmailVerificationRequest {
     private String email;
     private String univName;
+    private Long majorId;
 }
