@@ -26,21 +26,34 @@ public class SecurityConfig {
 
     private final OAuthService oAuthService;
     private final OAuth2AuthenticationSuccessHandler oAuth2AuthenticationSuccessHandler;
-    // ...
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(AbstractHttpConfigurer::disable)
+                .csrf(csrf -> csrf
+                        .ignoringRequestMatchers("/h2-console/**")
+                        .disable()
+                )
                 .authorizeHttpRequests(authorize -> authorize
+                        // H2 Console
                         .requestMatchers("/h2-console/**").permitAll()
+                        // OAuth 관련 엔드포인트
+                        .requestMatchers("/login", "/oauth2/**", "/login/oauth2/**").permitAll()
+                        // Swagger UI
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        // Public API 엔드포인트
+                        .requestMatchers("/api/auth/**").permitAll()
+                        // 인증이 필요한 API 엔드포인트
                         .requestMatchers("/api/boards/**").authenticated()
                         .requestMatchers("/api/users/**").authenticated()
                         .requestMatchers("/api/interests/**").authenticated()
                         .requestMatchers("/api/posts/**").authenticated()
+                        // 그 외 요청
                         .anyRequest().authenticated()
                 )
-                .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::disable))
+                .headers(headers -> headers
+                        .frameOptions(HeadersConfigurer.FrameOptionsConfig::disable)
+                )
                 .logout(logout -> logout
                         .logoutSuccessUrl("/")
                         .invalidateHttpSession(true)
@@ -48,15 +61,16 @@ public class SecurityConfig {
                 )
                 .oauth2Login(oauth2Login -> oauth2Login
                         .successHandler(oAuth2AuthenticationSuccessHandler)
-                        .userInfoEndpoint(userInfoEndpoint -> userInfoEndpoint.userService(oAuthService))
+                        .userInfoEndpoint(userInfoEndpoint ->
+                                userInfoEndpoint.userService(oAuthService))
                 )
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()));
+
         return http.build();
     }
 
-    // TODO: 환경변수화 처리
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
@@ -64,6 +78,8 @@ public class SecurityConfig {
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L); // 1시간 동안 preflight 요청 캐시
+
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
         return source;
