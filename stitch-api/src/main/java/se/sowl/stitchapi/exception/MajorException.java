@@ -17,4 +17,10 @@ public class MajorException extends RuntimeException{
             super("존재하지 않는 전공입니다.", HttpStatus.NOT_FOUND);
         }
     }
+
+    public static class DuplicateMajorNameException extends MajorException{
+        public DuplicateMajorNameException() {
+            super("이미 존재하는 전공명입니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
 }
