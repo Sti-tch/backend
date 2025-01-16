@@ -36,7 +36,7 @@ public class User {
     private String provider;
 
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private User_Cam_Info user_cam_info;
+    private UserCamInfo userCamInfo;
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
@@ -58,5 +58,9 @@ public class User {
 
     public void certifyCampus() {
         this.campusCertified = true;
+    }
+
+    void setUserCamInfo(UserCamInfo userCamInfo) {
+        this.userCamInfo = userCamInfo;
     }
 }

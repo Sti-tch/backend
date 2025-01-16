@@ -13,15 +13,15 @@ import se.sowl.stitchdomain.school.domain.Major;
 import se.sowl.stitchdomain.school.repository.CampusRepository;
 import se.sowl.stitchdomain.school.repository.MajorRepository;
 import se.sowl.stitchdomain.user.domain.User;
-import se.sowl.stitchdomain.user.domain.User_Cam_Info;
+import se.sowl.stitchdomain.user.domain.UserCamInfo;
 import se.sowl.stitchdomain.user.repository.UserRepository;
-import se.sowl.stitchdomain.user.repository.User_Cam_InfoRepository;
+import se.sowl.stitchdomain.user.repository.UserCamInfoRepository;
 
 @Service
 @RequiredArgsConstructor
 public class UserCamInfoService {
 
-    private final User_Cam_InfoRepository userCamInfoRepository;
+    private final UserCamInfoRepository userCamInfoRepository;
     private final MajorRepository majorRepository;
     private final UserRepository userRepository;
     private final CampusRepository campusRepository;
@@ -43,7 +43,7 @@ public class UserCamInfoService {
             throw new UserException.UserAlreadyCertifiedException();
         }
 
-        User_Cam_Info userCamInfo = User_Cam_Info.builder()
+        UserCamInfo userCamInfo = UserCamInfo.builder()
                 .user(user)
                 .campus(campus)
                 .major(major)

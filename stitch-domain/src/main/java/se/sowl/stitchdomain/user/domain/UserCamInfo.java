@@ -16,22 +16,22 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @Table(name = "user_cam_info")
-public class User_Cam_Info {
+public class UserCamInfo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "campus_id")
+    @JoinColumn(name = "campus_id", nullable = false)
     private Campus campus;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "major_id")
+    @JoinColumn(name = "major_id", nullable = false)
     private Major major;
 
     @Column(nullable = false)
@@ -46,11 +46,18 @@ public class User_Cam_Info {
     private LocalDateTime updatedAt;
 
     @Builder
-    public User_Cam_Info(User user, Campus campus, Major major, String campusEmail) {
-        this.user = user;
+    public UserCamInfo(User user, Campus campus, Major major, String campusEmail) {
+        this.setUser(user);
         this.campus = campus;
         this.major = major;
         this.campusEmail = campusEmail;
     }
+    private void setUser(User user) {
+        this.user = user;
+        if (user!=null) {
+            user.setUserCamInfo(this);
+        }
+    }
+
 
 }

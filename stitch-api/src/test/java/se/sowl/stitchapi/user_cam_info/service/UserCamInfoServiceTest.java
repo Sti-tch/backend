@@ -17,7 +17,7 @@ import se.sowl.stitchdomain.school.repository.CampusRepository;
 import se.sowl.stitchdomain.school.repository.MajorRepository;
 import se.sowl.stitchdomain.user.domain.User;
 import se.sowl.stitchdomain.user.repository.UserRepository;
-import se.sowl.stitchdomain.user.repository.User_Cam_InfoRepository;
+import se.sowl.stitchdomain.user.repository.UserCamInfoRepository;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,7 +32,7 @@ class UserCamInfoServiceTest {
     private UserRepository userRepository;
 
     @Autowired
-    private User_Cam_InfoRepository userCamInfoRepository;
+    private UserCamInfoRepository userCamInfoRepository;
 
     @Autowired
     private MajorRepository majorRepository;

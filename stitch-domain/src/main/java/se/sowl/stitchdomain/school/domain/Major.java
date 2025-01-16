@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import se.sowl.stitchdomain.user.domain.User_Cam_Info;
+import se.sowl.stitchdomain.user.domain.UserCamInfo;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -24,8 +24,8 @@ public class Major {
     @Column(nullable = false)
     private String name;
 
-    @OneToMany(mappedBy = "major")
-    private List<User_Cam_Info> user_cam_infos = new ArrayList<>();
+    @OneToMany(mappedBy = "major",cascade = CascadeType.ALL)
+    private List<UserCamInfo> userCamInfos = new ArrayList<>();
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
