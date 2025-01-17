@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import se.sowl.stitchapi.exception.MajorException;
-import se.sowl.stitchapi.major.dto.MajorResponse;
+import se.sowl.stitchapi.major.dto.response.MajorDetailResponse;
+import se.sowl.stitchapi.major.dto.response.MajorListResponse;
+import se.sowl.stitchapi.major.dto.response.MajorResponse;
 import se.sowl.stitchdomain.school.domain.Major;
 import se.sowl.stitchdomain.school.repository.MajorRepository;
 
@@ -76,7 +78,7 @@ class MajorServiceTest {
                 majorRepository.save(major);
             }
             //when
-            List<MajorResponse> majorResponses = majorService.getAllMajors();
+            List<MajorListResponse> majorResponses = majorService.getAllMajors();
 
             //then
             assertEquals(6, majorResponses.size());
@@ -93,7 +95,7 @@ class MajorServiceTest {
             Long majorId = testMajor.getId();
 
             //when
-            MajorResponse majorResponse = majorService.getMajorDetail(majorId);
+            MajorDetailResponse majorResponse = majorService.getMajorDetail(majorId);
 
             //then
             assertEquals(testMajor.getName(), majorResponse.getName());

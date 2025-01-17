@@ -1,4 +1,4 @@
-package se.sowl.stitchapi.user_cam_info.dto;
+package se.sowl.stitchapi.user_cam_info.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
