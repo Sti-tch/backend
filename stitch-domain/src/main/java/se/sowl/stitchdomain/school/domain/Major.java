@@ -36,7 +36,8 @@ public class Major {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Major(String name){
+    public Major(Long id,String name){
+        this.id = id;
         this.name = name;
     }
 }
