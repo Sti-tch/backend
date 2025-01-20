@@ -29,10 +29,6 @@ public class UnivCertController {
     public ResponseEntity<Map<String, Object>> sendVerificationEmail(
             @RequestBody EmailVerificationRequest request) {
 
-        if (request.getUserId() == null) {
-            throw new IllegalArgumentException("userId는 필수 값입니다.");
-        }
-
         String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new UserException.UserNotFoundException());
