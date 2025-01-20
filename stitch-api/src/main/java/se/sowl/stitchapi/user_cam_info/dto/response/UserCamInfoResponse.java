@@ -12,10 +12,8 @@ public class UserCamInfoResponse {
     private Long id;
     private Long userId;
     private Long campusId;
-    private Long majorId;
     private String userName;
     private String campusName;
-    private String majorName;
     private String campusEmail;
     private LocalDateTime createdAt;
 
@@ -24,10 +22,8 @@ public class UserCamInfoResponse {
                 userCamInfo.getId(),
                 userCamInfo.getUser().getId(),
                 userCamInfo.getCampus().getId(),
-                userCamInfo.getMajor().getId(),
                 userCamInfo.getUser().getName(),
                 userCamInfo.getCampus().getName(),
-                userCamInfo.getMajor().getName(),
                 userCamInfo.getCampusEmail(),
                 userCamInfo.getCreatedAt()
         );

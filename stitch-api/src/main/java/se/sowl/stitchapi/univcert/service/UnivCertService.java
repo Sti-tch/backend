@@ -16,7 +16,7 @@ public class UnivCertService {
 
     public Map<String, Object> sendVerificationEmail(String email, String univName) {
         try {
-            Map<String, Object> response = UnivCert.certify(univCertApiKey, email, univName, true);
+            Map<String, Object> response = UnivCert.certify(univCertApiKey, email, univName, false);
             if ((int)response.get("code") != 200) {
                 throw new RuntimeException("메일 인증 발송에 실패했습니다.");
             }

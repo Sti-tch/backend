@@ -31,7 +31,7 @@ public class UserCamInfo {
     private Campus campus;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "major_id", nullable = false)
+    @JoinColumn(name = "major_id")
     private Major major;
 
     @Column(nullable = false)

@@ -1,5 +1,6 @@
 package se.sowl.stitchapi.univcert.dto;
 
+import com.mysql.cj.log.Log;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class EmailVerificationRequest {
+    private Long userId;
     private String email;
     private String univName;
-    private Long majorId;
 }

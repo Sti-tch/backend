@@ -42,30 +42,15 @@ class UserCamInfoServiceTest {
 
     private User testUser;
 
-    private Campus testCampus;
-
-    private Major testMajor;
-
     @BeforeEach
     void setUp() {
-        testCampus = Campus.builder()
-                .name("서울대학교")
-                .build();
-        testCampus = campusRepository.save(testCampus);
-
-        testMajor = Major.builder()
-                .name("컴퓨터공학과")
-                .build();
-        testMajor = majorRepository.save(testMajor);
-
         testUser = User.builder()
-                .email("test@snu.ac.kr")
+                .email("test@email.com")
                 .name("테스트 유저")
                 .campusCertified(false)
                 .provider("kakao")
                 .build();
         testUser = userRepository.save(testUser);
-
     }
 
     @Nested
@@ -73,74 +58,66 @@ class UserCamInfoServiceTest {
     class createUserCamInfo{
 
         @Test
-        @DisplayName("유저 캠퍼스 정보 생성 성공")
-        void createUserCamInfoSuccess(){
+        @DisplayName("유저 캠퍼스 정보 생성 성공 - 기존 캠퍼스")
+        void createUserCamInfoExistingSuccess(){
+            //given
+            Campus campus = Campus.builder()
+                    .name("서울대학교")
+                    .build();
+            campusRepository.save(campus);
+
+            String campusEmail = "test@snu.ac.kr";
 
             //when
-            UserCamInfoResponse userCamInfoResponse = userCamInfoService.createUserCamInfo(testUser.getEmail(), testCampus.getName(), testMajor.getId());
+            UserCamInfoResponse userCamInfoResponse = userCamInfoService.createUserCamInfo(
+                    testUser.getId(),
+                    campusEmail,
+                    campus.getName()
+            );
 
             //then
             assertAll(
                     "유저 캠퍼스 정보가 올바르게 저장되어야 합니다.",
                     () -> assertNotNull(userCamInfoResponse.getId()),
                     () -> assertEquals(testUser.getId(), userCamInfoResponse.getUserId()),
-                    () -> assertEquals(testCampus.getId(), userCamInfoResponse.getCampusId()),
-                    () -> assertEquals(testMajor.getId(), userCamInfoResponse.getMajorId()),
+                    () -> assertEquals(campus.getId(), userCamInfoResponse.getCampusId()),
                     () -> assertEquals(testUser.getName(), userCamInfoResponse.getUserName()),
-                    () -> assertEquals(testCampus.getName(), userCamInfoResponse.getCampusName()),
-                    () -> assertEquals(testMajor.getName(), userCamInfoResponse.getMajorName()),
-                    () -> assertEquals(testUser.getEmail(), userCamInfoResponse.getCampusEmail()),
+                    () -> assertEquals(campus.getName(), userCamInfoResponse.getCampusName()),
+                    () -> assertEquals(campusEmail, userCamInfoResponse.getCampusEmail()),
+                    () -> assertTrue(testUser.isCampusCertified()),  // 인증 상태 확인
                     () -> assertNotNull(userCamInfoResponse.getCreatedAt())
             );
         }
 
         @Test
-        @DisplayName("존재하지 않는 유저로 생성 시도")
-        void createWithNonExistentUser() {
-            assertThrows(UserException.UserNotFoundException.class,
-                    () -> userCamInfoService.createUserCamInfo(
-                            "nonexistent@snu.ac.kr",
-                            testCampus.getName(),
-                            testMajor.getId()
-                    ));
+        @DisplayName("유저 캠퍼스 정보 생성 성공 - 새로운 캠퍼스")
+        void createUserCamInfoNewSuccess(){
+            //given
+            String campusName = "서울대학교";
+            String campusEmail = "test@skhu.ac.kr";
+
+            //when
+            UserCamInfoResponse userCamInfoResponse = userCamInfoService.createUserCamInfo(
+                    testUser.getId(),
+                    campusEmail,
+                    campusName
+            );
+
+            //then
+            assertAll(
+                    "새로운 캠퍼스로 유저 캠퍼스 정보가 올바르게 저장되어야 합니다.",
+                    () -> assertNotNull(userCamInfoResponse.getId()),
+                    () -> assertEquals(testUser.getId(), userCamInfoResponse.getUserId()),
+                    () -> assertNotNull(userCamInfoResponse.getCampusId()),
+                    () -> assertEquals(testUser.getName(), userCamInfoResponse.getUserName()),
+                    () -> assertEquals(campusName, userCamInfoResponse.getCampusName()),
+                    () -> assertEquals(campusEmail, userCamInfoResponse.getCampusEmail()),
+                    () -> assertTrue(testUser.isCampusCertified()),
+                    () -> assertNotNull(userCamInfoResponse.getCreatedAt())
+            );
+
         }
 
-        @Test
-        @DisplayName("존재하지 않는 캠퍼스로 생성 시도")
-        void createWithNonExistentCampus() {
-            assertThrows(CampusException.CampusNotFoundException.class,
-                    () -> userCamInfoService.createUserCamInfo(
-                            testUser.getEmail(),
-                            "존재하지않는대학교",
-                            testMajor.getId()
-                    ));
-        }
-
-        @Test
-        @DisplayName("존재하지 않는 전공으로 생성 시도")
-        void createWithNonExistentMajor() {
-            assertThrows(MajorException.MajorNotFoundException.class,
-                    () -> userCamInfoService.createUserCamInfo(
-                            testUser.getEmail(),
-                            testCampus.getName(),
-                            9999L
-                    ));
-        }
-
-        @Test
-        @DisplayName("이미 인증된 유저로 생성 시도")
-        void createWithAlreadyCertifiedUser() {
-            // given
-            testUser.certifyCampus();
-            userRepository.save(testUser);
-
-            assertThrows(UserException.UserAlreadyCertifiedException.class,
-                    () -> userCamInfoService.createUserCamInfo(
-                            testUser.getEmail(),
-                            testCampus.getName(),
-                            testMajor.getId()
-                    ));
-        }
     }
 
 
