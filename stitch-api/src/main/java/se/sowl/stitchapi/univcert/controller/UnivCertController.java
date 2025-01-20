@@ -2,6 +2,7 @@ package se.sowl.stitchapi.univcert.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import se.sowl.stitchapi.exception.CampusException;
 import se.sowl.stitchapi.exception.UserException;
@@ -28,6 +29,14 @@ public class UnivCertController {
     public ResponseEntity<Map<String, Object>> sendVerificationEmail(
             @RequestBody EmailVerificationRequest request) {
 
+        if (request.getUserId() == null) {
+            throw new IllegalArgumentException("userId는 필수 값입니다.");
+        }
+
+        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        User user = userRepository.findByEmail(userEmail)
+                .orElseThrow(() -> new UserException.UserNotFoundException());
+
         Map<String, Object> response = univCertService.sendVerificationEmail(
                 request.getEmail(),
                 request.getUnivName()
@@ -35,7 +44,7 @@ public class UnivCertController {
 
         if ((int)response.get("code") == 200) {
             userCamInfoService.createUserCamInfo(
-                    request.getUserId(),
+                    user.getId(),
                     request.getEmail(),
                     request.getUnivName()
             );
