@@ -2,6 +2,7 @@ package se.sowl.stitchapi.univcert.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import se.sowl.stitchapi.exception.CampusException;
@@ -11,6 +12,7 @@ import se.sowl.stitchapi.univcert.dto.EmailVerificationRequest;
 import se.sowl.stitchapi.univcert.dto.CodeVerificationRequest;
 import se.sowl.stitchapi.user_cam_info.service.UserCamInfoService;
 import se.sowl.stitchdomain.school.repository.CampusRepository;
+import se.sowl.stitchdomain.user.domain.CustomOAuth2User;
 import se.sowl.stitchdomain.user.domain.User;
 import se.sowl.stitchdomain.user.repository.UserRepository;
 
@@ -29,7 +31,10 @@ public class UnivCertController {
     public ResponseEntity<Map<String, Object>> sendVerificationEmail(
             @RequestBody EmailVerificationRequest request) {
 
-        String userEmail = SecurityContextHolder.getContext().getAuthentication().getName();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        CustomOAuth2User oAuth2User = (CustomOAuth2User) auth.getPrincipal();
+        String userEmail = oAuth2User.getEmail();  // getName() 대신 getEmail() 사용
+
         User user = userRepository.findByEmail(userEmail)
                 .orElseThrow(() -> new UserException.UserNotFoundException());
 
