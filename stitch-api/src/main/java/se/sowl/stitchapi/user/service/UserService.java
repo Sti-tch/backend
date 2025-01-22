@@ -3,6 +3,8 @@ package se.sowl.stitchapi.user.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import se.sowl.stitchapi.user.dto.request.EditUserRequest;
 import se.sowl.stitchapi.user.dto.response.UserInfoRequest;
 import se.sowl.stitchdomain.user.domain.User;
 import se.sowl.stitchdomain.user.repository.UserRepository;
@@ -18,6 +20,7 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    @Transactional
     public UserInfoRequest getUserInfo(Long userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
@@ -30,4 +33,12 @@ public class UserService {
                 user.getProvider()
         );
     }
+
+    @Transactional
+    public void editUser(Long userId, EditUserRequest request) {
+        User user = userRepository.findById(userId).orElseThrow();
+        user.updateNickname(request.getNickname());
+        userRepository.save(user);
+    }
+
 }

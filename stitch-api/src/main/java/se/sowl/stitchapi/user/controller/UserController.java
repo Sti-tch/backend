@@ -3,10 +3,9 @@ package se.sowl.stitchapi.user.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import se.sowl.stitchapi.common.CommonResponse;
+import se.sowl.stitchapi.user.dto.request.EditUserRequest;
 import se.sowl.stitchapi.user.dto.response.UserInfoRequest;
 import se.sowl.stitchapi.user.service.UserService;
 import se.sowl.stitchdomain.user.domain.CustomOAuth2User;
@@ -22,5 +21,12 @@ public class UserController {
     public CommonResponse<UserInfoRequest> getMe(@AuthenticationPrincipal CustomOAuth2User user) {
         UserInfoRequest userInfo = userService.getUserInfo(user.getUserId());
         return CommonResponse.ok(userInfo);
+    }
+
+    @PutMapping("/edit")
+    @PreAuthorize("isAuthenticated()")
+    public CommonResponse<Void> editUser(@AuthenticationPrincipal CustomOAuth2User user, @RequestBody EditUserRequest request) {
+        userService.editUser(user.getUserId(), request);
+        return CommonResponse.ok();
     }
 }
