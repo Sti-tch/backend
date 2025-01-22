@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
-import se.sowl.stitchapi.campus.dto.CampusListResponse;
+import se.sowl.stitchapi.campus.dto.response.CampusListResponse;
 import se.sowl.stitchdomain.school.domain.Campus;
 import se.sowl.stitchdomain.school.repository.CampusRepository;
 

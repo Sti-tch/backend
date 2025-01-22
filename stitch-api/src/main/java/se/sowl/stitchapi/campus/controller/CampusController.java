@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import se.sowl.stitchapi.campus.dto.CampusListResponse;
+import se.sowl.stitchapi.campus.dto.response.CampusListResponse;
 import se.sowl.stitchapi.campus.service.CampusService;
 import se.sowl.stitchapi.common.CommonResponse;
 

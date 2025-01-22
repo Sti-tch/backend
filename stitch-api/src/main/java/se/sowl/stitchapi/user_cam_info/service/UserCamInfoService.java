@@ -47,7 +47,5 @@ public class UserCamInfoService {
         userCamInfoRepository.save(userCamInfo);
 
         return UserCamInfoResponse.from(userCamInfo);
-
-
     }
 }

@@ -1,4 +1,4 @@
-package se.sowl.stitchapi.campus.dto;
+package se.sowl.stitchapi.campus.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

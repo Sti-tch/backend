@@ -3,7 +3,7 @@ package se.sowl.stitchapi.user.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import se.sowl.stitchapi.user.dto.UserInfoRequest;
+import se.sowl.stitchapi.user.dto.response.UserInfoRequest;
 import se.sowl.stitchdomain.user.domain.User;
 import se.sowl.stitchdomain.user.repository.UserRepository;
 

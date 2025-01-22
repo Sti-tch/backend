@@ -3,7 +3,7 @@ package se.sowl.stitchapi.campus.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import se.sowl.stitchapi.campus.dto.CampusListResponse;
+import se.sowl.stitchapi.campus.dto.response.CampusListResponse;
 import se.sowl.stitchdomain.school.repository.CampusRepository;
 
 import java.util.List;
