@@ -16,6 +16,7 @@ import se.sowl.stitchdomain.school.domain.Major;
 import se.sowl.stitchdomain.school.repository.CampusRepository;
 import se.sowl.stitchdomain.school.repository.MajorRepository;
 import se.sowl.stitchdomain.user.domain.User;
+import se.sowl.stitchdomain.user.domain.UserCamInfo;
 import se.sowl.stitchdomain.user.repository.UserRepository;
 import se.sowl.stitchdomain.user.repository.UserCamInfoRepository;
 
@@ -118,6 +119,52 @@ class UserCamInfoServiceTest {
 
         }
 
+    }
+
+    @Nested
+    @DisplayName("유저 캠퍼스 정보 조회")
+    class getUserCamInfo{
+        @Test
+        @DisplayName("유저 캠퍼스 정보 조회 성공")
+        void getUserCamInfoSuccess(){
+            //given
+            Campus campus = Campus.builder()
+                    .name("서울대학교")
+                    .build();
+            campusRepository.save(campus);
+
+            testUser.certifyCampus();
+            userRepository.save(testUser);
+
+            UserCamInfo userCamInfo = UserCamInfo.builder()
+                    .user(testUser)
+                    .campus(campus)
+                    .campusEmail("test@sun.ac.kr")
+                    .build();
+            userCamInfoRepository.save(userCamInfo);
+
+            //when
+            UserCamInfoResponse userCamInfoResponse = userCamInfoService.getUserCamInfo(testUser.getId());
+
+            //then
+            assertAll(
+                    "유저가 가진 캠퍼스 정보가 올바르게 조회되어야 합니다.",
+                    () -> assertEquals(userCamInfo.getId(), userCamInfoResponse.getId()),
+                    () -> assertEquals(testUser.getId(), userCamInfoResponse.getUserId()),
+                    () -> assertEquals(campus.getId(), userCamInfoResponse.getCampusId()),
+                    () -> assertEquals(testUser.getName(), userCamInfoResponse.getUserName()),
+                    () -> assertEquals(campus.getName(), userCamInfoResponse.getCampusName()),
+                    () -> assertEquals(userCamInfo.getCampusEmail(), userCamInfoResponse.getCampusEmail()),
+                    () -> assertNotNull(userCamInfoResponse.getCreatedAt())
+            );
+        }
+
+        @Test
+        @DisplayName("유저 캠퍼스 정보 조회 실패 - 인증되지 않은 유저")
+        void getUserCamInfoFailNotCertified(){
+            assertThrows(UserException.UserNotCertifiedException.class,
+                    () -> userCamInfoService.getUserCamInfo(testUser.getId()));
+        }
     }
 
 

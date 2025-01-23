@@ -48,4 +48,19 @@ public class UserCamInfoService {
 
         return UserCamInfoResponse.from(userCamInfo);
     }
+
+    @Transactional
+    public UserCamInfoResponse getUserCamInfo(Long userId){
+        User user = userRepository.findById(userId)
+                .orElseThrow(UserException.UserNotFoundException::new);
+
+        if (!user.isCampusCertified()){
+            throw new UserException.UserNotCertifiedException();
+        }
+
+        UserCamInfo userCamInfo = userCamInfoRepository.findByUser(user)
+                .orElseThrow(UserException.UserNotCertifiedException::new);
+
+        return UserCamInfoResponse.from(userCamInfo);
+    }
 }
