@@ -5,7 +5,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.sowl.stitchapi.user.dto.request.EditUserRequest;
-import se.sowl.stitchapi.user.dto.response.UserInfoRequest;
+import se.sowl.stitchapi.user.dto.request.UserInfoRequest;
 import se.sowl.stitchdomain.user.domain.User;
 import se.sowl.stitchdomain.user.repository.UserRepository;
 
