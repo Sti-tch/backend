@@ -9,8 +9,14 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import se.sowl.stitchdomain.school.domain.Campus;
 import se.sowl.stitchdomain.school.domain.Major;
+import se.sowl.stitchdomain.study.domain.StudyContent;
+import se.sowl.stitchdomain.study.domain.StudyMember;
+import se.sowl.stitchdomain.study.domain.StudyPost;
+import se.sowl.stitchdomain.study.domain.StudyPostComment;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
@@ -36,6 +42,18 @@ public class UserCamInfo {
 
     @Column(nullable = false)
     private String campusEmail;
+
+    @OneToMany(mappedBy = "userCamInfo")
+    private List<StudyPost> studyPosts = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userCamInfo")
+    private List<StudyMember> studyMembers = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userCamInfo")
+    private List<StudyPostComment> studyPostComments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "userCamInfo")
+    private List<StudyContent> studyContents = new ArrayList<>();
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)
