@@ -24,6 +24,9 @@ public class Campus {
     @Column(nullable = false)
     private String name;
 
+    @Column(name = "domain", nullable = false)
+    private String domain;
+
     @OneToMany(mappedBy = "campus")
     private List<UserCamInfo> userCamInfos = new ArrayList<>();
 
@@ -36,7 +39,8 @@ public class Campus {
     private LocalDateTime updatedAt;
 
     @Builder
-    public Campus(String name){
+    public Campus(String name, String domain) {
         this.name = name;
+        this.domain = domain;
     }
 }

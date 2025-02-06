@@ -13,12 +13,14 @@ import java.time.LocalDateTime;
 public class CampusListResponse {
     private Long id;
     private String name;
+    private String domain;
     private LocalDateTime createdAt;
 
     public static CampusListResponse from(Campus campus) {
         return new CampusListResponse(
                 campus.getId(),
                 campus.getName(),
+                campus.getDomain(),
                 campus.getCreatedAt()
         );
     }

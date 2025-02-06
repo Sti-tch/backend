@@ -37,9 +37,9 @@ class CampusControllerTest {
 
     @BeforeEach
     void setUp(){
-        CampusListResponse campus1 = new CampusListResponse(1L, "서울대학교", null);
-        CampusListResponse campus2 = new CampusListResponse(2L, "부산대학교", null);
-        CampusListResponse campus3 = new CampusListResponse(3L, "대전대학교", null);
+        CampusListResponse campus1 = new CampusListResponse(1L, "서울대학교", "snu.ac.kr",null);
+        CampusListResponse campus2 = new CampusListResponse(2L, "부산대학교", "pusan.ac.kr",null);
+        CampusListResponse campus3 = new CampusListResponse(3L, "대전대학교", "dju.ac.kr",null);
 
         campusList = Arrays.asList(campus1, campus2, campus3);
     }
@@ -64,10 +64,13 @@ class CampusControllerTest {
                 .andExpect(jsonPath("$.result.length()").value(3))
                 .andExpect(jsonPath("$.result[0].id").value(1))
                 .andExpect(jsonPath("$.result[0].name").value("서울대학교"))
+                .andExpect(jsonPath("$.result[0].domain").value("snu.ac.kr"))
                 .andExpect(jsonPath("$.result[1].id").value(2))
                 .andExpect(jsonPath("$.result[1].name").value("부산대학교"))
+                .andExpect(jsonPath("$.result[1].domain").value("pusan.ac.kr"))
                 .andExpect(jsonPath("$.result[2].id").value(3))
                 .andExpect(jsonPath("$.result[2].name").value("대전대학교"))
+                .andExpect(jsonPath("$.result[2].domain").value("dju.ac.kr"))
                 .andDo(print());
     }
 

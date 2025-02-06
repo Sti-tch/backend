@@ -31,6 +31,7 @@ class CampusServiceTest {
     void setUp() {
         testCampus = Campus.builder()
                 .name("테스트 캠퍼스")
+                .domain("test.com")
                 .build();
         testCampus = campusRepository.save(testCampus);
     }
@@ -45,6 +46,7 @@ class CampusServiceTest {
             for (int i = 0; i < 5; i++) {
                 Campus campus = Campus.builder()
                         .name("테스트 캠퍼스" + i)
+                        .domain("test" + i + "ac.kr")
                         .build();
                 campusRepository.save(campus);
             }
