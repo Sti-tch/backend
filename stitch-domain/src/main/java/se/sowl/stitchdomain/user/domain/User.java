@@ -30,7 +30,7 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
-    @Column(nullable = false)
+    @Column(name = "campus_certified",nullable = false)
     private boolean campusCertified = false;
 
     @Column(nullable = false)
