@@ -51,6 +51,11 @@ dependencies {
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
 
+    // H2 테스트용으로 scope 변경
+    testRuntimeOnly 'com.h2database:h2'
+    // MySQL 의존성 추가
+    runtimeOnly 'com.mysql:mysql-connector-j'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
 }

@@ -3,7 +3,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.security:spring-security-test'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
-    runtimeOnly 'com.h2database:h2'
+    // H2를 implementation으로 변경
+    implementation 'com.h2database:h2'
+
+    // MySQL 의존성 추가
+    implementation 'com.mysql:mysql-connector-j'
 }
 
 bootJar {

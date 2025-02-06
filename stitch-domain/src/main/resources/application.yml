@@ -3,7 +3,15 @@ spring:
     group:
       test: test
       prod: prod
-    active: test
+    active: prod  # test에서 prod로 변경
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type: TRACE
+    org.springframework.jdbc: DEBUG
+    root: INFO
+
 ---
 spring:
   config:
@@ -32,6 +40,7 @@ spring:
       ddl-auto: create
     show-sql: true
     defer-datasource-initialization: false
+
 ---
 spring:
   config:
@@ -39,13 +48,16 @@ spring:
       on-profile: prod
   datasource:
     url: jdbc:mysql://localhost:3306/stitch?useUnicode=yes&characterEncoding=UTF-8&allowMultiQueries=true&serverTimezone=Asia/Seoul
-    username:
-    password:
+    username: stitch
+    password: kjcmws0506!
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.MySQLDialect
         show_sql: true
+        format_sql: true
+        physical_naming_strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        implicit_naming_strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
     hibernate:
-      ddl-auto: none
+      ddl-auto: update

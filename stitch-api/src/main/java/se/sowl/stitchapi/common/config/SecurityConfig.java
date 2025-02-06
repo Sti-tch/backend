@@ -37,6 +37,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         // H2 Console
                         .requestMatchers("/h2-console/**").permitAll()
+                        .requestMatchers("/api/campus/list").permitAll()  // 이 엔드포인트는 인증 없이 접근 가능
                         // OAuth 관련 엔드포인트
                         .requestMatchers("/login", "/oauth2/**", "/login/oauth2/**").permitAll()
                         // Swagger UI
