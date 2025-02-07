@@ -31,4 +31,22 @@ public class UserException extends RuntimeException{
             super("인증되지 않은 사용자입니다.", HttpStatus.FORBIDDEN);
         }
     }
+
+    public static class CampusNotFoundException extends UserException {
+        public CampusNotFoundException() {
+            super("존재하지 않는 캠퍼스입니다.", HttpStatus.NOT_FOUND);
+        }
+    }
+
+    public static class InvalidCampusEmailDomainException extends UserException {
+        public InvalidCampusEmailDomainException() {
+            super("유효하지 않은 대학교 이메일 도메인입니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    public static class InvalidEmailFormatException extends UserException {
+        public InvalidEmailFormatException() {
+            super("잘못된 이메일 형식입니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
 }

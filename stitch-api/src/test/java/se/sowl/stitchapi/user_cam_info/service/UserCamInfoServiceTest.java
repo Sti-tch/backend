@@ -56,24 +56,20 @@ class UserCamInfoServiceTest {
 
     @Nested
     @DisplayName("유저 캠퍼스 정보 생성")
-    class createUserCamInfo{
+    class createUserCamInfo {
 
         @Test
-        @DisplayName("유저 캠퍼스 정보 생성 성공 - 기존 캠퍼스")
-        void createUserCamInfoExistingSuccess(){
+        @DisplayName("유저 캠퍼스 정보 생성 성공")
+        void createUserCamInfoSuccess() {
             //given
-            Campus campus = Campus.builder()
-                    .name("서울대학교")
-                    .build();
-            campusRepository.save(campus);
-
-            String campusEmail = "test@snu.ac.kr";
+            String univName = "성공회대학교";  // DB에 존재하는 대학
+            String campusEmail = "test@skhu.ac.kr";  // 실제 대학 도메인
 
             //when
             UserCamInfoResponse userCamInfoResponse = userCamInfoService.createUserCamInfo(
                     testUser.getId(),
                     campusEmail,
-                    campus.getName()
+                    univName
             );
 
             //then
@@ -81,57 +77,99 @@ class UserCamInfoServiceTest {
                     "유저 캠퍼스 정보가 올바르게 저장되어야 합니다.",
                     () -> assertNotNull(userCamInfoResponse.getId()),
                     () -> assertEquals(testUser.getId(), userCamInfoResponse.getUserId()),
-                    () -> assertEquals(campus.getId(), userCamInfoResponse.getCampusId()),
+                    () -> assertNotNull(userCamInfoResponse.getCampusId()),
                     () -> assertEquals(testUser.getName(), userCamInfoResponse.getUserName()),
-                    () -> assertEquals(campus.getName(), userCamInfoResponse.getCampusName()),
+                    () -> assertEquals(univName, userCamInfoResponse.getCampusName()),
                     () -> assertEquals(campusEmail, userCamInfoResponse.getCampusEmail()),
-                    () -> assertTrue(testUser.isCampusCertified()),  // 인증 상태 확인
+                    () -> assertTrue(testUser.isCampusCertified()),
                     () -> assertNotNull(userCamInfoResponse.getCreatedAt())
             );
         }
 
         @Test
-        @DisplayName("유저 캠퍼스 정보 생성 성공 - 새로운 캠퍼스")
-        void createUserCamInfoNewSuccess(){
+        @DisplayName("유저 캠퍼스 정보 생성 실패 - 잘못된 이메일 형식")
+        void createUserCamInfoFailInvalidEmail() {
             //given
-            String campusName = "서울대학교";
-            String campusEmail = "test@skhu.ac.kr";
+            String univName = "성공회대학교";
+            String invalidEmail = "invalid-email";
+
+            //when & then
+            assertThrows(UserException.InvalidEmailFormatException.class,
+                    () -> userCamInfoService.createUserCamInfo(
+                            testUser.getId(),
+                            invalidEmail,
+                            univName
+                    ));
+        }
+
+        @Test
+        @DisplayName("유저 캠퍼스 정보 생성 실패 - 잘못된 도메인")
+        void createUserCamInfoFailInvalidDomain() {
+            //given
+            String univName = "성공회대학교";
+            String wrongDomainEmail = "test@wrong-domain.com";
+
+            //when & then
+            assertThrows(UserException.InvalidCampusEmailDomainException.class,
+                    () -> userCamInfoService.createUserCamInfo(
+                            testUser.getId(),
+                            wrongDomainEmail,
+                            univName
+                    ));
+        }
+
+        @Test
+        @DisplayName("유저 캠퍼스 정보 생성 실패 - 존재하지 않는 대학")
+        void createUserCamInfoFailCampusNotFound() {
+            //given
+            String nonExistentCampus = "존재하지 않는 대학교";
+            String email = "test@test.ac.kr";
+
+            //when & then
+            assertThrows(UserException.CampusNotFoundException.class,
+                    () -> userCamInfoService.createUserCamInfo(
+                            testUser.getId(),
+                            email,
+                            nonExistentCampus
+                    ));
+        }
+
+        @Test
+        @DisplayName("유저 캠퍼스 정보 생성 성공 - 서브도메인 포함")
+        void createUserCamInfoSuccessWithSubdomain() {
+            //given
+            String univName = "성공회대학교";
+            String campusEmail = "test@office.skhu.ac.kr";  // 서브도메인 포함
 
             //when
             UserCamInfoResponse userCamInfoResponse = userCamInfoService.createUserCamInfo(
                     testUser.getId(),
                     campusEmail,
-                    campusName
+                    univName
             );
 
             //then
             assertAll(
-                    "새로운 캠퍼스로 유저 캠퍼스 정보가 올바르게 저장되어야 합니다.",
+                    "서브도메인이 포함된 이메일로도 유저 캠퍼스 정보가 올바르게 저장되어야 합니다.",
                     () -> assertNotNull(userCamInfoResponse.getId()),
                     () -> assertEquals(testUser.getId(), userCamInfoResponse.getUserId()),
                     () -> assertNotNull(userCamInfoResponse.getCampusId()),
-                    () -> assertEquals(testUser.getName(), userCamInfoResponse.getUserName()),
-                    () -> assertEquals(campusName, userCamInfoResponse.getCampusName()),
-                    () -> assertEquals(campusEmail, userCamInfoResponse.getCampusEmail()),
-                    () -> assertTrue(testUser.isCampusCertified()),
-                    () -> assertNotNull(userCamInfoResponse.getCreatedAt())
+                    () -> assertEquals(campusEmail, userCamInfoResponse.getCampusEmail())
             );
-
         }
-
     }
+
 
     @Nested
     @DisplayName("유저 캠퍼스 정보 조회")
-    class getUserCamInfo{
+    class getUserCamInfo {
         @Test
         @DisplayName("유저 캠퍼스 정보 조회 성공")
-        void getUserCamInfoSuccess(){
+        void getUserCamInfoSuccess() {
             //given
-            Campus campus = Campus.builder()
-                    .name("서울대학교")
-                    .build();
-            campusRepository.save(campus);
+            String univName = "성공회대학교";
+            Campus campus = campusRepository.findByName(univName)
+                    .orElseThrow(UserException.CampusNotFoundException::new);
 
             testUser.certifyCampus();
             userRepository.save(testUser);
@@ -139,7 +177,7 @@ class UserCamInfoServiceTest {
             UserCamInfo userCamInfo = UserCamInfo.builder()
                     .user(testUser)
                     .campus(campus)
-                    .campusEmail("test@sun.ac.kr")
+                    .campusEmail("test@skhu.ac.kr")
                     .build();
             userCamInfoRepository.save(userCamInfo);
 
@@ -161,11 +199,9 @@ class UserCamInfoServiceTest {
 
         @Test
         @DisplayName("유저 캠퍼스 정보 조회 실패 - 인증되지 않은 유저")
-        void getUserCamInfoFailNotCertified(){
+        void getUserCamInfoFailNotCertified() {
             assertThrows(UserException.UserNotCertifiedException.class,
                     () -> userCamInfoService.getUserCamInfo(testUser.getId()));
         }
     }
-
-
 }

@@ -29,13 +29,15 @@ public class UserCamInfoService {
             throw new UserException.UserAlreadyCertifiedException();
         }
 
+
+        String emailDomain = extractDomain(campusEmail);
+
         Campus campus = campusRepository.findByName(univName)
-                .orElseGet(() ->{
-                    Campus newCampus = Campus.builder()
-                            .name(univName)
-                            .build();
-                    return campusRepository.save(newCampus);
-                });
+                .orElseThrow(UserException.CampusNotFoundException::new);
+
+        if (!emailDomain.endsWith(campus.getDomain())) {
+            throw new UserException.InvalidCampusEmailDomainException();
+        }
 
         UserCamInfo userCamInfo = UserCamInfo.builder()
                 .user(user)
@@ -48,6 +50,14 @@ public class UserCamInfoService {
 
         return UserCamInfoResponse.from(userCamInfo);
     }
+
+    private String extractDomain(String email) {
+        if (email == null || !email.contains("@")) {
+            throw new UserException.InvalidEmailFormatException();
+        }
+        return email.substring(email.indexOf("@") + 1);
+    }
+
 
     @Transactional
     public UserCamInfoResponse getUserCamInfo(Long userId){
