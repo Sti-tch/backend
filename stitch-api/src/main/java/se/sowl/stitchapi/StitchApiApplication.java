@@ -13,5 +13,4 @@ public class StitchApiApplication {
     public static void main(String[] args) {
         SpringApplication.run(StitchApiApplication.class, args);
     }
-
 }
