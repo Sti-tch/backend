@@ -1,5 +1,6 @@
 package se.sowl.stitchapi.user_cam_info.service;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.sowl.stitchapi.exception.UserException;
@@ -11,6 +12,7 @@ import se.sowl.stitchdomain.user.domain.UserCamInfo;
 import se.sowl.stitchdomain.user.repository.UserRepository;
 import se.sowl.stitchdomain.user.repository.UserCamInfoRepository;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserCamInfoService {
@@ -22,6 +24,7 @@ public class UserCamInfoService {
 
     @Transactional
     public UserCamInfoResponse createUserCamInfo(Long userId, String campusEmail, String univName) {
+
         User user  = userRepository.findById(userId)
                 .orElseThrow(UserException.UserNotFoundException::new);
 
@@ -32,8 +35,10 @@ public class UserCamInfoService {
 
         String emailDomain = extractDomain(campusEmail);
 
+        log.debug("Searching for university: {}", univName);
         Campus campus = campusRepository.findByName(univName)
                 .orElseThrow(UserException.CampusNotFoundException::new);
+        log.debug("Found campus: {}", campus);
 
         if (!emailDomain.endsWith(campus.getDomain())) {
             throw new UserException.InvalidCampusEmailDomainException();

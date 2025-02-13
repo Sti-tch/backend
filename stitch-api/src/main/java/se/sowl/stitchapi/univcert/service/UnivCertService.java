@@ -2,14 +2,26 @@ package se.sowl.stitchapi.univcert.service;
 
 import com.univcert.api.UnivCert;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import org.springframework.http.HttpHeaders;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.Map;
 
+
+
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UnivCertService {
+
+    private final RestTemplate restTemplate;
 
     @Value("${univcert.api.key}")
     private String univCertApiKey;
@@ -60,6 +72,30 @@ public class UnivCertService {
             return response;
         } catch (Exception e) {
             throw new RuntimeException("대학교 이름 확인 중 오류가 발생했습니다: " + e.getMessage());
+        }
+    }
+
+    public Map<String, Object> clearVerificationStatus(String email) {
+        try {
+            // API 요청 데이터 준비
+            String url = "https://univcert.com/api/v1/clear";
+            HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_JSON);
+
+            Map<String, String> requestBody = Map.of("key", "114d1271-7b05-41bc-8099-470eaabe1727");
+
+            HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(requestBody, headers);
+
+            ResponseEntity<Map> response = restTemplate.postForEntity(
+                    url,
+                    requestEntity,
+                    Map.class
+            );
+
+            return response.getBody();
+        } catch (Exception e) {
+            log.error("Error clearing verification status: ", e);
+            throw new RuntimeException("인증 상태 초기화 중 오류가 발생했습니다: " + e.getMessage());
         }
     }
 }

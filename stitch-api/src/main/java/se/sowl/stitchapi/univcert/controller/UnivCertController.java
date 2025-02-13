@@ -31,6 +31,8 @@ public class UnivCertController {
     public ResponseEntity<Map<String, Object>> sendVerificationEmail(
             @RequestBody EmailVerificationRequest request) {
 
+        univCertService.clearVerificationStatus(request.getEmail());
+
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         CustomOAuth2User oAuth2User = (CustomOAuth2User) auth.getPrincipal();
         String userEmail = oAuth2User.getEmail();  // getName() 대신 getEmail() 사용
@@ -43,13 +45,6 @@ public class UnivCertController {
                 request.getUnivName()
         );
 
-        if ((int)response.get("code") == 200) {
-            userCamInfoService.createUserCamInfo(
-                    user.getId(),
-                    request.getEmail(),
-                    request.getUnivName()
-            );
-        }
         return ResponseEntity.ok(response);
     }
 
@@ -61,6 +56,22 @@ public class UnivCertController {
                 request.getUnivName(),
                 request.getCode()
         );
+
+        // 2. 코드 확인이 성공했을 때만 UserCamInfo 생성
+        if ((int)response.get("code") == 200) {
+            Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+            CustomOAuth2User oAuth2User = (CustomOAuth2User) auth.getPrincipal();
+            String userEmail = oAuth2User.getEmail();
+
+            User user = userRepository.findByEmail(userEmail)
+                    .orElseThrow(() -> new UserException.UserNotFoundException());
+
+            userCamInfoService.createUserCamInfo(
+                    user.getId(),
+                    request.getEmail(),
+                    request.getUnivName()
+            );
+        }
         return ResponseEntity.ok(response);
     }
 
@@ -75,6 +86,13 @@ public class UnivCertController {
     public ResponseEntity<Map<String, Object>> checkUniversity(
             @RequestParam String univName) {
         Map<String, Object> response = univCertService.isValidUniversity(univName);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/university/clear")
+    public ResponseEntity<Map<String, Object>> clearVerificationStatus(
+            @RequestParam String email) {
+        Map<String, Object> response = univCertService.clearVerificationStatus(email);
         return ResponseEntity.ok(response);
     }
 }
