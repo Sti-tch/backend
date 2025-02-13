@@ -7,6 +7,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import se.sowl.stitchapi.common.CommonResponse;
 import se.sowl.stitchapi.user.dto.request.EditUserRequest;
+import se.sowl.stitchapi.user.dto.request.UserInfoRequest;
 import se.sowl.stitchapi.user.dto.response.StitchUserInfoResponse;
 import se.sowl.stitchapi.user.service.UserService;
 import se.sowl.stitchdomain.user.domain.CustomOAuth2User;
@@ -19,8 +20,8 @@ public class UserController {
 
     @GetMapping("/me")
     @PreAuthorize("isAuthenticated()")
-    public CommonResponse<StitchUserInfoResponse> getMe(@AuthenticationPrincipal CustomOAuth2User user) {
-        StitchUserInfoResponse userInfo = userService.getUserInfo(user.getUserId());
+    public CommonResponse<UserInfoRequest> getMe(@AuthenticationPrincipal CustomOAuth2User user) {
+        UserInfoRequest userInfo = userService.getUserInfo(user.getUserId());
         return CommonResponse.ok(userInfo);
     }
 
