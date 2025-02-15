@@ -3,7 +3,6 @@ package se.sowl.stitchapi.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
-import se.sowl.stitchdomain.user.domain.User;
 
 @Getter
 public class UserException extends RuntimeException{
