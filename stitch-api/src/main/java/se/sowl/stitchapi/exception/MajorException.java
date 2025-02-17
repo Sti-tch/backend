@@ -18,9 +18,16 @@ public class MajorException extends RuntimeException{
         }
     }
 
-    public static class DuplicateMajorNameException extends MajorException{
-        public DuplicateMajorNameException() {
-            super("이미 존재하는 전공명입니다.", HttpStatus.BAD_REQUEST);
+    public static class MajorAlreadySelectedException extends MajorException{
+        public MajorAlreadySelectedException() {
+            super("이미 전공이 선택되어 있습니다.", HttpStatus.BAD_REQUEST);
         }
     }
+
+    public static class MajorIdRequiredException extends MajorException {
+        public MajorIdRequiredException() {
+            super("전공 ID가 필요합니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

@@ -10,5 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class MajorRequest {
-    private String name;
+    private Long majorId;
+    private Long userId;
+    private boolean isSkipped;
 }

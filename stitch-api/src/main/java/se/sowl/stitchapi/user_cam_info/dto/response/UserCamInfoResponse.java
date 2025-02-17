@@ -15,6 +15,7 @@ public class UserCamInfoResponse {
     private String userName;
     private String campusName;
     private String campusEmail;
+    private boolean isMajorSkipped;
     private LocalDateTime createdAt;
 
     public static UserCamInfoResponse from(UserCamInfo userCamInfo) {
@@ -25,6 +26,7 @@ public class UserCamInfoResponse {
                 userCamInfo.getUser().getName(),
                 userCamInfo.getCampus().getName(),
                 userCamInfo.getCampusEmail(),
+                userCamInfo.isMajorSkipped(),
                 userCamInfo.getCreatedAt()
         );
     }

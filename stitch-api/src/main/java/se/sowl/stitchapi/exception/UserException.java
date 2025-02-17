@@ -48,4 +48,10 @@ public class UserException extends RuntimeException{
             super("잘못된 이메일 형식입니다.", HttpStatus.BAD_REQUEST);
         }
     }
+
+    public static class UserCamInfoNotFoundException extends UserException {
+        public UserCamInfoNotFoundException() {
+            super("존재하지 않는 사용자 캠퍼스 정보입니다.", HttpStatus.NOT_FOUND);
+        }
+    }
 }
