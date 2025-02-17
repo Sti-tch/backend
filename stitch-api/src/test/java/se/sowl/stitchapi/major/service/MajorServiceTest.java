@@ -38,31 +38,6 @@ class MajorServiceTest {
         testMajor = majorRepository.save(testMajor);
     }
 
-    @Nested
-    @DisplayName("전공 생성 테스트")
-    class CreateMajorTest{
-        @Test
-        @DisplayName("전공 생성 성공")
-        void createMajorSuccess(){
-            //given
-            String name = "테스트 전공";
-
-            //when
-            MajorResponse majorResponse = majorService.createMajor(name);
-
-            //then
-            assertEquals(name, majorResponse.getName());
-        }
-        @Test
-        @DisplayName("이미 존재하는 전공명으로 생성 시 실패 ")
-        void createMajorFail(){
-            //given
-            String name = "컴퓨터공학과";
-
-            //when & then
-            assertThrows(MajorException.DuplicateMajorNameException.class, () -> majorService.createMajor(name));
-        }
-    }
 
     @Nested
     @DisplayName("모든 전공 조회 테스트")

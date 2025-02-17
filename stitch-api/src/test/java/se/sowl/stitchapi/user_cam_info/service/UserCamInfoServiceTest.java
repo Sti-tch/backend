@@ -82,6 +82,7 @@ class UserCamInfoServiceTest {
                     () -> assertEquals(univName, userCamInfoResponse.getCampusName()),
                     () -> assertEquals(campusEmail, userCamInfoResponse.getCampusEmail()),
                     () -> assertTrue(testUser.isCampusCertified()),
+                    () -> assertFalse(userCamInfoResponse.isMajorSkipped()),
                     () -> assertNotNull(userCamInfoResponse.getCreatedAt())
             );
         }
