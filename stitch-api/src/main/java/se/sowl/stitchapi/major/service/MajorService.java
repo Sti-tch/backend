@@ -47,6 +47,22 @@ public class MajorService {
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(UserException.UserNotFoundException::new);
 
+        UserCamInfo userCamInfo = userCamInfoRepository.findByUser(user)
+                .orElseThrow(UserException.UserCamInfoNotFoundException::new);
+
+        // 마이페이지에서의 전공 선택 (이전에 건너뛰기 했던 경우)
+        if (userCamInfo.isMajorSkipped() && request.getMajorId() != null) {
+            return handleMyPageMajorSelection(request);
+        }
+
+        // 학교 인증 직후의 전공 선택 또는 건너뛰기
+        return handleInitialMajorSelection(request);
+    }
+
+    private MajorResponse handleInitialMajorSelection(MajorRequest request){
+        User user = userRepository.findById(request.getUserId())
+                .orElseThrow(UserException.UserNotFoundException::new);
+
         if (!user.isCampusCertified()){
             throw new UserException.UserNotCertifiedException();
         }
@@ -63,36 +79,31 @@ public class MajorService {
             throw new MajorException.MajorIdRequiredException();
         }
 
-        Major major = majorRepository.findById(request.getMajorId())
-                .orElseThrow(MajorException.MajorNotFoundException::new);
-
+        Major major = findMajorById(request.getMajorId());
         userCamInfo.assignMajor(major);
-
         return MajorResponse.from(major);
     }
 
-    // 마이페이지에서 건너뛰었던 전공을 선택하는 메서드
-    @Transactional
-    public MajorResponse updateMajorInMyPage(MajorRequest request){
+
+    private MajorResponse handleMyPageMajorSelection(MajorRequest request){
         User user = userRepository.findById(request.getUserId())
                 .orElseThrow(UserException.UserNotFoundException::new);
 
         UserCamInfo userCamInfo = userCamInfoRepository.findByUser(user)
                 .orElseThrow(UserException.UserCamInfoNotFoundException::new);
 
-        if (userCamInfo.isMajorSkipped() == false){  // 또는 !userCamInfo.isMajorSkipped()
-            throw new MajorException.MajorAlreadySelectedException();
-        }
-
         if (request.getMajorId() == null){
             throw new MajorException.MajorIdRequiredException();
         }
 
-        Major major = majorRepository.findById(request.getMajorId())
-                .orElseThrow(MajorException.MajorNotFoundException::new);
-
+        Major major = findMajorById(request.getMajorId());
         userCamInfo.assignMajor(major);
-
         return MajorResponse.from(major);
+    }
+
+
+    private Major findMajorById(Long majorId) {
+        return majorRepository.findById(majorId)
+                .orElseThrow(MajorException.MajorNotFoundException::new);
     }
 }
