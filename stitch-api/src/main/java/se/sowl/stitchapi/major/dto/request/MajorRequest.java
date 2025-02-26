@@ -13,4 +13,5 @@ public class MajorRequest {
     private Long majorId;
     private Long userId;
     private boolean isSkipped;
+
 }
