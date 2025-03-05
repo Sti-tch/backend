@@ -92,3 +92,4 @@ public class UserCamInfo {
         this.isMajorSkipped = false;
     }
 }
+
