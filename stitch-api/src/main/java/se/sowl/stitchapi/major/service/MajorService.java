@@ -24,7 +24,7 @@ public class MajorService {
 
     private final MajorRepository majorRepository;
     private final UserRepository userRepository;
-    private UserCamInfoRepository userCamInfoRepository;
+    private final UserCamInfoRepository userCamInfoRepository;
 
     @Transactional
     public List<MajorListResponse> getAllMajors(){

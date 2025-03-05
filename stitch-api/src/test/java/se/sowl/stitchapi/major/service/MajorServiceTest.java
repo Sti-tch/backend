@@ -8,11 +8,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 import se.sowl.stitchapi.exception.MajorException;
+import se.sowl.stitchapi.major.dto.request.MajorRequest;
 import se.sowl.stitchapi.major.dto.response.MajorDetailResponse;
 import se.sowl.stitchapi.major.dto.response.MajorListResponse;
 import se.sowl.stitchapi.major.dto.response.MajorResponse;
+import se.sowl.stitchdomain.school.domain.Campus;
 import se.sowl.stitchdomain.school.domain.Major;
+import se.sowl.stitchdomain.school.repository.CampusRepository;
 import se.sowl.stitchdomain.school.repository.MajorRepository;
+import se.sowl.stitchdomain.user.domain.User;
+import se.sowl.stitchdomain.user.domain.UserCamInfo;
+import se.sowl.stitchdomain.user.repository.UserCamInfoRepository;
+import se.sowl.stitchdomain.user.repository.UserRepository;
 
 import java.util.List;
 
@@ -28,6 +35,21 @@ class MajorServiceTest {
     @Autowired
     private MajorRepository majorRepository;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Autowired
+    private UserCamInfoRepository userCamInfoRepository;
+
+    @Autowired
+    private CampusRepository campusRepository;
+
+    private User testUser;
+
+    private Campus testCampus;
+
+    private UserCamInfo testUserCamInfo;
+
     private Major testMajor;
 
     @BeforeEach
@@ -36,6 +58,29 @@ class MajorServiceTest {
                 .name("컴퓨터공학과")
                 .build();
         testMajor = majorRepository.save(testMajor);
+
+        testCampus = Campus.builder()
+                .name("테스트 캠퍼스")
+                .domain("test.ac.kr")
+                .build();
+        testCampus = campusRepository.save(testCampus);
+
+        testUser = User.builder()
+                .name("테스트 유저")
+                .email("test@email.com")
+                .nickname("test")
+                .provider("kakao")
+                .campusCertified(true)
+                .build();
+        testUser = userRepository.save(testUser);
+
+        testUserCamInfo = UserCamInfo.builder()
+                .user(testUser)
+                .campus(testCampus)
+                .campusEmail("test@skhu.ac.kr")
+                .isMajorSkipped(false)
+                .build();
+        testUserCamInfo = userCamInfoRepository.save(testUserCamInfo);
     }
 
 
@@ -87,5 +132,25 @@ class MajorServiceTest {
         }
     }
 
+    @Nested
+    @DisplayName("전공 선택 테스트")
+    class SelectMajorTest{
+        @Test
+        @DisplayName("학교 인증 직후 전공 선택 성공")
+        void selectMajorSuccess(){
+            //given
+            MajorRequest request = new MajorRequest(testMajor.getId(), testUser.getId(), false);
 
+            //when
+            MajorResponse response = majorService.selectMajor(request);
+
+            //then
+            assertNotNull(response);
+            assertEquals(testMajor.getId(), response.getId());
+            assertEquals(testMajor.getName(), response.getName());
+
+            UserCamInfo updatedUserCamInfo = userCamInfoRepository.findByUser(testUser).orElseThrow();
+            assertEquals(testMajor.getId(), updatedUserCamInfo.getMajor().getId());
+        }
+    }
 }
