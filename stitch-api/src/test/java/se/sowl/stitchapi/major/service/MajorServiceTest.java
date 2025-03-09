@@ -90,6 +90,8 @@ class MajorServiceTest {
         @Test
         @DisplayName("모든 전공 조회 성공")
         void getAllMajorsSuccess(){
+            majorRepository.deleteAll();
+
             //given
             for (int i = 1; i <= 5; i++) {
                 Major major = Major.builder()
@@ -97,11 +99,12 @@ class MajorServiceTest {
                         .build();
                 majorRepository.save(major);
             }
+
             //when
             List<MajorListResponse> majorResponses = majorService.getAllMajors();
 
             //then
-            assertEquals(6, majorResponses.size());
+            assertEquals(5, majorResponses.size());
         }
     }
 

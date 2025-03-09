@@ -44,7 +44,7 @@ public class UserCamInfo {
     private String campusEmail;
 
     @Column(name = "is_major_skipped")
-    private boolean isMajorSkipped = false;
+    private Boolean isMajorSkipped = false;
 
     @OneToMany(mappedBy = "userCamInfo")
     private List<StudyPost> studyPosts = new ArrayList<>();
@@ -67,13 +67,19 @@ public class UserCamInfo {
     private LocalDateTime updatedAt;
 
     @Builder
-    public UserCamInfo(User user, Campus campus, Major major, String campusEmail, boolean isMajorSkipped) {
+    public UserCamInfo(User user, Campus campus, Major major, String campusEmail, Boolean isMajorSkipped) {
         this.setUser(user);
         this.campus = campus;
         this.major = major;
         this.campusEmail = campusEmail;
-        this.isMajorSkipped = isMajorSkipped;
+        this.isMajorSkipped = (isMajorSkipped != null) ? isMajorSkipped : false;
     }
+
+    public boolean isMajorSkipped() {
+        return isMajorSkipped != null ? isMajorSkipped : false;
+    }
+
+
     private void setUser(User user) {
         this.user = user;
         if (user!=null) {
@@ -82,8 +88,8 @@ public class UserCamInfo {
     }
 
     // 바로 전공을 선택하지 않은 경우
-    public void setMajorSkipped(boolean isMajorSkipped) {
-        this.isMajorSkipped = isMajorSkipped;
+    public void setMajorSkipped(Boolean isMajorSkipped) {
+        this.isMajorSkipped = (isMajorSkipped != null) ? isMajorSkipped : false;
     }
 
     // 전공을 선택할 때 호출
