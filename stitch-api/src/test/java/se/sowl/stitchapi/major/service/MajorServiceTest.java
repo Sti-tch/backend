@@ -155,5 +155,21 @@ class MajorServiceTest {
             UserCamInfo updatedUserCamInfo = userCamInfoRepository.findByUser(testUser).orElseThrow();
             assertEquals(testMajor.getId(), updatedUserCamInfo.getMajor().getId());
         }
+
+        @Test
+        @DisplayName("학교 인증 직후 전공 건너뛰기 성공")
+        void skipMajorSuccess(){
+            //given
+            MajorRequest request = new MajorRequest(null, testUser.getId(), true);
+
+            //when
+            MajorResponse response = majorService.selectMajor(request);
+
+            //then
+            assertNull(response);
+
+            UserCamInfo updatedUserCamInfo = userCamInfoRepository.findByUser(testUser).orElseThrow();
+            assertTrue(updatedUserCamInfo.isMajorSkipped());
+        }
     }
 }

@@ -20,6 +20,8 @@ import se.sowl.stitchapi.major.service.MajorService;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -116,6 +118,55 @@ class MajorControllerTest {
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.code").value("FAIL"))
                     .andExpect(jsonPath("$.message").value("존재하지 않는 전공입니다."))
+                    .andDo(print());
+        }
+    }
+
+    @Nested
+    @DisplayName("전공 선택")
+    class selectMajor{
+        @Test
+        @DisplayName("POST /api/majors/select - 학교 인증 직후 전공 선택 성공")
+        @WithMockUser
+        void selectMajorSuccess() throws Exception{
+            //given
+            MajorRequest request = new MajorRequest(1L, 1L, false);
+            MajorResponse response = new MajorResponse(1L, "컴퓨터공학과", null);
+
+            //when
+            when(majorService.selectMajor(any(MajorRequest.class))).thenReturn(response);
+
+            //then
+            mockMvc.perform(post("/api/majors/select")
+                            .with(csrf())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(new ObjectMapper().writeValueAsString(request)))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.code").value("SUCCESS"))
+                    .andExpect(jsonPath("$.message").value("성공"))
+                    .andExpect(jsonPath("$.result.name").value("컴퓨터공학과"))
+                    .andDo(print());
+        }
+
+        @Test
+        @DisplayName("POST /api/majors/select - 학교 인증 직후 전공 건너뛰기 성공")
+        @WithMockUser
+        void skipMajorSuccess() throws Exception{
+            //given
+            MajorRequest request = new MajorRequest(null, 1L, true);
+
+            //when
+            when(majorService.selectMajor(any(MajorRequest.class))).thenReturn(null);
+
+            //then
+            mockMvc.perform(post("/api/majors/select")
+                            .with(csrf())
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .content(new ObjectMapper().writeValueAsString(request)))
+                    .andExpect(status().isOk())
+                    .andExpect(jsonPath("$.code").value("SUCCESS"))
+                    .andExpect(jsonPath("$.message").value("성공"))
+                    .andExpect(jsonPath("$.result").doesNotExist())
                     .andDo(print());
         }
     }
