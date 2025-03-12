@@ -55,7 +55,7 @@ class CampusServiceTest {
             List<CampusListResponse> campusListResponses = campusService.getAllCampuses();
 
             //then
-            assertEquals(6, campusListResponses.size());
+            assertEquals(90, campusListResponses.size());  // db에 있는 85개 + 5개 추가한 캠퍼스
         }
     }
 
