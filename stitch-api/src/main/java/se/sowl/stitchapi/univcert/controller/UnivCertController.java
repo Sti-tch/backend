@@ -11,6 +11,7 @@ import se.sowl.stitchapi.univcert.service.UnivCertService;
 import se.sowl.stitchapi.univcert.dto.EmailVerificationRequest;
 import se.sowl.stitchapi.univcert.dto.CodeVerificationRequest;
 import se.sowl.stitchapi.user_cam_info.service.UserCamInfoService;
+import se.sowl.stitchdomain.school.domain.Campus;
 import se.sowl.stitchdomain.school.repository.CampusRepository;
 import se.sowl.stitchdomain.user.domain.CustomOAuth2User;
 import se.sowl.stitchdomain.user.domain.User;
@@ -30,6 +31,16 @@ public class UnivCertController {
     @PostMapping("/university/verify")
     public ResponseEntity<Map<String, Object>> sendVerificationEmail(
             @RequestBody EmailVerificationRequest request) {
+
+        // 이메일 도메인 검증 로직 추가
+        String emailDomain = extractDomain(request.getEmail());
+        Campus campus = campusRepository.findByName(request.getUnivName())
+                .orElseThrow(() -> new UserException.CampusNotFoundException());
+
+        if (!emailDomain.endsWith(campus.getDomain())) {
+            throw new UserException.InvalidCampusEmailDomainException();
+        }
+
 
         univCertService.clearVerificationStatus(request.getEmail());
 
@@ -94,5 +105,13 @@ public class UnivCertController {
             @RequestParam String email) {
         Map<String, Object> response = univCertService.clearVerificationStatus(email);
         return ResponseEntity.ok(response);
+    }
+
+    // 이메일에서 도메인 추출하는 헬퍼 메서드 추가
+    private String extractDomain(String email) {
+        if (email == null || !email.contains("@")) {
+            throw new UserException.InvalidEmailFormatException();
+        }
+        return email.substring(email.indexOf("@") + 1);
     }
 }
