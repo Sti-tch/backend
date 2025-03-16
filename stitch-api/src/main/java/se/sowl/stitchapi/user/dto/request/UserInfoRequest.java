@@ -9,6 +9,7 @@ import lombok.Getter;
 @AllArgsConstructor
 public class UserInfoRequest {
     private Long userId;
+    private Long majorId;
     private String email;
     private boolean campusCertified;
     private String name;
