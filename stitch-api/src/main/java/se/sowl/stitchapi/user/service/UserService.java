@@ -28,6 +28,7 @@ public class UserService {
         return new UserInfoRequest(
                 user.getId(),
                 user.getEmail(),
+                user.isCampusCertified(),
                 user.getName(),
                 user.getNickname(),
                 user.getProvider()

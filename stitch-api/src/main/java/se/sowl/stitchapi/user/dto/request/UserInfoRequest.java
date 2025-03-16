@@ -10,6 +10,7 @@ import lombok.Getter;
 public class UserInfoRequest {
     private Long userId;
     private String email;
+    private boolean campusCertified;
     private String name;
     private String nickname;
     private String provider;
