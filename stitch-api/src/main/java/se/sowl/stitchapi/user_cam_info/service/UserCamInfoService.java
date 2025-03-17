@@ -48,7 +48,6 @@ public class UserCamInfoService {
                 .user(user)
                 .campus(campus)
                 .campusEmail(campusEmail)
-                .isMajorSkipped(false)
                 .build();
 
         user.certifyCampus();

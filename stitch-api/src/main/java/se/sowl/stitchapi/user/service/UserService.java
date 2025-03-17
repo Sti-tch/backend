@@ -29,12 +29,20 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        UserCamInfo userCamInfo = userCamInfoRepository.findById(userId)
-                .orElseThrow(UserCamInfoException.UserCamNotFoundException::new);
+        Long majorid = null;
+
+        if (user.isCampusCertified()) {
+            UserCamInfo userCamInfo = userCamInfoRepository.findByUser(user)
+                    .orElseThrow(UserCamInfoException.UserCamNotFoundException::new);
+
+            if (userCamInfo.getMajor() != null) {
+                majorid = userCamInfo.getMajor().getId();
+            }
+        }
 
         return new UserInfoRequest(
                 user.getId(),
-                user.getUserCamInfo().getMajor().getId(),
+                majorid,
                 user.getEmail(),
                 user.isCampusCertified(),
                 user.getName(),

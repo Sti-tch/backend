@@ -43,9 +43,6 @@ public class UserCamInfo {
     @Column(nullable = false)
     private String campusEmail;
 
-    @Column(name = "is_major_skipped")
-    private Boolean isMajorSkipped = false;
-
     @OneToMany(mappedBy = "userCamInfo")
     private List<StudyPost> studyPosts = new ArrayList<>();
 
@@ -67,16 +64,11 @@ public class UserCamInfo {
     private LocalDateTime updatedAt;
 
     @Builder
-    public UserCamInfo(User user, Campus campus, Major major, String campusEmail, Boolean isMajorSkipped) {
+    public UserCamInfo(User user, Campus campus, Major major, String campusEmail) {
         this.setUser(user);
         this.campus = campus;
         this.major = major;
         this.campusEmail = campusEmail;
-        this.isMajorSkipped = (isMajorSkipped != null) ? isMajorSkipped : false;
-    }
-
-    public boolean isMajorSkipped() {
-        return isMajorSkipped != null ? isMajorSkipped : false;
     }
 
 
@@ -87,15 +79,18 @@ public class UserCamInfo {
         }
     }
 
-    // 바로 전공을 선택하지 않은 경우
-    public void setMajorSkipped(Boolean isMajorSkipped) {
-        this.isMajorSkipped = (isMajorSkipped != null) ? isMajorSkipped : false;
-    }
+    public void setMajor(Major major) {
 
-    // 전공을 선택할 때 호출
-    public void assignMajor(Major major) {
+        if (this.major != null) {
+            this.major.getUserCamInfos().remove(this);
+        }
+
         this.major = major;
-        this.isMajorSkipped = false;
+
+
+        if (major != null) {
+            major.getUserCamInfos().add(this);
+        }
     }
 }
 
