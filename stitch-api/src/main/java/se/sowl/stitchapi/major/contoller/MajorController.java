@@ -32,7 +32,7 @@ public class MajorController {
     }
 
     @PostMapping("/select")
-    public CommonResponse<?> selectMajor(@RequestBody MajorRequest request){
+    public CommonResponse<MajorResponse> selectMajor(@RequestBody MajorRequest request){
         MajorResponse response = majorService.selectMajor(request);
         return CommonResponse.ok(response);
     }

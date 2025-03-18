@@ -81,13 +81,15 @@ public class UserCamInfo {
 
     public void setMajor(Major major) {
 
+        // 기존에 선택한 전공이 있는 경우 처리
         if (this.major != null) {
             this.major.getUserCamInfos().remove(this);
         }
 
+        // 새 전공 설정
         this.major = major;
 
-
+        // 새 전공의 학생 목록에 이 학생 추가
         if (major != null) {
             major.getUserCamInfos().add(this);
         }

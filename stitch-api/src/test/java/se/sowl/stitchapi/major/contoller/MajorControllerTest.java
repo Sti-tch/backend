@@ -124,49 +124,29 @@ class MajorControllerTest {
 
     @Nested
     @DisplayName("전공 선택")
+    @WithMockUser
     class selectMajor{
+
         @Test
-        @DisplayName("POST /api/majors/select - 학교 인증 직후 전공 선택 성공")
-        @WithMockUser
+        @DisplayName("POST /api/majors/select - 전공 선택 성공")
         void selectMajorSuccess() throws Exception{
             //given
-            MajorRequest request = new MajorRequest(1L, 1L, false);
-            MajorResponse response = new MajorResponse(1L, "컴퓨터공학과", null);
+            MajorRequest majorRequest = new MajorRequest(1L, 1L);
+
+            MajorResponse majorResponse = new MajorResponse(1L, "컴퓨터공학과", null);
 
             //when
-            when(majorService.selectMajor(any(MajorRequest.class))).thenReturn(response);
+            when(majorService.selectMajor(any(MajorRequest.class))).thenReturn(majorResponse);
 
             //then
             mockMvc.perform(post("/api/majors/select")
                             .with(csrf())
                             .contentType(MediaType.APPLICATION_JSON)
-                            .content(new ObjectMapper().writeValueAsString(request)))
+                            .content(new ObjectMapper().writeValueAsString(majorRequest)))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.code").value("SUCCESS"))
                     .andExpect(jsonPath("$.message").value("성공"))
                     .andExpect(jsonPath("$.result.name").value("컴퓨터공학과"))
-                    .andDo(print());
-        }
-
-        @Test
-        @DisplayName("POST /api/majors/select - 학교 인증 직후 전공 건너뛰기 성공")
-        @WithMockUser
-        void skipMajorSuccess() throws Exception{
-            //given
-            MajorRequest request = new MajorRequest(null, 1L, true);
-
-            //when
-            when(majorService.selectMajor(any(MajorRequest.class))).thenReturn(null);
-
-            //then
-            mockMvc.perform(post("/api/majors/select")
-                            .with(csrf())
-                            .contentType(MediaType.APPLICATION_JSON)
-                            .content(new ObjectMapper().writeValueAsString(request)))
-                    .andExpect(status().isOk())
-                    .andExpect(jsonPath("$.code").value("SUCCESS"))
-                    .andExpect(jsonPath("$.message").value("성공"))
-                    .andExpect(jsonPath("$.result").doesNotExist())
                     .andDo(print());
         }
     }

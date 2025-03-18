@@ -52,12 +52,19 @@ class MajorServiceTest {
 
     private Major testMajor;
 
+    private Major anotherMajor;
+
     @BeforeEach
     void setUp() {
         testMajor = Major.builder()
                 .name("컴퓨터공학과")
                 .build();
         testMajor = majorRepository.save(testMajor);
+
+        anotherMajor = Major.builder()
+                .name("경영학과")
+                .build();
+        anotherMajor = majorRepository.save(anotherMajor);
 
         testCampus = Campus.builder()
                 .name("테스트 캠퍼스")
@@ -78,7 +85,6 @@ class MajorServiceTest {
                 .user(testUser)
                 .campus(testCampus)
                 .campusEmail("test@skhu.ac.kr")
-                .isMajorSkipped(false)
                 .build();
         testUserCamInfo = userCamInfoRepository.save(testUserCamInfo);
     }
@@ -138,11 +144,12 @@ class MajorServiceTest {
     @Nested
     @DisplayName("전공 선택 테스트")
     class SelectMajorTest{
+
         @Test
-        @DisplayName("학교 인증 직후 전공 선택 성공")
-        void selectMajorSuccess(){
+        @DisplayName("처음 전공 선택 성공")
+        void selectFirstMajorSuccess(){
             //given
-            MajorRequest request = new MajorRequest(testMajor.getId(), testUser.getId(), false);
+            MajorRequest request = new MajorRequest(testMajor.getId(), testUser.getId());
 
             //when
             MajorResponse response = majorService.selectMajor(request);
@@ -152,24 +159,39 @@ class MajorServiceTest {
             assertEquals(testMajor.getId(), response.getId());
             assertEquals(testMajor.getName(), response.getName());
 
-            UserCamInfo updatedUserCamInfo = userCamInfoRepository.findByUser(testUser).orElseThrow();
-            assertEquals(testMajor.getId(), updatedUserCamInfo.getMajor().getId());
+            // DB에 실제로 반영되었는지 확인
+            UserCamInfo savedUserCamInfo = userCamInfoRepository.findByUser(testUser)
+                    .orElseThrow();
+            assertNotNull(savedUserCamInfo.getMajor());
+            assertEquals(testMajor.getId(), savedUserCamInfo.getMajor().getId());
         }
 
         @Test
-        @DisplayName("학교 인증 직후 전공 건너뛰기 성공")
-        void skipMajorSuccess(){
+        @DisplayName("이미 선택한 전공이 있는 경우 전공 변경 성공")
+        void changeMajorSuccess(){
             //given
-            MajorRequest request = new MajorRequest(null, testUser.getId(), true);
+            testUserCamInfo.setMajor(testMajor);
+            userCamInfoRepository.save(testUserCamInfo);
+
+            MajorRequest request = new MajorRequest(anotherMajor.getId(), testUser.getId());
 
             //when
             MajorResponse response = majorService.selectMajor(request);
 
             //then
-            assertNull(response);
+            assertNotNull(response);
+            assertEquals(anotherMajor.getId(), response.getId());
+            assertEquals(anotherMajor.getName(), response.getName());
 
-            UserCamInfo updatedUserCamInfo = userCamInfoRepository.findByUser(testUser).orElseThrow();
-            assertTrue(updatedUserCamInfo.isMajorSkipped());
+            // DB에 실제로 반영되었는지 확인
+            UserCamInfo savedUserCamInfo = userCamInfoRepository.findByUser(testUser)
+                    .orElseThrow();
+            assertNotNull(savedUserCamInfo.getMajor());
+            assertEquals(anotherMajor.getId(), savedUserCamInfo.getMajor().getId());
+
+            // 이전 전공과의 관계가 제거되었는지 확인
+            Major oldMajor = majorRepository.findById(testMajor.getId()).orElseThrow();
+            assertFalse(oldMajor.getUserCamInfos().contains(savedUserCamInfo));
         }
     }
 }
