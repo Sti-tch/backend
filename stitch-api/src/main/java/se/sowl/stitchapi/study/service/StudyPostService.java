@@ -26,9 +26,9 @@ public class StudyPostService {
     private final UserCamInfoRepository userCamInfoRepository;
 
     @Transactional
-    public StudyPostResponse createStudyPost(StudyPostRequest studyPostRequest, Long userId) {
+    public StudyPostResponse createStudyPost(StudyPostRequest studyPostRequest, Long userCamIfoId) {
 
-        UserCamInfo userCamInfo = userCamInfoRepository.findById(userId)
+        UserCamInfo userCamInfo = userCamInfoRepository.findById(userCamIfoId)
                 .orElseThrow(UserCamInfoException.UserCamNotFoundException::new);
 
         StudyPost studyPost = StudyPost.builder()

@@ -29,22 +29,33 @@ public class UserService {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        Long majorid = null;
+        Long majorId = null;
+        String majorName = null;
+        Long campusId = null;
+        String campusName = null;
 
         if (user.isCampusCertified()) {
             UserCamInfo userCamInfo = userCamInfoRepository.findByUser(user)
                     .orElseThrow(UserCamInfoException.UserCamNotFoundException::new);
 
             if (userCamInfo.getMajor() != null) {
-                majorid = userCamInfo.getMajor().getId();
+                majorId = userCamInfo.getMajor().getId();
+                majorName = userCamInfo.getMajor().getName();
+            }
+            if(userCamInfo.getCampus() != null) {
+                campusId = userCamInfo.getCampus().getId();
+                campusName = userCamInfo.getCampus().getName();
             }
         }
 
         return new UserInfoRequest(
                 user.getId(),
-                majorid,
+                majorId,
+                majorName,
                 user.getEmail(),
                 user.isCampusCertified(),
+                campusId,
+                campusName,
                 user.getName(),
                 user.getNickname(),
                 user.getProvider()
