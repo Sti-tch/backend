@@ -33,13 +33,13 @@ public class StudyPost {
     @Column(nullable = false)
     private String content;
 
-    @OneToMany(mappedBy = "studyPost")
+    @OneToMany(mappedBy = "studyPost", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StudyMember> members = new ArrayList<>();
 
-    @OneToMany(mappedBy = "studyPost")
+    @OneToMany(mappedBy = "studyPost", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StudyContent> studyContents = new ArrayList<>();
 
-    @OneToMany(mappedBy = "studyPost")
+    @OneToMany(mappedBy = "studyPost", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StudyPostComment> comments = new ArrayList<>();
 
     @CreationTimestamp
@@ -59,5 +59,12 @@ public class StudyPost {
         this.title = title;
         this.content = content;
         this.studyStatus = studyStatus;
+    }
+
+    public void updatePost(String title, String content, StudyStatus studyStatus) {
+        this.title = title;
+        this.content = content;
+        this.studyStatus = studyStatus;
+
     }
 }

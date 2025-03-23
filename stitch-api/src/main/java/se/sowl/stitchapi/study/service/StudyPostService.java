@@ -70,4 +70,35 @@ public class StudyPostService {
 
         return StudyPostDetailResponse.from(studyPost);
     }
+
+    @Transactional
+    public StudyPostResponse updateStudyPost(StudyPostRequest request, Long studyPostId, Long userCamInfoId){
+        StudyPost studyPost = studyPostRepository.findById(studyPostId)
+                .orElseThrow(StudyPostException.StudyPostNotFoundException::new);
+
+        if (!studyPost.getUserCamInfo().getId().equals(userCamInfoId)){
+            throw new StudyPostException.UnauthorizedException();
+        }
+
+        studyPost.updatePost(
+                request.getTitle(),
+                request.getContent(),
+                request.getStatus()
+        );
+
+        return StudyPostResponse.from(studyPost);
+    }
+
+    @Transactional
+    public StudyPostResponse deleteStudyPost(Long studyPostId, Long userCamInfoId){
+        StudyPost studyPost = studyPostRepository.findById(studyPostId)
+                .orElseThrow(StudyPostException.StudyPostNotFoundException::new);
+
+        if (!studyPost.getUserCamInfo().getId().equals(userCamInfoId)){
+            throw new StudyPostException.UnauthorizedException();
+        }
+
+        studyPostRepository.delete(studyPost);
+        return StudyPostResponse.from(studyPost);
+    }
 }
