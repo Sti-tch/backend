@@ -63,6 +63,9 @@ public class StudyPostService {
 
         boolean isAuthor = studyPost.getUserCamInfo().getId().equals(userCamInfoId);
 
+
+       /* 작성자는 항상 게시물을 볼 수 있고,
+        작성자가 아닌 사용자는 스터디가 "모집 중"이거나 "진행 중" 상태일 때만 볼 수 있다.*/
         if (!isAuthor && !(StudyStatus.RECRUITING.equals(studyPost.getStudyStatus()) ||
                 StudyStatus.IN_PROGRESS.equals(studyPost.getStudyStatus()))) {
             throw new StudyPostException.UnauthorizedException();
