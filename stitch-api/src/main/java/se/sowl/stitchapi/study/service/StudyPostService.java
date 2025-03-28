@@ -7,6 +7,7 @@ import se.sowl.stitchapi.exception.StudyPostException;
 import se.sowl.stitchapi.exception.UserCamInfoException;
 import se.sowl.stitchapi.study.dto.request.StudyPostRequest;
 import se.sowl.stitchapi.study.dto.response.StudyPostDetailResponse;
+import se.sowl.stitchapi.study.dto.response.StudyPostListResponse;
 import se.sowl.stitchapi.study.dto.response.StudyPostResponse;
 import se.sowl.stitchdomain.study.domain.StudyMember;
 import se.sowl.stitchdomain.study.domain.StudyPost;
@@ -18,6 +19,8 @@ import se.sowl.stitchdomain.study.repository.StudyMemberRepository;
 import se.sowl.stitchdomain.study.repository.StudyPostRepository;
 import se.sowl.stitchdomain.user.domain.UserCamInfo;
 import se.sowl.stitchdomain.user.repository.UserCamInfoRepository;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -103,5 +106,27 @@ public class StudyPostService {
 
         studyPostRepository.delete(studyPost);
         return StudyPostResponse.from(studyPost);
+    }
+
+    @Transactional
+    public List<StudyPostListResponse> getStudyPostLists(){
+        List<StudyPost> studyPosts = studyPostRepository.findAll();
+
+        return studyPosts.stream()
+                .map(StudyPostListResponse::from)
+                .toList();
+    }
+
+    @Transactional
+    public List<StudyPostListResponse> searchPosts(String keyword){
+        List<StudyPost> studyPosts = studyPostRepository.findAll();
+
+        List<StudyPost> filteredPosts = studyPosts.stream()
+                .filter(post -> post.getTitle().contains(keyword))
+                .toList();
+
+        return filteredPosts.stream()
+                .map(StudyPostListResponse::from)
+                .toList();
     }
 }
