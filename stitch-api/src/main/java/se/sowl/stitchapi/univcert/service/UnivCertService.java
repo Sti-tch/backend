@@ -3,6 +3,7 @@ package se.sowl.stitchapi.univcert.service;
 import com.univcert.api.UnivCert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.MediaType;
@@ -18,13 +19,16 @@ import java.util.Map;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class UnivCertService {
 
     private final RestTemplate restTemplate;
+    private final String univCertApiKey;
 
-    @Value("${univcert.api.key}")
-    private String univCertApiKey;
+    // 이 생성자 추가
+    public UnivCertService(RestTemplate restTemplate, @Qualifier("univCertApiKey") String univCertApiKey) {
+        this.restTemplate = restTemplate;
+        this.univCertApiKey = univCertApiKey;
+    }
 
     public Map<String, Object> sendVerificationEmail(String email, String univName) {
         try {
