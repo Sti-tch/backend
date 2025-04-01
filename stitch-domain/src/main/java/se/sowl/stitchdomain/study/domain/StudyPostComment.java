@@ -45,4 +45,8 @@ public class StudyPostComment {
         this.studyPost = studyPost;
         this.userCamInfo = userCamInfo;
     }
+
+    public void updateContent(String content) {
+        this.content = content;
+    }
 }

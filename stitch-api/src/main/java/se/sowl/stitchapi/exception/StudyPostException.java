@@ -23,4 +23,8 @@ public class StudyPostException extends RuntimeException {
             super("해당 스터디 게시글에 접근할 권한이 없습니다.", HttpStatus.FORBIDDEN);
         }
     }
+
+    public static class StudyPostCommentNotFoundException extends StudyPostException {
+        public StudyPostCommentNotFoundException() {super("존재하지 않는 스터디 게시글 댓글입니다.", HttpStatus.NOT_FOUND);}
+    }
 }
