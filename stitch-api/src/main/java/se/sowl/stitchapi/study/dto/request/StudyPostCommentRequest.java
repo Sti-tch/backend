@@ -10,5 +10,4 @@ import lombok.NoArgsConstructor;
 public class StudyPostCommentRequest {
     private String content;
     private Long studyPostId;
-    private Long parentCommentId;
 }

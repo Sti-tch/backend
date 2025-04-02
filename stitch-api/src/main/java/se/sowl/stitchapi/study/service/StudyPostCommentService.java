@@ -4,8 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.sowl.stitchapi.exception.StudyPostException;
-import se.sowl.stitchapi.exception.UserCamInfoException;
 import se.sowl.stitchapi.study.dto.request.StudyPostCommentRequest;
+import se.sowl.stitchapi.exception.UserCamInfoException;
 import se.sowl.stitchapi.study.dto.request.StudyPostRequest;
 import se.sowl.stitchapi.study.dto.response.StudyPostCommentResponse;
 import se.sowl.stitchdomain.study.domain.StudyPost;
@@ -56,7 +56,7 @@ public class StudyPostCommentService {
     }
 
     @Transactional
-    public StudyPostCommentResponse updateStudyPostComment(Long commentId, StudyPostRequest request, Long userCamInfoId){
+    public StudyPostCommentResponse updateStudyPostComment(Long commentId, StudyPostCommentRequest request, Long userCamInfoId){
         StudyPostComment comment = studyPostCommentRepository.findById(commentId)
                 .orElseThrow(StudyPostException.StudyPostCommentNotFoundException::new);
 

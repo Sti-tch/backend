@@ -16,6 +16,7 @@ public class StudyPostCommentResponse {
     private Long id;
     private String content;
     private UserCamInfoResponse author;
+    private Long userCamInfoId;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
@@ -24,6 +25,7 @@ public class StudyPostCommentResponse {
                 .id(studyPostComment.getId())
                 .content(studyPostComment.getContent())
                 .author(UserCamInfoResponse.from(studyPostComment.getUserCamInfo()))
+                .userCamInfoId(studyPostComment.getUserCamInfo().getId())
                 .createdAt(studyPostComment.getCreatedAt())
                 .updatedAt(studyPostComment.getUpdatedAt())
                 .build();
