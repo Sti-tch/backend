@@ -51,4 +51,11 @@ public class StudyMember {
         this.memberRole = memberRole;
         this.memberStatus = memberStatus;
     }
+    public void updateMemberRole(MemberRole memberRole) {
+        this.memberRole = memberRole;
+    }
+
+    public void updateMemberStatus(MemberStatus memberStatus) {
+        this.memberStatus = memberStatus;
+    }
 }
