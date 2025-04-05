@@ -96,16 +96,15 @@ public class StudyPostService {
     }
 
     @Transactional
-    public StudyPostResponse deleteStudyPost(Long studyPostId, Long userCamInfoId){
+    public void deleteStudyPost(Long studyPostId, Long userCamInfoId){
         StudyPost studyPost = studyPostRepository.findById(studyPostId)
                 .orElseThrow(StudyPostException.StudyPostNotFoundException::new);
 
         if (!studyPost.getUserCamInfo().getId().equals(userCamInfoId)){
             throw new StudyPostException.UnauthorizedException();
         }
-
         studyPostRepository.delete(studyPost);
-        return StudyPostResponse.from(studyPost);
+
     }
 
     @Transactional

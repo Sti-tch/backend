@@ -20,7 +20,7 @@ import se.sowl.stitchdomain.study.enumm.StudyStatus;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -227,13 +227,11 @@ class StudyPostControllerTest {
             // given
             Long studyPostId = 1L;
             Long userCamInfoId = 1L;
-            StudyPostResponse studyPostResponse = new StudyPostResponse(1L, "title", "content", StudyStatus.RECRUITING, null, null);
 
-            // when
-            when(studyPostService.deleteStudyPost(studyPostId, userCamInfoId))
-                    .thenReturn(studyPostResponse);
+            // when & then
+            // 반환값이 void이므로 when...thenReturn 구문 제거
+            doNothing().when(studyPostService).deleteStudyPost(studyPostId, userCamInfoId);
 
-            // then
             mockMvc.perform(delete("/api/studies/delete")
                             .param("studyPostId", studyPostId.toString())
                             .param("userCamInfoId", userCamInfoId.toString())
@@ -242,10 +240,7 @@ class StudyPostControllerTest {
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$.code").value("SUCCESS"))
                     .andExpect(jsonPath("$.message").value("성공"))
-                    .andExpect(jsonPath("$.result.id").value(1L))
-                    .andExpect(jsonPath("$.result.title").value("title"))
-                    .andExpect(jsonPath("$.result.content").value("content"))
-                    .andExpect(jsonPath("$.result.studyStatus").value("RECRUITING"))
+                    .andExpect(jsonPath("$.result").doesNotExist()) // 결과가 null이므로 검증
                     .andDo(print());
         }
 
@@ -257,8 +252,8 @@ class StudyPostControllerTest {
             Long userCamInfoId = 2L;
 
             // when
-            when(studyPostService.deleteStudyPost(studyPostId, userCamInfoId))
-                    .thenThrow(new IllegalArgumentException("접근 권한이 없습니다."));
+            doThrow(new IllegalArgumentException("접근 권한이 없습니다."))
+                    .when(studyPostService).deleteStudyPost(studyPostId, userCamInfoId);
 
             // then
             mockMvc.perform(delete("/api/studies/delete")

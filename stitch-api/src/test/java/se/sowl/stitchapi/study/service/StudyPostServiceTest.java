@@ -303,12 +303,8 @@ class StudyPostServiceTest {
         @DisplayName("게시글 작성자가 삭제 시 성공")
         void deleteStudyPost_ByAuthor_Success() {
             // when
-            StudyPostResponse response = studyPostService.deleteStudyPost(
+            studyPostService.deleteStudyPost(
                     createdPost.getId(), testUserCamInfo.getId());
-
-            // then
-            assertNotNull(response);
-            assertEquals(createdPost.getId(), response.getId());
 
             // DB에서 실제로 삭제되었는지 확인
             assertTrue(studyPostRepository.findById(createdPost.getId()).isEmpty());

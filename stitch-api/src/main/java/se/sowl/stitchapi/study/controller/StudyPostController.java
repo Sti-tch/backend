@@ -48,12 +48,12 @@ public class StudyPostController {
     }
 
     @DeleteMapping("/delete")
-    public CommonResponse<StudyPostResponse> deleteStudyPost(
+    public CommonResponse<Void> deleteStudyPost(
             @RequestParam("studyPostId") Long studyPostId,
             @RequestParam("userCamInfoId") Long userCamInfoId
     ){
-        StudyPostResponse response = studyPostService.deleteStudyPost(studyPostId, userCamInfoId);
-        return CommonResponse.ok(response);
+        studyPostService.deleteStudyPost(studyPostId, userCamInfoId);
+        return CommonResponse.ok(null);
     }
 
     @GetMapping("/list")

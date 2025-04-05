@@ -6,7 +6,6 @@ import org.springframework.transaction.annotation.Transactional;
 import se.sowl.stitchapi.exception.StudyPostException;
 import se.sowl.stitchapi.study.dto.request.StudyPostCommentRequest;
 import se.sowl.stitchapi.exception.UserCamInfoException;
-import se.sowl.stitchapi.study.dto.request.StudyPostRequest;
 import se.sowl.stitchapi.study.dto.response.StudyPostCommentResponse;
 import se.sowl.stitchdomain.study.domain.StudyPost;
 import se.sowl.stitchdomain.study.domain.StudyPostComment;
