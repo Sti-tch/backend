@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import se.sowl.stitchapi.exception.NotificationException;
 import se.sowl.stitchapi.exception.UserCamInfoException;
 import se.sowl.stitchapi.notification.dto.NotificationListResponse;
+import se.sowl.stitchapi.notification.dto.NotificationResponse;
 import se.sowl.stitchdomain.notification.domain.Notification;
 import se.sowl.stitchdomain.notification.enumm.NotificationType;
 import se.sowl.stitchdomain.notification.repository.NotificationRepository;
@@ -127,9 +128,12 @@ class NotificationServiceTest {
             Long userCamInfoId = testUserCamInfo.getId();
 
             //when
-            notificationService.markOneAsRead(notificationId, userCamInfoId);
+            NotificationResponse response = notificationService.markOneAsRead(notificationId, userCamInfoId);
 
             //then
+            assertTrue(response.isRead(), "알림이 읽음으로 처리되어야 합니다.");
+
+            // 추가로 DB 확인을 하려면 기존 코드도 유지
             Notification updatedNotification = notificationRepository.findById(notificationId).orElseThrow();
             assertTrue(updatedNotification.isRead(), "알림이 읽음으로 처리되어야 합니다.");
         }
