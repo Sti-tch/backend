@@ -42,9 +42,10 @@ public class Notification {
     private LocalDateTime createdAt;
 
     @Builder
-    public Notification(UserCamInfo userCamInfo, String message, boolean isRead, NotificationType notificationType, Long targetId) {
+    public Notification(UserCamInfo userCamInfo, String message, String link, boolean isRead, NotificationType notificationType, Long targetId) {
         this.userCamInfo = userCamInfo;
         this.message = message;
+        this.link = link;
         this.isRead = isRead;
         this.notificationType = notificationType;
         this.targetId = targetId;
