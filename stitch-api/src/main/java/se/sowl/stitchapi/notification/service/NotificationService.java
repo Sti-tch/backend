@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.sowl.stitchapi.exception.NotificationException;
+import se.sowl.stitchapi.exception.StudyMemberException;
+import se.sowl.stitchapi.exception.StudyPostException;
 import se.sowl.stitchapi.exception.UserCamInfoException;
 import se.sowl.stitchapi.notification.dto.NotificationListResponse;
 import se.sowl.stitchapi.notification.dto.NotificationResponse;
@@ -12,6 +14,8 @@ import se.sowl.stitchdomain.notification.enumm.NotificationType;
 import se.sowl.stitchdomain.notification.repository.NotificationRepository;
 import se.sowl.stitchdomain.study.domain.StudyMember;
 import se.sowl.stitchdomain.study.domain.StudyPost;
+import se.sowl.stitchdomain.study.repository.StudyMemberRepository;
+import se.sowl.stitchdomain.study.repository.StudyPostRepository;
 import se.sowl.stitchdomain.user.domain.UserCamInfo;
 import se.sowl.stitchdomain.user.repository.UserCamInfoRepository;
 
@@ -23,6 +27,8 @@ public class NotificationService {
 
     private final NotificationRepository notificationRepository;
     private final UserCamInfoRepository userCamInfoRepository;
+    private final StudyMemberRepository studyMemberRepository;
+    private final StudyPostRepository studyPostRepository;
 
     // 사용자 알림 목록 조회
     @Transactional
@@ -77,9 +83,14 @@ public class NotificationService {
     }
 
     // 알림 생성(스터디 가입 신청)
-    // usercaminfo는 알림을 받는 당사자
     @Transactional
-    public NotificationResponse createStudyApplyNotification(UserCamInfo receiver, StudyMember studyMember) {
+    public NotificationResponse createStudyApplyNotification(Long receiverId, Long studyMemberId) {
+        UserCamInfo receiver = userCamInfoRepository.findById(receiverId)
+                .orElseThrow(UserCamInfoException.UserCamNotFoundException::new);
+
+        StudyMember studyMember = studyMemberRepository.findById(studyMemberId)
+                .orElseThrow(StudyMemberException.MemberNotFoundException::new);
+
         Notification notification = Notification.builder()
                 .userCamInfo(receiver) // 알림 받는 사람: 스터디 관리자(리더)
                 .message(studyMember.getUserCamInfo().getUser().getName() +
@@ -96,7 +107,10 @@ public class NotificationService {
 
     // 알림 생성(스터디 가입 승인)
     @Transactional
-    public NotificationResponse createApproveNotification(StudyMember studyMember) {
+    public NotificationResponse createApproveNotification(Long studyMemberId) {
+        StudyMember studyMember = studyMemberRepository.findById(studyMemberId)
+                .orElseThrow(StudyMemberException.MemberNotFoundException::new);
+
         Notification notification = Notification.builder()
                 .userCamInfo(studyMember.getUserCamInfo()) // 알림 받는 당사자: 신청자
                 .message("'" + studyMember.getStudyPost().getTitle() + "' 스터디 가입이 승인되었습니다.")
@@ -112,7 +126,10 @@ public class NotificationService {
 
     // 알림 생성(스터디 가입 거절)
     @Transactional
-    public NotificationResponse createRejectNotification(StudyMember studyMember) {
+    public NotificationResponse createRejectNotification(Long studyMemberId) {
+        StudyMember studyMember = studyMemberRepository.findById(studyMemberId)
+                .orElseThrow(StudyMemberException.MemberNotFoundException::new);
+
         Notification notification = Notification.builder()
                 .userCamInfo(studyMember.getUserCamInfo()) // 알림 받는 당사자: 신청자
                 .message("'" + studyMember.getStudyPost().getTitle() + "' 스터디 가입이 거절되었습니다.")
@@ -128,7 +145,13 @@ public class NotificationService {
 
     // 알림 생성(새 댓글)
     @Transactional
-    public NotificationResponse createNewCommentNotification(StudyPost studyPost, UserCamInfo commentWriter) {
+    public NotificationResponse createNewCommentNotification(Long studyPostId, Long commentWriterId) {
+        StudyPost studyPost = studyPostRepository.findById(studyPostId)
+                .orElseThrow(StudyPostException.StudyPostNotFoundException::new);
+
+        UserCamInfo commentWriter = userCamInfoRepository.findById(commentWriterId)
+                .orElseThrow(UserCamInfoException.UserCamNotFoundException::new);
+
         // 게시글 작성자에게만 알림 (자신의 글에 자신이 댓글을 달면 알림 제외)
         if (!studyPost.getUserCamInfo().getId().equals(commentWriter.getId())) {
             Notification notification = Notification.builder()
