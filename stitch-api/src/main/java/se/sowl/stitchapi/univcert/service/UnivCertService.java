@@ -86,8 +86,7 @@ public class UnivCertService {
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_JSON);
 
-            Map<String, String> requestBody = Map.of("key", "114d1271-7b05-41bc-8099-470eaabe1727");
-
+            Map<String, String> requestBody = Map.of("key", univCertApiKey);
             HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(requestBody, headers);
 
             ResponseEntity<Map> response = restTemplate.postForEntity(
