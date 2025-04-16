@@ -59,4 +59,10 @@ public class StudyMemberException extends RuntimeException {
             super("승인된 멤버만 이 작업을 수행할 수 있습니다.", HttpStatus.FORBIDDEN);
         }
     }
+
+    public static class SchoolVerificationRequiredException extends StudyMemberException {
+        public SchoolVerificationRequiredException() {
+            super("스터디 가입을 위해서는 학교 인증이 필요합니다.", HttpStatus.BAD_REQUEST);
+        }
+    }
 }
