@@ -30,7 +30,7 @@ public class Notification {
     private String link;
 
     @Column(nullable = false)
-    private boolean isRead;
+    private boolean isRead = false;
 
     @Enumerated(EnumType.STRING)
     private NotificationType notificationType;
