@@ -64,6 +64,7 @@ public class StudyPostService {
         StudyPost studyPost = studyPostRepository.findById(studyPostId)
                 .orElseThrow(StudyPostException.StudyPostNotFoundException::new);
 
+        // 작성자와 현재 사용자가 같으면 true
         boolean isAuthor = studyPost.getUserCamInfo().getId().equals(userCamInfoId);
 
 

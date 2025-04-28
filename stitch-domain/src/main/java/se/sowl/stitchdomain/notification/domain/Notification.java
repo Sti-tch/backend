@@ -22,7 +22,7 @@ public class Notification {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_cam_info_id", nullable = false)
-    private UserCamInfo userCamInfo;
+    private UserCamInfo userCamInfo; // 알림을 받는 사람 지칭
 
     @Column(nullable = false)
     private String message;
@@ -35,7 +35,7 @@ public class Notification {
     @Enumerated(EnumType.STRING)
     private NotificationType notificationType;
 
-    private Long targetId;
+    private Long targetId; // 알림을 클릭했을 때 이동할 게시글, 댓글, 스터디원 프로필 등
 
     @CreationTimestamp
     @Column(name = "created_at")
