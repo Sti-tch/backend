@@ -95,7 +95,7 @@ public class NotificationService {
                 .userCamInfo(receiver) // 알림 받는 사람: 스터디 관리자(리더)
                 .message(studyMember.getUserCamInfo().getUser().getName() +
                         "님이 '" + studyMember.getStudyPost().getTitle() + "' 스터디에 가입 신청했습니다.")
-                .link("/api/studies/" + studyMember.getStudyPost().getId() + "/members")
+                .link("/api/study-members/list?studyPostId=" + studyMember.getStudyPost().getId())
                 .notificationType(NotificationType.STUDY_APPLY)
                 .targetId(studyMember.getId())
                 .isRead(false)
@@ -114,7 +114,7 @@ public class NotificationService {
         Notification notification = Notification.builder()
                 .userCamInfo(studyMember.getUserCamInfo()) // 알림 받는 당사자: 신청자
                 .message("'" + studyMember.getStudyPost().getTitle() + "' 스터디 가입이 승인되었습니다.")
-                .link("/api/studies/" + studyMember.getStudyPost().getId())
+                .link("/api/study-posts/" + studyMember.getStudyPost().getId())
                 .notificationType(NotificationType.STUDY_APPLY_APPROVED)
                 .targetId(studyMember.getStudyPost().getId())
                 .isRead(false)
@@ -133,7 +133,7 @@ public class NotificationService {
         Notification notification = Notification.builder()
                 .userCamInfo(studyMember.getUserCamInfo()) // 알림 받는 당사자: 신청자
                 .message("'" + studyMember.getStudyPost().getTitle() + "' 스터디 가입이 거절되었습니다.")
-                .link("/api/studies/" + studyMember.getStudyPost().getId())
+                .link("/api/study-posts/" + studyMember.getStudyPost().getId())
                 .notificationType(NotificationType.STUDY_APPLY_REJECTED)
                 .targetId(studyMember.getStudyPost().getId())
                 .isRead(false)
@@ -158,7 +158,7 @@ public class NotificationService {
                     .userCamInfo(studyPost.getUserCamInfo()) // 알림 받는 당사자: 게시글 작성자
                     .message(commentWriter.getUser().getName() +
                             "님이 '" + studyPost.getTitle() + "' 게시글에 댓글을 남겼습니다.")
-                    .link("/api/studies/" + studyPost.getId() + "/comments")
+                    .link("/api/study-posts/" + studyPost.getId() + "/comments")
                     .notificationType(NotificationType.STUDY_COMMENT_ADDED)
                     .targetId(studyPost.getId())
                     .isRead(false)
