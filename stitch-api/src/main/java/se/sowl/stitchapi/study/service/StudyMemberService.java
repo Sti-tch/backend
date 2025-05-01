@@ -10,7 +10,6 @@ import se.sowl.stitchapi.notification.service.NotificationService;
 import se.sowl.stitchapi.study.dto.request.ChangeLeaderRequest;
 import se.sowl.stitchapi.study.dto.request.StudyMemberApplyRequest;
 import se.sowl.stitchapi.study.dto.response.StudyMemberResponse;
-import se.sowl.stitchdomain.notification.repository.NotificationRepository;
 import se.sowl.stitchdomain.study.domain.StudyMember;
 import se.sowl.stitchdomain.study.domain.StudyPost;
 import se.sowl.stitchdomain.study.enumm.MemberRole;
@@ -29,7 +28,6 @@ public class StudyMemberService {
     private final StudyMemberRepository studyMemberRepository;
     private final StudyPostRepository studyPostRepository;
     private final UserCamInfoRepository userCamInfoRepository;
-    private final NotificationRepository notificationRepository;
     private final NotificationService notificationService;
 
     // 스터디 가입 신청
@@ -163,9 +161,11 @@ public class StudyMemberService {
         StudyPost studyPost = studyPostRepository.findById(request.getStudyPostId())
                 .orElseThrow(StudyPostException.StudyPostNotFoundException::new);
 
+        // 현재 리더 정보
         UserCamInfo currentLeaderInfo = userCamInfoRepository.findById(userCamInfoId)
                 .orElseThrow(UserCamInfoException.UserCamNotFoundException::new);
 
+        // 현재 리더의 멤버 조회
         StudyMember currentLeader = studyMemberRepository.findByStudyPostAndUserCamInfo(studyPost, currentLeaderInfo)
                 .orElseThrow(StudyMemberException.NotMemberException::new);
 
