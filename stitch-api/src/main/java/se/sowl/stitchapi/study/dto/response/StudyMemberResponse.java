@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import se.sowl.stitchdomain.study.domain.StudyMember;
+import se.sowl.stitchdomain.study.enumm.MemberRole;
+import se.sowl.stitchdomain.study.enumm.MemberStatus;
 
 import java.time.LocalDateTime;
 
@@ -17,8 +19,8 @@ public class StudyMemberResponse {
     private Long userCamInfoId;
     private String userName;
     private String userNickname;
-    private String memberRole;
-    private String memberStatus;
+    private MemberRole memberRole;
+    private MemberStatus memberStatus;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String campusName;
@@ -32,8 +34,8 @@ public class StudyMemberResponse {
                 .userCamInfoId(studyMember.getUserCamInfo().getId())
                 .userName(studyMember.getUserCamInfo().getUser().getName())
                 .userNickname(studyMember.getUserCamInfo().getUser().getNickname())
-                .memberRole(studyMember.getMemberRole().name())
-                .memberStatus(studyMember.getMemberStatus().name())
+                .memberRole(studyMember.getMemberRole())
+                .memberStatus(studyMember.getMemberStatus())
                 .createdAt(studyMember.getCreatedAt())
                 .updatedAt(studyMember.getUpdatedAt())
                 .campusName(studyMember.getUserCamInfo().getCampus().getName())
