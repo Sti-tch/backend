@@ -178,19 +178,36 @@ class StudyMemberServiceTest {
         @DisplayName("스터디 가입 신청 성공")
         void applyStudyMemberSuccess(){
             // given
+            // 새로운 신청자 유저 생성
+            User newApplicantUser = User.builder()
+                    .name("새 신청자 유저")
+                    .email("new_applicant@email.com")
+                    .nickname("new_applicant")
+                    .provider("kakao")
+                    .campusCertified(true)
+                    .build();
+            newApplicantUser = userRepository.save(newApplicantUser);
+
+            UserCamInfo newApplicantUserCamInfo = UserCamInfo.builder()
+                    .user(newApplicantUser)
+                    .campus(testCampus)
+                    .campusEmail("new_applicant@test.ac.kr")
+                    .build();
+            newApplicantUserCamInfo = userCamInfoRepository.save(newApplicantUserCamInfo);
+
             StudyMemberApplyRequest request = new StudyMemberApplyRequest(testStudyPost.getId(), "신청 메시지");
 
             //when
-            StudyMemberResponse response = studyMemberService.applyStudyMember(request, applicantUserCamInfo.getId());
+            StudyMemberResponse response = studyMemberService.applyStudyMember(request, newApplicantUserCamInfo.getId());
 
             // then
             assertNotNull(response);
-            assertEquals(applicantUserCamInfo.getId(), response.getUserCamInfoId());
+            assertEquals(newApplicantUserCamInfo.getId(), response.getUserCamInfoId());
             assertEquals(MemberRole.APPLICANT, response.getMemberRole());
             assertEquals(MemberStatus.PENDING, response.getMemberStatus());
 
             // DB에 실제로 반영되었는지 확인
-            Optional<StudyMember>  savedStudyMember = studyMemberRepository.findById(response.getId());
+            Optional<StudyMember> savedStudyMember = studyMemberRepository.findById(response.getId());
             assertTrue(savedStudyMember.isPresent());
             assertEquals(MemberRole.APPLICANT, savedStudyMember.get().getMemberRole());
             assertEquals(MemberStatus.PENDING, savedStudyMember.get().getMemberStatus());
