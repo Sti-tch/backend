@@ -37,7 +37,7 @@ public class StudyPostController {
         return CommonResponse.ok(response);
     }
 
-    @PutMapping("/update")
+    @PostMapping("/update")
     public CommonResponse<StudyPostResponse> updateStudyPost(
             @RequestBody StudyPostRequest studyPostRequest,
             @RequestParam("studyPostId") Long studyPostId,
@@ -47,7 +47,7 @@ public class StudyPostController {
         return CommonResponse.ok(response);
     }
 
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public CommonResponse<Void> deleteStudyPost(
             @RequestParam("studyPostId") Long studyPostId,
             @RequestParam("userCamInfoId") Long userCamInfoId

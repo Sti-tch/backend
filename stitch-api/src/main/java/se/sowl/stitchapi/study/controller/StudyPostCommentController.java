@@ -46,7 +46,7 @@ public class StudyPostCommentController {
         StudyPostCommentResponse response = studyPostCommentService.updateStudyPostComment(commentId, studyPostCommentRequest, userCamInfoId);
         return CommonResponse.ok(response);
     }
-    @DeleteMapping("/delete")
+    @PostMapping("/delete")
     public CommonResponse<Void> deleteStudyPostComments(
             @RequestParam("commentId") Long commentId,
             @RequestParam("userCamInfoId") Long userCamInfoId

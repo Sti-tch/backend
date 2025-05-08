@@ -61,6 +61,6 @@ public class StudyContentController {
             @RequestParam("userCamInfoId") Long userCamInfoId
     ){
         studyContentService.deleteStudyContent(studyContentId, userCamInfoId);
-        return CommonResponse.ok();
+        return CommonResponse.ok(null);
     }
 }
