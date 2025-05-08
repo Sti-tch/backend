@@ -55,5 +55,10 @@ public class StudyContent {
         this.studyContentType = studyContentType;
     }
 
+    public void updateContent(String title,String content, ContentType contentType) {
+        this.title = title;
+        this.content = content;
+        this.studyContentType = contentType;
+    }
 
 }
