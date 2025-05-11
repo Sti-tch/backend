@@ -15,6 +15,7 @@ public class StudyContentResponse {
     private Long id;
     private Long studyPostId;
     private String title;
+    private String content;
     private ContentType contentType;
     private LocalDateTime createdAt;
     private String writerName;
@@ -27,6 +28,7 @@ public class StudyContentResponse {
                 .id(studyContent.getId())
                 .studyPostId(studyContent.getStudyPost().getId())
                 .title(studyContent.getTitle())
+                .content(studyContent.getContent())
                 .contentType(studyContent.getStudyContentType())
                 .createdAt(studyContent.getCreatedAt())
                 .writerName(studyContent.getUserCamInfo().getUser().getName())
