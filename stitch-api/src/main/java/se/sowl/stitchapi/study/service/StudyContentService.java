@@ -7,6 +7,7 @@ import se.sowl.stitchapi.exception.StudyContentException;
 import se.sowl.stitchapi.exception.StudyMemberException;
 import se.sowl.stitchapi.exception.StudyPostException;
 import se.sowl.stitchapi.exception.UserCamInfoException;
+import se.sowl.stitchapi.notification.service.NotificationService;
 import se.sowl.stitchapi.study.dto.request.StudyContentRequest;
 import se.sowl.stitchapi.study.dto.response.StudyContentDetailResponse;
 import se.sowl.stitchapi.study.dto.response.StudyContentListResponse;
@@ -32,6 +33,7 @@ public class StudyContentService {
     private final StudyPostRepository studyPostRepository;
     private final StudyMemberRepository studyMemberRepository;
     private final UserCamInfoRepository userCamInfoRepository;
+    private final NotificationService notificationService;
 
 
     /**
@@ -58,6 +60,8 @@ public class StudyContentService {
                 .studyContentType(request.getContentType())
                 .build();
         StudyContent savedStudyContent = studyContentRepository.save(studyContent);
+
+        notificationService.createNewContentNotification(savedStudyContent.getId(), userCamInfoId);
 
         return StudyContentResponse.from(savedStudyContent);
     }
