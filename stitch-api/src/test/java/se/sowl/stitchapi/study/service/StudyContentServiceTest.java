@@ -6,8 +6,10 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.transaction.annotation.Transactional;
 import se.sowl.stitchapi.exception.StudyContentException;
+import se.sowl.stitchapi.notification.service.NotificationService;
 import se.sowl.stitchapi.study.dto.request.StudyContentRequest;
 import se.sowl.stitchapi.study.dto.response.StudyContentListResponse;
 import se.sowl.stitchapi.study.dto.response.StudyContentResponse;
@@ -29,6 +31,11 @@ import se.sowl.stitchdomain.user.domain.User;
 import se.sowl.stitchdomain.user.domain.UserCamInfo;
 import se.sowl.stitchdomain.user.repository.UserCamInfoRepository;
 import se.sowl.stitchdomain.user.repository.UserRepository;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.times;
 
 import java.util.List;
 import java.util.Optional;
@@ -62,6 +69,9 @@ class StudyContentServiceTest {
 
     @Autowired
     private CampusRepository campusRepository;
+
+    @MockBean
+    private NotificationService notificationService;
 
     private User leaderUser;
     private User memberUser;
@@ -208,6 +218,10 @@ class StudyContentServiceTest {
                     .contentType(ContentType.MATERIAL)
                     .build();
 
+            // NotificationService의 createNewContentNotification 메서드가 호출될 때 어떤 동작을 할지 정의
+            when(notificationService.createNewContentNotification(any(Long.class), eq(leaderUserCamInfo.getId())))
+                    .thenReturn(null); // 반환값이 중요하지 않은 경우 null 반환
+
             //when
             StudyContentResponse response = studyContentService.createStudyContent(request, leaderUserCamInfo.getId());
 
@@ -217,6 +231,10 @@ class StudyContentServiceTest {
             assertEquals(request.getContent(), response.getContent());
             assertEquals(request.getContentType(), response.getContentType());
             assertEquals(leaderUserCamInfo.getId(), response.getUserCamInfoId());
+
+            // NotificationService의 createNewContentNotification 메서드가 호출되었는지 확인
+            verify(notificationService, times(1))
+                    .createNewContentNotification(any(Long.class), eq(leaderUserCamInfo.getId()));
         }
 
         @Test

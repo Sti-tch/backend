@@ -33,4 +33,9 @@ public interface StudyMemberRepository extends JpaRepository<StudyMember, Long> 
      * 특정 스터디에서 특정 역할(리더 등)을 가진 멤버 조회
      */
     Optional<StudyMember> findByStudyPostAndMemberRole(StudyPost studyPost, MemberRole memberRole);
+
+    /**
+     * 특정 스터디에서 특정 사용자의 멤버십 정보 조회 (상태가 승인된 경우)
+     */
+    List<StudyMember> findByStudyPostAndMemberStatus(StudyPost studyPost, MemberStatus memberStatus);
 }
