@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import se.sowl.stitchdomain.notification.domain.Notification;
+import se.sowl.stitchdomain.notification.enumm.NotificationType;
+
+import java.time.LocalDateTime;
 
 @Getter
 @AllArgsConstructor
@@ -13,9 +16,9 @@ public class NotificationListResponse {
     private String message;
     private String link;
     private boolean isRead;
-    private String type;
+    private NotificationType type;
     private Long targetId;
-    private String createdAt;
+    private LocalDateTime createdAt;
 
     public static NotificationListResponse from(Notification notification) {
         return NotificationListResponse.builder()
@@ -23,9 +26,9 @@ public class NotificationListResponse {
                 .message(notification.getMessage())
                 .link(notification.getLink())
                 .isRead(notification.isRead())
-                .type(notification.getNotificationType() != null ? notification.getNotificationType().toString() : null)
+                .type(notification.getNotificationType())
                 .targetId(notification.getTargetId())
-                .createdAt(notification.getCreatedAt().toString())
+                .createdAt(notification.getCreatedAt())
                 .build();
     }
 }
