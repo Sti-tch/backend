@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.sowl.stitchapi.exception.*;
+import se.sowl.stitchapi.notification.dto.NotificationEvent;
 import se.sowl.stitchapi.notification.dto.NotificationListResponse;
 import se.sowl.stitchapi.notification.dto.NotificationResponse;
 import se.sowl.stitchdomain.notification.domain.Notification;
@@ -34,6 +35,7 @@ public class NotificationService {
     private final StudyPostRepository studyPostRepository;
     private final StudyContentRepository studyContentRepository;
     private final StudyPostCommentRepository studyPostCommentRepository;
+    private final NotificationEmitterService emitterService;
 
     // 사용자 알림 목록 조회
     @Transactional
@@ -107,7 +109,12 @@ public class NotificationService {
                 .build();
 
         notification = notificationRepository.save(notification);
-        return NotificationResponse.from(notification);
+        NotificationResponse response = NotificationResponse.from(notification);
+
+        // SSE 실시간 알림 전송
+        emitterService.sendNotification(receiverId, NotificationEvent.from(notification));
+
+        return response;
     }
 
     // 알림 생성(스터디 가입 승인)
@@ -126,7 +133,12 @@ public class NotificationService {
                 .build();
 
         notification = notificationRepository.save(notification);
-        return NotificationResponse.from(notification);
+        NotificationResponse response = NotificationResponse.from(notification);
+
+        // SSE 실시간 알림 전송
+        emitterService.sendNotification(studyMember.getUserCamInfo().getId(), NotificationEvent.from(notification));
+
+        return response;
     }
 
     // 알림 생성(스터디 가입 거절)
@@ -145,7 +157,12 @@ public class NotificationService {
                 .build();
 
         notification = notificationRepository.save(notification);
-        return NotificationResponse.from(notification);
+        NotificationResponse response = NotificationResponse.from(notification);
+
+        // SSE 실시간 알림 전송
+        emitterService.sendNotification(studyMember.getUserCamInfo().getId(), NotificationEvent.from(notification));
+
+        return response;
     }
 
     // 알림 생성(새 댓글)
@@ -170,7 +187,12 @@ public class NotificationService {
                     .build();
 
             notification = notificationRepository.save(notification);
-            return NotificationResponse.from(notification);
+            NotificationResponse response = NotificationResponse.from(notification);
+
+            // SSE 실시간 알림 전송
+            emitterService.sendNotification(studyPost.getUserCamInfo().getId(), NotificationEvent.from(notification));
+
+            return response;
         }
 
         return null; // 자신의 글에 자신이 댓글을 달면 알림 없음
@@ -209,7 +231,12 @@ public class NotificationService {
 
                 // 알림 저장 후 응답 리스트에 추가
                 Notification savedNotification = notificationRepository.save(notification);
-                notificationResponses.add(NotificationResponse.from(savedNotification));
+                NotificationResponse response = NotificationResponse.from(savedNotification);
+                notificationResponses.add(response);
+
+                // SSE 실시간 알림 전송
+                emitterService.sendNotification(member.getUserCamInfo().getId(),
+                        NotificationEvent.from(savedNotification));
             }
         }
         return notificationResponses;
