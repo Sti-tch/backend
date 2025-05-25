@@ -18,4 +18,5 @@ public class UserInfoRequest {
     private String name;
     private String nickname;
     private String provider;
+    private Long userCamInfoId;
 }
