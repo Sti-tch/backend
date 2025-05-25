@@ -33,10 +33,12 @@ public class UserService {
         String majorName = null;
         Long campusId = null;
         String campusName = null;
+        Long useCamInfoId = null;
 
         if (user.isCampusCertified()) {
             UserCamInfo userCamInfo = userCamInfoRepository.findByUser(user)
                     .orElseThrow(UserCamInfoException.UserCamNotFoundException::new);
+            useCamInfoId = userCamInfo.getId();
 
             if (userCamInfo.getMajor() != null) {
                 majorId = userCamInfo.getMajor().getId();
@@ -58,7 +60,8 @@ public class UserService {
                 campusName,
                 user.getName(),
                 user.getNickname(),
-                user.getProvider()
+                user.getProvider(),
+                useCamInfoId
         );
     }
 
