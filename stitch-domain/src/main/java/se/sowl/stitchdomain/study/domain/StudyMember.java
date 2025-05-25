@@ -31,9 +31,11 @@ public class StudyMember {
     private UserCamInfo userCamInfo;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "member_role", nullable = false)
     private MemberRole memberRole;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "member_status", nullable = false)
     private MemberStatus memberStatus;
 
     @CreationTimestamp

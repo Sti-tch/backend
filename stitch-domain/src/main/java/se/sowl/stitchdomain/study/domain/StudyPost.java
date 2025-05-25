@@ -51,6 +51,7 @@ public class StudyPost {
     private LocalDateTime updatedAt;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "study_status", nullable = false)
     private StudyStatus studyStatus;
 
     @Builder

@@ -36,6 +36,7 @@ public class StudyContent {
     private UserCamInfo userCamInfo;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "study_content_type", nullable = false)
     private ContentType studyContentType;
 
     @CreationTimestamp
