@@ -21,7 +21,6 @@ import se.sowl.stitchdomain.study.repository.StudyPostCommentRepository;
 import se.sowl.stitchdomain.study.repository.StudyPostRepository;
 import se.sowl.stitchdomain.user.domain.UserCamInfo;
 import se.sowl.stitchdomain.user.repository.UserCamInfoRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 
