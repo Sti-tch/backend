@@ -5,6 +5,7 @@ import org.springframework.web.bind.annotation.*;
 import se.sowl.stitchapi.common.CommonResponse;
 import se.sowl.stitchapi.study.dto.request.ChangeLeaderRequest;
 import se.sowl.stitchapi.study.dto.request.StudyMemberApplyRequest;
+import se.sowl.stitchapi.study.dto.response.MyStudyResponse;
 import se.sowl.stitchapi.study.dto.response.StudyMemberResponse;
 import se.sowl.stitchapi.study.service.StudyMemberService;
 
@@ -45,8 +46,8 @@ public class StudyMemberController {
     }
 
     @GetMapping("/list")
-    public CommonResponse<List<StudyMemberResponse>> getStudyMember(){
-        List<StudyMemberResponse> responses = studyMemberService.getStudyMembers();
+    public CommonResponse<List<StudyMemberResponse>> getStudyMember(@RequestParam("studyPostId") Long studyPostId) {
+        List<StudyMemberResponse> responses = studyMemberService.getStudyMembers(studyPostId);
         return CommonResponse.ok(responses);
     }
 
@@ -68,4 +69,30 @@ public class StudyMemberController {
         StudyMemberResponse response = studyMemberService.changeLeader(request, userCamInfoId);
         return CommonResponse.ok(response);
     }
+
+    @GetMapping("/applicants")
+    public CommonResponse<List<StudyMemberResponse>> getStudyApplicants(
+            @RequestParam("studyPostId") Long studyPostId,
+            @RequestParam("userCamInfoId") Long userCamInfoId
+            ) {
+        List<StudyMemberResponse> responses = studyMemberService.getApplicantsMyStudy(studyPostId, userCamInfoId);
+        return CommonResponse.ok(responses);
+    }
+
+    @GetMapping("/my-applications")
+    public CommonResponse<List<MyStudyResponse>> getMyApplications(
+            @RequestParam("userCamInfoId") Long userCamInfoId
+    ) {
+        List<MyStudyResponse> responses = studyMemberService.getMyApplications(userCamInfoId);
+        return CommonResponse.ok(responses);
+    }
+
+    @GetMapping("/my-studies")
+    public CommonResponse<List<MyStudyResponse>> getMyStudies(
+            @RequestParam("userCamInfoId") Long userCamInfoId
+    ) {
+        List<MyStudyResponse> responses = studyMemberService.getMyJoinedStudies(userCamInfoId);
+        return CommonResponse.ok(responses);
+    }
+
 }
