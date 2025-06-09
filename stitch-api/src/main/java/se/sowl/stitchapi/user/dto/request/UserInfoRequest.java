@@ -19,4 +19,7 @@ public class UserInfoRequest {
     private String nickname;
     private String provider;
     private Long userCamInfoId;
+
+    private int joinedStudyCount;      // 참여중인 스터디 수 (APPROVED)
+    private int pendingStudyCount;     // 승인대기 스터디 수 (PENDING)
 }
