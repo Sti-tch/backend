@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import se.sowl.stitchapi.exception.UserCamInfoException;
 import se.sowl.stitchapi.user.dto.request.EditUserRequest;
 import se.sowl.stitchapi.user.dto.request.UserInfoRequest;
+import se.sowl.stitchdomain.study.enumm.MemberStatus;
+import se.sowl.stitchdomain.study.repository.StudyMemberRepository;
 import se.sowl.stitchdomain.user.domain.User;
 import se.sowl.stitchdomain.user.domain.UserCamInfo;
 import se.sowl.stitchdomain.user.repository.UserCamInfoRepository;
@@ -19,6 +21,7 @@ import java.util.List;
 public class UserService {
     private final UserRepository userRepository;
     private final UserCamInfoRepository userCamInfoRepository;
+    private final StudyMemberRepository studyMemberRepository;
 
     public List<User> getList() {
         return userRepository.findAll();
@@ -35,6 +38,9 @@ public class UserService {
         String campusName = null;
         Long useCamInfoId = null;
 
+        int joinedStudyCount = 0;  // 참여중인 스터디 수
+        int pendingStudyCount = 0; // 승인대기 스터디 수
+
         if (user.isCampusCertified()) {
             UserCamInfo userCamInfo = userCamInfoRepository.findByUser(user)
                     .orElseThrow(UserCamInfoException.UserCamNotFoundException::new);
@@ -48,6 +54,14 @@ public class UserService {
                 campusId = userCamInfo.getCampus().getId();
                 campusName = userCamInfo.getCampus().getName();
             }
+
+            joinedStudyCount = studyMemberRepository
+                    .findByUserCamInfoAndMemberStatus(userCamInfo, MemberStatus.APPROVED)
+                    .size();
+
+            pendingStudyCount = studyMemberRepository.
+                    findByUserCamInfoAndMemberStatus(userCamInfo, MemberStatus.PENDING)
+                    .size();
         }
 
         return new UserInfoRequest(
@@ -61,7 +75,9 @@ public class UserService {
                 user.getName(),
                 user.getNickname(),
                 user.getProvider(),
-                useCamInfoId
+                useCamInfoId,
+                joinedStudyCount,
+                pendingStudyCount
         );
     }
 
