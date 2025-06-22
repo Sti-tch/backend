@@ -18,7 +18,6 @@ public class StudyPostCommentController {
 
     private final StudyPostCommentService studyPostCommentService;
 
-    @Transactional
     @GetMapping("/list")
     @PreAuthorize("isAuthenticated()")
     public CommonResponse<List<StudyPostCommentResponse>> getCommentsByPostId(
@@ -53,5 +52,23 @@ public class StudyPostCommentController {
     ){
         studyPostCommentService.deleteStudyPostComment(commentId, userCamInfoId);
         return CommonResponse.ok(null);
+    }
+
+    @GetMapping("/count")
+    @PreAuthorize("isAuthenticated()")
+    public CommonResponse<Integer> getCommentCount(
+            @RequestParam("studyPostId") Long studyPostId
+    ){
+        int commentCount = studyPostCommentService.getCommentCount(studyPostId);
+        return CommonResponse.ok(commentCount);
+    }
+
+    @GetMapping("/myComments")
+    @PreAuthorize("isAuthenticated()")
+    public CommonResponse<List<StudyPostCommentResponse>> getMyComments(
+            @RequestParam("userCamInfoId") Long userCamInfoId
+    ){
+        List<StudyPostCommentResponse> response = studyPostCommentService.getMyComments(userCamInfoId);
+        return CommonResponse.ok(response);
     }
 }
