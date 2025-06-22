@@ -79,4 +79,24 @@ public class StudyPostCommentService {
 
         studyPostCommentRepository.delete(comment);
     }
+
+    @Transactional
+    public int getCommentCount(Long studyPostId){
+        StudyPost studyPost = studyPostRepository.findById(studyPostId)
+                .orElseThrow(StudyPostException.StudyPostNotFoundException::new);
+
+        return studyPostCommentRepository.countByStudyPostId(studyPostId);
+    }
+
+    @Transactional
+    public List<StudyPostCommentResponse> getMyComments(Long userCamInfoId){
+        UserCamInfo userCamInfo = userCamInfoRepository.findById(userCamInfoId)
+                .orElseThrow(UserCamInfoException.UserCamNotFoundException::new);
+
+        List<StudyPostComment> comments = studyPostCommentRepository.findByUserCamInfoOrderByCreatedAtDesc(userCamInfo);
+
+        return comments.stream()
+                .map(StudyPostCommentResponse::from)
+                .toList();
+    }
 }
