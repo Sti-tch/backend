@@ -53,10 +53,10 @@ public class StudyMemberController {
 
     @PostMapping("/leave")
     public CommonResponse<Void> leaveStudyMember(
-            @RequestParam("studyMemberId") Long studyMemberId,
+            @RequestParam("studyPostId") Long studyPostId,
             @RequestParam("userCamInfoId") Long userCamInfoId
     ){
-        studyMemberService.leaveStudyMember(studyMemberId, userCamInfoId);
+        studyMemberService.leaveStudyMember(studyPostId, userCamInfoId);
         return CommonResponse.ok(null);
     }
 

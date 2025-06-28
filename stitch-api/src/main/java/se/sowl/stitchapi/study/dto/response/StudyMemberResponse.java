@@ -21,6 +21,7 @@ public class StudyMemberResponse {
     private String userNickname;
     private MemberRole memberRole;
     private MemberStatus memberStatus;
+    private String applyMessage;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private String campusName;
@@ -36,6 +37,7 @@ public class StudyMemberResponse {
                 .userNickname(studyMember.getUserCamInfo().getUser().getNickname())
                 .memberRole(studyMember.getMemberRole())
                 .memberStatus(studyMember.getMemberStatus())
+                .applyMessage(studyMember.getApplyMessage())
                 .createdAt(studyMember.getCreatedAt())
                 .updatedAt(studyMember.getUpdatedAt())
                 .campusName(studyMember.getUserCamInfo().getCampus().getName())

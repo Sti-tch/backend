@@ -22,6 +22,9 @@ public class StudyMember {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "apply_message", length = 500)
+    private String applyMessage;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "study_post_id")
     private StudyPost studyPost;
@@ -47,11 +50,12 @@ public class StudyMember {
     private LocalDateTime updatedAt;
 
     @Builder
-    public StudyMember(StudyPost studyPost, UserCamInfo userCamInfo, MemberRole memberRole, MemberStatus memberStatus) {
+    public StudyMember(StudyPost studyPost, UserCamInfo userCamInfo, MemberRole memberRole, MemberStatus memberStatus, String applyMessage) {
         this.studyPost = studyPost;
         this.userCamInfo = userCamInfo;
         this.memberRole = memberRole;
         this.memberStatus = memberStatus;
+        this.applyMessage = applyMessage;
     }
     public void updateMemberRole(MemberRole memberRole) {
         this.memberRole = memberRole;
