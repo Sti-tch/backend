@@ -191,6 +191,8 @@ public class StudyMemberService {
             throw new StudyMemberException.NotApprovedMemberException();
         }
 
+        studyPost.changeOwner(newLeader.getUserCamInfo());
+
         currentLeader.updateMemberRole(MemberRole.MEMBER);
         newLeader.updateMemberRole(MemberRole.LEADER);
 

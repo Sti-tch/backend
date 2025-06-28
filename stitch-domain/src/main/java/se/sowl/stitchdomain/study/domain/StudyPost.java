@@ -66,6 +66,9 @@ public class StudyPost {
         this.title = title;
         this.content = content;
         this.studyStatus = studyStatus;
+    }
 
+    public void changeOwner(UserCamInfo newOwner) {
+        this.userCamInfo = newOwner;
     }
 }
