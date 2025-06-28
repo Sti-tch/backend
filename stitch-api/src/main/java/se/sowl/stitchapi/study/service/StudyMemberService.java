@@ -56,6 +56,7 @@ public class StudyMemberService {
                 .userCamInfo(userCamInfo)
                 .memberRole(MemberRole.APPLICANT)
                 .memberStatus(MemberStatus.PENDING)
+                .applyMessage(request.getApplyMessage())
                 .build();
         
         StudyMember savedStudyMember = studyMemberRepository.save(studyMember);
