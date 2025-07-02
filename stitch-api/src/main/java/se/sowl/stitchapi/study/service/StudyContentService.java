@@ -50,7 +50,7 @@ public class StudyContentService {
                 .orElseThrow(StudyPostException.StudyPostNotFoundException::new);
 
         // 스터디 멤버인지 확인
-        StudyMember studyMember = validateStudyMember(studyPost, userCamInfo);
+        validateStudyMember(studyPost, userCamInfo);
 
         StudyContent studyContent = StudyContent.builder()
                 .title(request.getTitle())
@@ -79,7 +79,7 @@ public class StudyContentService {
         UserCamInfo userCamInfo = userCamInfoRepository.findById(userCamInfoId)
                 .orElseThrow(UserCamInfoException.UserCamNotFoundException::new);
 
-        StudyMember studyMember = validateStudyMember(studyPost, userCamInfo);
+        validateStudyMember(studyPost, userCamInfo);
 
         List<StudyContent> contents = studyContentRepository.findByStudyPostOrderByCreatedAtDesc(studyPost);
         return contents.stream()
@@ -101,7 +101,7 @@ public class StudyContentService {
         UserCamInfo userCamInfo = userCamInfoRepository.findById(userCamInfoId)
                 .orElseThrow(UserCamInfoException.UserCamNotFoundException::new);
 
-        StudyMember studyMember = validateStudyMember(studyContent.getStudyPost(), userCamInfo);
+        validateStudyMember(studyContent.getStudyPost(), userCamInfo);
 
         return StudyContentDetailResponse.from(studyContent);
     }
@@ -171,7 +171,7 @@ public class StudyContentService {
      * 사용자가 해당 스터디의 승인된 멤버 또는 리더인지 확인합니다.
      * @return 검증된 StudyMember 객체
      */
-    private StudyMember validateStudyMember(StudyPost studyPost, UserCamInfo userCamInfo){
+    private void validateStudyMember(StudyPost studyPost, UserCamInfo userCamInfo){
 
         StudyMember studyMember = studyMemberRepository.findByStudyPostAndUserCamInfo(studyPost, userCamInfo)
                 .orElseThrow(StudyMemberException.MemberNotFoundException::new);
@@ -185,7 +185,5 @@ public class StudyContentService {
         if (!(isLeader || isApprovedMember)) {
             throw new StudyContentException.UnauthorizedException();
         }
-
-        return studyMember;
     }
 }
