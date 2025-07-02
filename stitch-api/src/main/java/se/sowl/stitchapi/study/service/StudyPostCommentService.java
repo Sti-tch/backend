@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.sowl.stitchapi.exception.StudyPostException;
+import se.sowl.stitchapi.notification.service.NotificationService;
 import se.sowl.stitchapi.study.dto.request.StudyPostCommentRequest;
 import se.sowl.stitchapi.exception.UserCamInfoException;
 import se.sowl.stitchapi.study.dto.response.StudyPostCommentResponse;
@@ -23,6 +24,7 @@ public class StudyPostCommentService {
     private final StudyPostCommentRepository studyPostCommentRepository;
     private final StudyPostRepository studyPostRepository;
     private final UserCamInfoRepository userCamInfoRepository;
+    private final NotificationService notificationService;
 
     @Transactional
     public List<StudyPostCommentResponse> getCommentsByPostId(Long studyPostId){
@@ -51,6 +53,9 @@ public class StudyPostCommentService {
                 .build();
 
         studyPostCommentRepository.save(studyPostComment);
+
+        notificationService.createNewCommentNotification(studyPostComment.getId());
+
         return StudyPostCommentResponse.from(studyPostComment);
     }
 
