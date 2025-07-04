@@ -31,7 +31,6 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final UserCamInfoRepository userCamInfoRepository;
     private final StudyMemberRepository studyMemberRepository;
-    private final StudyPostRepository studyPostRepository;
     private final StudyContentRepository studyContentRepository;
     private final StudyPostCommentRepository studyPostCommentRepository;
     private final NotificationEmitterService emitterService;
@@ -48,6 +47,29 @@ public class NotificationService {
         return notificationListResponses.stream()
                 .map(NotificationListResponse::from)
                 .toList();
+    }
+
+    // 읽지 않은 알림 개수 조회
+    @Transactional
+    public int getUnreadNotificationCount(Long userCamInfoId){
+        UserCamInfo userCamInfo = userCamInfoRepository.findById(userCamInfoId)
+                .orElseThrow(UserCamInfoException.UserCamNotFoundException::new);
+
+        // 읽지 않은 알림의 개수를 조회
+        return notificationRepository.countByUserCamInfoAndIsReadFalse(userCamInfo);
+    }
+
+    // 알림 상세 조회
+    @Transactional
+    public NotificationResponse getNotificationDetail(Long notificationId, Long userCamInfoId){
+        Notification notification = notificationRepository.findById(notificationId)
+                .orElseThrow(NotificationException.NotificationNotFoundException::new);
+
+        if (!notification.getUserCamInfo().getId().equals(userCamInfoId)) {
+            throw new NotificationException.UnauthorizedException();
+        }
+
+        return NotificationResponse.from(notification);
     }
 
     // 알림 읽음 처리
