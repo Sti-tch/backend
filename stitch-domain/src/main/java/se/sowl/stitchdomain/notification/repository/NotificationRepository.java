@@ -18,4 +18,7 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 
     Optional<Notification> findFirstByTargetIdAndNotificationTypeOrderByCreatedAtDesc(
             Long targetId, NotificationType notificationType);
+
+    // 알림 읽음 처리를 위한 메소드
+    int countByUserCamInfoAndIsReadFalse(UserCamInfo userCamInfo);
 }

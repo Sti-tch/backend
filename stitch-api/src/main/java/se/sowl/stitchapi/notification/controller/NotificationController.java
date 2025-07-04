@@ -24,6 +24,23 @@ public class NotificationController {
         return CommonResponse.ok(responses);
     }
 
+    @GetMapping("/unread-count")
+    public CommonResponse<Integer> getUnreadNotificationCount(
+            @RequestParam("userCamInfoId") Long userCamInfoId
+    ){
+        int count = notificationService.getUnreadNotificationCount(userCamInfoId);
+        return CommonResponse.ok(count);
+    }
+
+    @GetMapping("/detail")
+    public CommonResponse<NotificationResponse> getNotificationDetail(
+            @RequestParam("notificationId") Long notificationId,
+            @RequestParam("userCamInfoId") Long userCamInfoId
+    ){
+        NotificationResponse response = notificationService.getNotificationDetail(notificationId, userCamInfoId);
+        return CommonResponse.ok(response);
+    }
+
     @PostMapping("/read")
     public CommonResponse<NotificationResponse> markOneRead(
             @RequestParam("notificationId") Long notificationId,
