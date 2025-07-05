@@ -43,6 +43,8 @@ public class SecurityConfig {
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         // Public API 엔드포인트
                         .requestMatchers("/api/auth/**").permitAll()
+                        // 로그아웃 엔드포인트 허용 - 이 줄 추가
+                        .requestMatchers("/api/users/logout").permitAll()
                         // SSE 연결 엔드포인트 (인증 필요) - 추가
                         .requestMatchers("/api/notifications/sse/**").authenticated()
                         // 인증이 필요한 API 엔드포인트

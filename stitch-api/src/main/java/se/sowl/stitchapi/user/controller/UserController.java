@@ -12,7 +12,6 @@ import se.sowl.stitchdomain.user.domain.CustomOAuth2User;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 @RestController
@@ -39,19 +38,11 @@ public class UserController {
      * 로그아웃 처리 (POST 방식)
      */
     @PostMapping("/logout")
-    @PreAuthorize("isAuthenticated()")
     public CommonResponse<String> logout(HttpServletRequest request) {
         try {
-            // 현재 세션 가져오기
-            HttpSession session = request.getSession(false);
-
-            if (session != null) {
-                // 세션 무효화
-                session.invalidate();
-            }
-
+            // Spring Security의 로그아웃 사용
+            request.logout();
             return CommonResponse.ok("로그아웃이 완료되었습니다.");
-
         } catch (Exception e) {
             return CommonResponse.fail("로그아웃 처리 중 오류가 발생했습니다.");
         }
@@ -59,22 +50,20 @@ public class UserController {
 
     /**
      * 로그아웃 처리 (GET 방식 - 브라우저 직접 접근용)
+     * 프론트엔드에서 window.location.href로 호출할 때 사용
      */
     @GetMapping("/logout")
     public void logoutGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
         try {
-            HttpSession session = request.getSession(false);
+            // Spring Security의 로그아웃 사용
+            request.logout();
 
-            if (session != null) {
-                session.invalidate();
-            }
-
-            // 로그인 페이지로 리다이렉트
-            response.sendRedirect("/login");
+            // 프론트엔드로 리다이렉트
+            response.sendRedirect("http://localhost:3000");
 
         } catch (Exception e) {
-            // 에러 발생 시 메인 페이지로 리다이렉트
-            response.sendRedirect("/");
+            // 에러 발생 시에도 프론트엔드로 리다이렉트
+            response.sendRedirect("http://localhost:3000");
         }
     }
 }
