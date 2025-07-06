@@ -9,7 +9,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import se.sowl.stitchdomain.school.domain.Campus;
 import se.sowl.stitchdomain.school.domain.Major;
-import se.sowl.stitchdomain.study.domain.StudyContent;
 import se.sowl.stitchdomain.study.domain.StudyMember;
 import se.sowl.stitchdomain.study.domain.StudyPost;
 import se.sowl.stitchdomain.study.domain.StudyPostComment;
@@ -51,9 +50,6 @@ public class UserCamInfo {
 
     @OneToMany(mappedBy = "userCamInfo")
     private List<StudyPostComment> studyPostComments = new ArrayList<>();
-
-    @OneToMany(mappedBy = "userCamInfo")
-    private List<StudyContent> studyContents = new ArrayList<>();
 
     @CreationTimestamp
     @Column(name = "created_at", updatable = false)

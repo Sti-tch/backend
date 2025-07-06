@@ -10,18 +10,13 @@ import se.sowl.stitchapi.notification.dto.NotificationResponse;
 import se.sowl.stitchdomain.notification.domain.Notification;
 import se.sowl.stitchdomain.notification.enumm.NotificationType;
 import se.sowl.stitchdomain.notification.repository.NotificationRepository;
-import se.sowl.stitchdomain.study.domain.StudyContent;
 import se.sowl.stitchdomain.study.domain.StudyMember;
 import se.sowl.stitchdomain.study.domain.StudyPost;
 import se.sowl.stitchdomain.study.domain.StudyPostComment;
-import se.sowl.stitchdomain.study.enumm.MemberStatus;
-import se.sowl.stitchdomain.study.repository.StudyContentRepository;
 import se.sowl.stitchdomain.study.repository.StudyMemberRepository;
 import se.sowl.stitchdomain.study.repository.StudyPostCommentRepository;
-import se.sowl.stitchdomain.study.repository.StudyPostRepository;
 import se.sowl.stitchdomain.user.domain.UserCamInfo;
 import se.sowl.stitchdomain.user.repository.UserCamInfoRepository;
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -31,7 +26,6 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final UserCamInfoRepository userCamInfoRepository;
     private final StudyMemberRepository studyMemberRepository;
-    private final StudyContentRepository studyContentRepository;
     private final StudyPostCommentRepository studyPostCommentRepository;
     private final NotificationEmitterService emitterService;
 
@@ -217,49 +211,5 @@ public class NotificationService {
         }
 
         return null; // 자신의 글에 자신이 댓글을 달면 알림 없음
-    }
-
-    @Transactional
-    public List<NotificationResponse> createNewContentNotification(Long studyContentId, Long contentWriterId) {
-        StudyContent studyContent = studyContentRepository.findById(studyContentId)
-                .orElseThrow(StudyContentException.ContentNotFoundException::new);
-
-        StudyPost studyPost = studyContent.getStudyPost();
-
-        UserCamInfo contentWriter = userCamInfoRepository.findById(contentWriterId)
-                .orElseThrow(UserCamInfoException.UserCamNotFoundException::new);
-
-        // 해당 스터디의 모든 멥버 조회 (승인된 멤버만)
-        List<StudyMember> studyMembers = studyMemberRepository.findByStudyPostAndMemberStatus(
-                studyPost, MemberStatus.APPROVED);
-
-        // 생성된 알림 응답을 저장할 리스트
-        List<NotificationResponse> notificationResponses = new ArrayList<>();
-
-        for (StudyMember member : studyMembers) {
-            // 자신이 작성한 컨텐츠에 대해서는 알림을 받지 않음
-            if (!member.getUserCamInfo().getId().equals(contentWriter.getId())) {
-                Notification notification = Notification.builder()
-                        .userCamInfo(member.getUserCamInfo()) // 알림 받는 당사자: 스터디 멤버
-                        .message(contentWriter.getUser().getName() +
-                                "님이 '" + studyPost.getTitle() + "' 스터디에 '" +
-                                studyContent.getTitle() + "' 컨텐츠를 추가했습니다.")
-                        .link("/api/study-contents/" + studyContent.getId())
-                        .notificationType(NotificationType.STUDY_CONTENT_ADDED)
-                        .targetId(studyContent.getId())
-                        .isRead(false)
-                        .build();
-
-                // 알림 저장 후 응답 리스트에 추가
-                Notification savedNotification = notificationRepository.save(notification);
-                NotificationResponse response = NotificationResponse.from(savedNotification);
-                notificationResponses.add(response);
-
-                // SSE 실시간 알림 전송
-                emitterService.sendNotification(member.getUserCamInfo().getId(),
-                        NotificationEvent.from(savedNotification));
-            }
-        }
-        return notificationResponses;
     }
 }

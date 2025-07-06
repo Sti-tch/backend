@@ -99,13 +99,4 @@ public class NotificationController {
         NotificationResponse response = notificationService.createNewCommentNotification(commentId);
         return CommonResponse.ok(response);
     }
-
-    @PostMapping("/study-content")
-    public CommonResponse<List<NotificationResponse>> createNewContentNotification(
-            @RequestParam("studyContentId") Long studyContentId,
-            @RequestParam("contentWriterId") Long contentWriterId
-    ){
-        List<NotificationResponse> response = notificationService.createNewContentNotification(studyContentId, contentWriterId);
-        return CommonResponse.ok(response);
-    }
 }

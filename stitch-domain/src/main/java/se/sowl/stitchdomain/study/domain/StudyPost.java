@@ -37,9 +37,6 @@ public class StudyPost {
     private List<StudyMember> members = new ArrayList<>();
 
     @OneToMany(mappedBy = "studyPost", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<StudyContent> studyContents = new ArrayList<>();
-
-    @OneToMany(mappedBy = "studyPost", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StudyPostComment> comments = new ArrayList<>();
 
     @CreationTimestamp

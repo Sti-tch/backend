@@ -14,7 +14,6 @@ import se.sowl.stitchdomain.study.domain.StudyPost;
 import se.sowl.stitchdomain.study.enumm.MemberRole;
 import se.sowl.stitchdomain.study.enumm.MemberStatus;
 import se.sowl.stitchdomain.study.enumm.StudyStatus;
-import se.sowl.stitchdomain.study.repository.StudyContentRepository;
 import se.sowl.stitchdomain.study.repository.StudyMemberRepository;
 import se.sowl.stitchdomain.study.repository.StudyPostRepository;
 import se.sowl.stitchdomain.user.domain.UserCamInfo;
@@ -28,7 +27,6 @@ public class StudyPostService {
 
     private final StudyPostRepository studyPostRepository;
     private final StudyMemberRepository studyMemberRepository;
-    private final StudyContentRepository studyContentRepository;
     private final UserCamInfoRepository userCamInfoRepository;
 
 
