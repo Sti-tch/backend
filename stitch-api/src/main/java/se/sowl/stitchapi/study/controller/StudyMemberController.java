@@ -37,12 +37,12 @@ public class StudyMemberController {
     }
 
     @PostMapping("/reject")
-    public CommonResponse<StudyMemberResponse> rejectStudyMember(
+    public CommonResponse<Void> rejectStudyMember(
             @RequestParam("studyMemberId") Long studyMemberId,
             @RequestParam("userCamInfoId") Long userCamInfoId
     ){
-        StudyMemberResponse response = studyMemberService.rejectStudyMember(studyMemberId, userCamInfoId);
-        return CommonResponse.ok(response);
+        studyMemberService.rejectStudyMember(studyMemberId, userCamInfoId);
+        return CommonResponse.ok(null);
     }
 
     @GetMapping("/list")
