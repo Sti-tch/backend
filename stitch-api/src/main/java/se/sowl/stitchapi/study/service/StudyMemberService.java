@@ -89,14 +89,12 @@ public class StudyMemberService {
 
     // 스터디 가입 거절
     @Transactional
-    public StudyMemberResponse rejectStudyMember(Long studyMemberId, Long userCamInfoId) {
+    public void rejectStudyMember(Long studyMemberId, Long userCamInfoId) {
         StudyMember studyMember = validateMemberAndLeader(studyMemberId, userCamInfoId);
-
-        studyMember.updateMemberStatus(MemberStatus.REJECTED);
 
         notificationService.createRejectNotification(studyMember.getId());
 
-        return StudyMemberResponse.from(studyMember);
+        studyMemberRepository.delete(studyMember);
     }
 
     /**
