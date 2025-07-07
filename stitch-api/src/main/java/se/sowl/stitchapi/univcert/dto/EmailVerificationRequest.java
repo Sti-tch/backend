@@ -1,6 +1,5 @@
 package se.sowl.stitchapi.univcert.dto;
 
-import com.mysql.cj.log.Log;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -45,8 +45,11 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-web'
 
-    // UnivCert - master branch의 최신 버전 사용
-    implementation 'com.github.in-seo:univcert:-SNAPSHOT'
+    // 📧 메일 의존성 추가
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
+
+    // UnivCert 제거하거나 주석 처리
+    // implementation 'com.github.in-seo:univcert:-SNAPSHOT'
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
