@@ -17,17 +17,4 @@ public class MajorException extends RuntimeException{
             super("존재하지 않는 전공입니다.", HttpStatus.NOT_FOUND);
         }
     }
-
-    public static class MajorAlreadySelectedException extends MajorException{
-        public MajorAlreadySelectedException() {
-            super("이미 전공이 선택되어 있습니다.", HttpStatus.BAD_REQUEST);
-        }
-    }
-
-    public static class MajorIdRequiredException extends MajorException {
-        public MajorIdRequiredException() {
-            super("전공 ID가 필요합니다.", HttpStatus.BAD_REQUEST);
-        }
-    }
-
 }
