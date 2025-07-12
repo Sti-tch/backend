@@ -1,5 +1,7 @@
 package se.sowl.stitchapi.univcert.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -21,6 +23,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
+@Tag(name = "UnivCert", description = "대학교 인증 관련 API")
 public class UnivCertController {
 
     private final UnivCertService univCertService;
@@ -28,6 +31,7 @@ public class UnivCertController {
     private final UserCamInfoService userCamInfoService;
     private final UserRepository userRepository;
 
+    @Operation(summary = "대학교 인증 이메일 발송")
     @PostMapping("/university/verify")
     public ResponseEntity<Map<String, Object>> sendVerificationEmail(
             @RequestBody EmailVerificationRequest request) {
@@ -66,6 +70,7 @@ public class UnivCertController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "대학교 인증 코드 검증")
     @PostMapping("/university/verify-code")
     public ResponseEntity<Map<String, Object>> verifyCode(
             @RequestBody CodeVerificationRequest request) {
@@ -105,6 +110,7 @@ public class UnivCertController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "대학교 인증 상태 확인")
     @GetMapping("/university/status")
     public ResponseEntity<Map<String, Object>> checkStatus(
             @RequestParam String email) {
@@ -112,6 +118,7 @@ public class UnivCertController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "대학교 이름 유효성 검사")
     @GetMapping("/university/check")
     public ResponseEntity<Map<String, Object>> checkUniversity(
             @RequestParam String univName) {
@@ -119,6 +126,7 @@ public class UnivCertController {
         return ResponseEntity.ok(response);
     }
 
+    @Operation(summary = "대학교 인증 상태 초기화")
     @PostMapping("/university/clear")
     public ResponseEntity<Map<String, Object>> clearVerificationStatus(
             @RequestParam String email) {
