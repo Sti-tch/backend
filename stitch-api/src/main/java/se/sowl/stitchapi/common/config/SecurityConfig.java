@@ -40,7 +40,7 @@ public class SecurityConfig {
                         // OAuth 관련 엔드포인트
                         .requestMatchers("/login", "/oauth2/**", "/login/oauth2/**").permitAll()
                         // Swagger UI
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/api-docs/**").permitAll()
                         // Public API 엔드포인트
                         .requestMatchers("/api/auth/**").permitAll()
                         // 로그아웃 엔드포인트 허용 - 이 줄 추가

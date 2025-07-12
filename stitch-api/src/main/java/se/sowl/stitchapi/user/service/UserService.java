@@ -5,7 +5,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.sowl.stitchapi.exception.UserCamInfoException;
-import se.sowl.stitchapi.user.dto.request.EditUserRequest;
 import se.sowl.stitchapi.user.dto.request.UserInfoRequest;
 import se.sowl.stitchdomain.study.enumm.MemberStatus;
 import se.sowl.stitchdomain.study.repository.StudyMemberRepository;
@@ -80,13 +79,4 @@ public class UserService {
                 pendingStudyCount
         );
     }
-
-
-    @Transactional
-    public void editUser(Long userId, EditUserRequest request) {
-        User user = userRepository.findById(userId).orElseThrow();
-        user.updateNickname(request.getNickname());
-        userRepository.save(user);
-    }
-
 }
