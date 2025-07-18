@@ -120,4 +120,5 @@ public class StudyMemberController {
         List<MyStudyResponse> responses = studyMemberService.getMyJoinedStudies(userCamInfoId);
         return CommonResponse.ok(responses);
     }
+
 }
