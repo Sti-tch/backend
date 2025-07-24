@@ -2,16 +2,18 @@ package se.sowl.stitchapi.notification.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import se.sowl.stitchdomain.notification.domain.Notification;
 import se.sowl.stitchdomain.notification.enumm.NotificationType;
 
 import java.time.LocalDateTime;
 
-@Getter
-@AllArgsConstructor
+@Data
 @Builder
-public class NotificationResponse {
+@NoArgsConstructor
+@AllArgsConstructor
+public class NotificationEvent {
     private Long id;
     private Long userCamInfoId;
     private String message;
@@ -21,8 +23,9 @@ public class NotificationResponse {
     private Long targetId;
     private LocalDateTime createdAt;
 
-    public static NotificationResponse from(Notification notification) {
-        return NotificationResponse.builder()
+    // Notification 엔티티로부터 NotificationEvent 생성
+    public static NotificationEvent from(Notification notification) {
+        return NotificationEvent.builder()
                 .id(notification.getId())
                 .userCamInfoId(notification.getUserCamInfo().getId())
                 .message(notification.getMessage())

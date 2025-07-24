@@ -3,10 +3,8 @@ package se.sowl.stitchapi.notification.service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import se.sowl.stitchapi.exception.NotificationException;
-import se.sowl.stitchapi.exception.StudyMemberException;
-import se.sowl.stitchapi.exception.StudyPostException;
-import se.sowl.stitchapi.exception.UserCamInfoException;
+import se.sowl.stitchapi.exception.*;
+import se.sowl.stitchapi.notification.dto.NotificationEvent;
 import se.sowl.stitchapi.notification.dto.NotificationListResponse;
 import se.sowl.stitchapi.notification.dto.NotificationResponse;
 import se.sowl.stitchdomain.notification.domain.Notification;
@@ -14,11 +12,11 @@ import se.sowl.stitchdomain.notification.enumm.NotificationType;
 import se.sowl.stitchdomain.notification.repository.NotificationRepository;
 import se.sowl.stitchdomain.study.domain.StudyMember;
 import se.sowl.stitchdomain.study.domain.StudyPost;
+import se.sowl.stitchdomain.study.domain.StudyPostComment;
 import se.sowl.stitchdomain.study.repository.StudyMemberRepository;
-import se.sowl.stitchdomain.study.repository.StudyPostRepository;
+import se.sowl.stitchdomain.study.repository.StudyPostCommentRepository;
 import se.sowl.stitchdomain.user.domain.UserCamInfo;
 import se.sowl.stitchdomain.user.repository.UserCamInfoRepository;
-
 import java.util.List;
 
 @Service
@@ -28,7 +26,8 @@ public class NotificationService {
     private final NotificationRepository notificationRepository;
     private final UserCamInfoRepository userCamInfoRepository;
     private final StudyMemberRepository studyMemberRepository;
-    private final StudyPostRepository studyPostRepository;
+    private final StudyPostCommentRepository studyPostCommentRepository;
+    private final NotificationEmitterService emitterService;
 
     // 사용자 알림 목록 조회
     @Transactional
@@ -42,6 +41,29 @@ public class NotificationService {
         return notificationListResponses.stream()
                 .map(NotificationListResponse::from)
                 .toList();
+    }
+
+    // 읽지 않은 알림 개수 조회
+    @Transactional
+    public int getUnreadNotificationCount(Long userCamInfoId){
+        UserCamInfo userCamInfo = userCamInfoRepository.findById(userCamInfoId)
+                .orElseThrow(UserCamInfoException.UserCamNotFoundException::new);
+
+        // 읽지 않은 알림의 개수를 조회
+        return notificationRepository.countByUserCamInfoAndIsReadFalse(userCamInfo);
+    }
+
+    // 알림 상세 조회
+    @Transactional
+    public NotificationResponse getNotificationDetail(Long notificationId, Long userCamInfoId){
+        Notification notification = notificationRepository.findById(notificationId)
+                .orElseThrow(NotificationException.NotificationNotFoundException::new);
+
+        if (!notification.getUserCamInfo().getId().equals(userCamInfoId)) {
+            throw new NotificationException.UnauthorizedException();
+        }
+
+        return NotificationResponse.from(notification);
     }
 
     // 알림 읽음 처리
@@ -97,12 +119,17 @@ public class NotificationService {
                         "님이 '" + studyMember.getStudyPost().getTitle() + "' 스터디에 가입 신청했습니다.")
                 .link("/api/study-members/list?studyPostId=" + studyMember.getStudyPost().getId())
                 .notificationType(NotificationType.STUDY_APPLY)
-                .targetId(studyMember.getId())
+                .targetId(studyMember.getId()) // 알림의 대상 ID: 스터디 멤버 ID
                 .isRead(false)
                 .build();
 
         notification = notificationRepository.save(notification);
-        return NotificationResponse.from(notification);
+        NotificationResponse response = NotificationResponse.from(notification);
+
+        // SSE 실시간 알림 전송
+        emitterService.sendNotification(receiverId, NotificationEvent.from(notification));
+
+        return response;
     }
 
     // 알림 생성(스터디 가입 승인)
@@ -121,7 +148,12 @@ public class NotificationService {
                 .build();
 
         notification = notificationRepository.save(notification);
-        return NotificationResponse.from(notification);
+        NotificationResponse response = NotificationResponse.from(notification);
+
+        // SSE 실시간 알림 전송
+        emitterService.sendNotification(studyMember.getUserCamInfo().getId(), NotificationEvent.from(notification));
+
+        return response;
     }
 
     // 알림 생성(스터디 가입 거절)
@@ -140,17 +172,22 @@ public class NotificationService {
                 .build();
 
         notification = notificationRepository.save(notification);
-        return NotificationResponse.from(notification);
+        NotificationResponse response = NotificationResponse.from(notification);
+
+        // SSE 실시간 알림 전송
+        emitterService.sendNotification(studyMember.getUserCamInfo().getId(), NotificationEvent.from(notification));
+
+        return response;
     }
 
     // 알림 생성(새 댓글)
     @Transactional
-    public NotificationResponse createNewCommentNotification(Long studyPostId, Long commentWriterId) {
-        StudyPost studyPost = studyPostRepository.findById(studyPostId)
-                .orElseThrow(StudyPostException.StudyPostNotFoundException::new);
+    public NotificationResponse createNewCommentNotification(Long commentId) {
+        StudyPostComment comment = studyPostCommentRepository.findById(commentId)
+                .orElseThrow(StudyPostException.StudyPostCommentNotFoundException::new);
 
-        UserCamInfo commentWriter = userCamInfoRepository.findById(commentWriterId)
-                .orElseThrow(UserCamInfoException.UserCamNotFoundException::new);
+        StudyPost studyPost = comment.getStudyPost();
+        UserCamInfo commentWriter = comment.getUserCamInfo();
 
         // 게시글 작성자에게만 알림 (자신의 글에 자신이 댓글을 달면 알림 제외)
         if (!studyPost.getUserCamInfo().getId().equals(commentWriter.getId())) {
@@ -160,12 +197,17 @@ public class NotificationService {
                             "님이 '" + studyPost.getTitle() + "' 게시글에 댓글을 남겼습니다.")
                     .link("/api/study-posts/" + studyPost.getId() + "/comments")
                     .notificationType(NotificationType.STUDY_COMMENT_ADDED)
-                    .targetId(studyPost.getId())
+                    .targetId(comment.getId()) // 댓글 ID를 타겟으로 설정
                     .isRead(false)
                     .build();
 
             notification = notificationRepository.save(notification);
-            return NotificationResponse.from(notification);
+            NotificationResponse response = NotificationResponse.from(notification);
+
+            // SSE 실시간 알림 전송
+            emitterService.sendNotification(studyPost.getUserCamInfo().getId(), NotificationEvent.from(notification));
+
+            return response;
         }
 
         return null; // 자신의 글에 자신이 댓글을 달면 알림 없음

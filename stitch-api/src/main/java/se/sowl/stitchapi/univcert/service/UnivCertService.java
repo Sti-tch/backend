@@ -1,104 +1,140 @@
 package se.sowl.stitchapi.univcert.service;
 
-import com.univcert.api.UnivCert;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+import se.sowl.stitchapi.univcert.storage.VerificationCodeStorage;
 
-import org.springframework.http.HttpHeaders;
-import org.springframework.web.client.RestTemplate;
-
+import java.util.HashMap;
 import java.util.Map;
-
-
+import java.util.Random;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UnivCertService {
 
-    private final RestTemplate restTemplate;
-    private final String univCertApiKey;
-
-    // 이 생성자 추가
-    public UnivCertService(RestTemplate restTemplate, @Qualifier("univCertApiKey") String univCertApiKey) {
-        this.restTemplate = restTemplate;
-        this.univCertApiKey = univCertApiKey;
-    }
+    private final JavaMailSender mailSender;
+    private final VerificationCodeStorage codeStorage;
+    private final UniversityValidationService universityValidationService;
+    private final Random random = new Random();
 
     public Map<String, Object> sendVerificationEmail(String email, String univName) {
         try {
-            Map<String, Object> response = UnivCert.certify(univCertApiKey, email, univName, false);
-            if ((int)response.get("code") != 200) {
-                throw new RuntimeException("메일 인증 발송에 실패했습니다.");
+            // 대학교 이름 검증
+            if (!universityValidationService.isValidUniversity(univName)) {
+                return createErrorResponse(400, "유효하지 않은 대학교입니다.");
             }
-            return response;
+
+            // 6자리 인증 코드 생성
+            int verificationCode = 100000 + random.nextInt(900000);
+
+            // 이메일 발송
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setTo(email);
+            message.setSubject("[Stitch] 대학교 이메일 인증");
+            message.setText(createEmailContent(univName, verificationCode));
+            message.setFrom("kcw130502@gmail.com");
+
+            mailSender.send(message);
+
+            // 인증 코드 저장
+            codeStorage.storeCode(email, verificationCode);
+
+            log.info("Verification email sent to: {}", email);
+            return createSuccessResponse("인증 메일이 발송되었습니다.");
+
         } catch (Exception e) {
-            throw new RuntimeException("메일 인증 처리 중 오류가 발생했습니다: " + e.getMessage());
+            log.error("Error sending verification email: ", e);
+            return createErrorResponse(500, "메일 인증 발송에 실패했습니다: " + e.getMessage());
         }
     }
 
     public Map<String, Object> verifyCode(String email, String univName, int code) {
         try {
-            Map<String, Object> response = UnivCert.certifyCode(univCertApiKey, email, univName, code);
-            if ((int)response.get("code") != 200) {
-                throw new RuntimeException("인증 코드가 올바르지 않습니다.");
+            if (codeStorage.verifyCode(email, code)) {
+                // 인증 성공 시 코드 삭제
+                codeStorage.removeCode(email);
+                return createSuccessResponse("인증이 완료되었습니다.");
+            } else {
+                return createErrorResponse(400, "인증 코드가 올바르지 않거나 만료되었습니다.");
             }
-            return response;
         } catch (Exception e) {
-            throw new RuntimeException("인증 코드 확인 중 오류가 발생했습니다: " + e.getMessage());
+            log.error("Error verifying code: ", e);
+            return createErrorResponse(500, "인증 코드 확인 중 오류가 발생했습니다: " + e.getMessage());
         }
     }
 
     public Map<String, Object> checkVerificationStatus(String email) {
         try {
-            // TODO: Implement UnivCert.status method
-            Map<String, Object> response = UnivCert.status(univCertApiKey, email);
-            if ((int)response.get("code") != 200) {
-                throw new RuntimeException("인증 상태 확인에 실패했습니다.");
-            }
+            boolean hasValidCode = codeStorage.hasValidCode(email);
+            Map<String, Object> response = createSuccessResponse("인증 상태 확인 완료");
+            response.put("verified", hasValidCode);
             return response;
         } catch (Exception e) {
-            throw new RuntimeException("인증 상태 확인 중 오류가 발생했습니다: " + e.getMessage());
+            log.error("Error checking verification status: ", e);
+            return createErrorResponse(500, "인증 상태 확인 중 오류가 발생했습니다: " + e.getMessage());
         }
     }
 
     public Map<String, Object> isValidUniversity(String univName) {
         try {
-            Map<String, Object> response = UnivCert.check(univName);
-            if ((int)response.get("code") != 200) {
-                throw new RuntimeException("유효하지 않은 대학교입니다.");
+            boolean isValid = universityValidationService.isValidUniversity(univName);
+            if (isValid) {
+                return createSuccessResponse("유효한 대학교입니다.");
+            } else {
+                return createErrorResponse(400, "유효하지 않은 대학교입니다.");
             }
-            return response;
         } catch (Exception e) {
-            throw new RuntimeException("대학교 이름 확인 중 오류가 발생했습니다: " + e.getMessage());
+            log.error("Error checking university: ", e);
+            return createErrorResponse(500, "대학교 이름 확인 중 오류가 발생했습니다: " + e.getMessage());
         }
     }
 
     public Map<String, Object> clearVerificationStatus(String email) {
         try {
-            // API 요청 데이터 준비
-            String url = "https://univcert.com/api/v1/clear";
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_JSON);
-
-            Map<String, String> requestBody = Map.of("key", univCertApiKey);
-            HttpEntity<Map<String, String>> requestEntity = new HttpEntity<>(requestBody, headers);
-
-            ResponseEntity<Map> response = restTemplate.postForEntity(
-                    url,
-                    requestEntity,
-                    Map.class
-            );
-
-            return response.getBody();
+            codeStorage.removeCode(email);
+            return createSuccessResponse("인증 상태가 초기화되었습니다.");
         } catch (Exception e) {
             log.error("Error clearing verification status: ", e);
-            throw new RuntimeException("인증 상태 초기화 중 오류가 발생했습니다: " + e.getMessage());
+            return createErrorResponse(500, "인증 상태 초기화 중 오류가 발생했습니다: " + e.getMessage());
         }
+    }
+
+    private String createEmailContent(String univName, int code) {
+        return String.format(
+                """
+                안녕하세요, Stitch입니다.
+                
+                %s 이메일 인증을 위한 인증번호입니다.
+                
+                인증번호: %d
+                
+                위 인증번호를 입력하여 이메일 인증을 완료해주세요.
+                인증번호는 5분간 유효합니다.
+                
+                감사합니다.
+                Stitch 팀
+                """,
+                univName, code
+        );
+    }
+
+    private Map<String, Object> createSuccessResponse(String message) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("code", 200);
+        response.put("message", message);
+        response.put("success", true);
+        return response;
+    }
+
+    private Map<String, Object> createErrorResponse(int code, String message) {
+        Map<String, Object> response = new HashMap<>();
+        response.put("code", code);
+        response.put("message", message);
+        response.put("success", false);
+        return response;
     }
 }

@@ -37,9 +37,6 @@ public class StudyPost {
     private List<StudyMember> members = new ArrayList<>();
 
     @OneToMany(mappedBy = "studyPost", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<StudyContent> studyContents = new ArrayList<>();
-
-    @OneToMany(mappedBy = "studyPost", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<StudyPostComment> comments = new ArrayList<>();
 
     @CreationTimestamp
@@ -51,6 +48,7 @@ public class StudyPost {
     private LocalDateTime updatedAt;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "study_status", nullable = false)
     private StudyStatus studyStatus;
 
     @Builder
@@ -65,6 +63,9 @@ public class StudyPost {
         this.title = title;
         this.content = content;
         this.studyStatus = studyStatus;
+    }
 
+    public void changeOwner(UserCamInfo newOwner) {
+        this.userCamInfo = newOwner;
     }
 }

@@ -37,13 +37,16 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         // H2 Console
                         .requestMatchers("/h2-console/**").permitAll()
-                        .requestMatchers("/api/campus/list").permitAll()  // 이 엔드포인트는 인증 없이 접근 가능
                         // OAuth 관련 엔드포인트
                         .requestMatchers("/login", "/oauth2/**", "/login/oauth2/**").permitAll()
                         // Swagger UI
-                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                        .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/api-docs/**").permitAll()
                         // Public API 엔드포인트
                         .requestMatchers("/api/auth/**").permitAll()
+                        // 로그아웃 엔드포인트 허용 - 이 줄 추가
+                        .requestMatchers("/api/users/logout").permitAll()
+                        // SSE 연결 엔드포인트 (인증 필요) - 추가
+                        .requestMatchers("/api/notifications/sse/**").authenticated()
                         // 인증이 필요한 API 엔드포인트
                         .requestMatchers("/api/boards/**").authenticated()
                         .requestMatchers("/api/users/**").authenticated()
@@ -79,6 +82,8 @@ public class SecurityConfig {
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
+
+        configuration.setExposedHeaders(Arrays.asList("Content-Type", "X-Requested-With", "Authorization"));
         configuration.setMaxAge(3600L); // 1시간 동안 preflight 요청 캐시
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
