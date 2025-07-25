@@ -81,7 +81,7 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(List.of(
                 "http://localhost:3000",
                 "http://13.209.246.131:8080",
-                "https://frontend-flame-nu-15.vercel.app"
+                "https://frontend-38vzqvkhs-kangcheolungs-projects-b7t609b6.vercel.app"
                 ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
