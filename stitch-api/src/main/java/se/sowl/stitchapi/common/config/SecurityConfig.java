@@ -44,7 +44,6 @@ public class SecurityConfig {
                         // Public API 엔드포인트
                         .requestMatchers("/api/auth/**").permitAll()
                         // 로그아웃 엔드포인트 허용 - 이 줄 추가
-                        .requestMatchers("/api/users/session").permitAll()  // 로그인 상태 확인 엔드포인트
                         .requestMatchers("/api/users/logout").permitAll()
                         // SSE 연결 엔드포인트 (인증 필요) - 추가
                         .requestMatchers("/api/notifications/sse/**").authenticated()
