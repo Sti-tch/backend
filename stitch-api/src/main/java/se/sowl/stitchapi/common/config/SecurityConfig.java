@@ -79,9 +79,10 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(List.of(
-                "http://localhost:3000",
-                "http://13.209.246.131:8080",
-                "https://frontend-38vzqvkhs-kangcheolungs-projects-b7t609b6.vercel.app"
+                "http://localhost:3000",  // 개발환경
+                "https://stitch-study.site",  // 백엔드 HTTPS 도메인
+                "https://frontend-ggedkqafq-kangcheolungs-projects-b71609b6.vercel.app",  // Vercel 메인 도메인
+                "https://frontend-flame-beta-36.vercel.app"  // Vercel 추가 도메인
                 ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));

@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,11 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Tag(name = "User", description = "사용자 관련 API")
 public class UserController {
+
     private final UserService userService;
+
+    @Value("${app.frontend.url:http://localhost:3000}")
+    private String frontendUrl;
 
     @Operation(summary = "사용자 정보 조회")
     @GetMapping("/me")
@@ -49,9 +54,9 @@ public class UserController {
             throws IOException {
         try {
             request.logout();
-            response.sendRedirect("http://localhost:3000");
+            response.sendRedirect(frontendUrl);
         } catch (Exception e) {
-            response.sendRedirect("http://localhost:3000");
+            response.sendRedirect(frontendUrl);
         }
     }
 }
