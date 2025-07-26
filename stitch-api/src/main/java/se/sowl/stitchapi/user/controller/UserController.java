@@ -16,6 +16,8 @@ import se.sowl.stitchdomain.user.domain.CustomOAuth2User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/users")
@@ -27,6 +29,23 @@ public class UserController {
 
     @Value("${app.frontend.url:http://localhost:3000}")
     private String frontendUrl;
+
+    @Operation(summary = "로그인 상태 확인")
+    @GetMapping("/session")
+    public CommonResponse<Map<String, Object>> checkSession(
+            @AuthenticationPrincipal CustomOAuth2User user) {
+
+        Map<String, Object> result = new HashMap<>();
+
+        if (user != null) {
+            result.put("isLoggedIn", true);
+            result.put("userId", user.getUserId());
+        } else {
+            result.put("isLoggedIn", false);
+        }
+
+        return CommonResponse.ok(result);
+    }
 
     @Operation(summary = "사용자 정보 조회")
     @GetMapping("/me")
