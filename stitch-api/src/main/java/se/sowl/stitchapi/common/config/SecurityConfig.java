@@ -81,8 +81,7 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(List.of(
                 "http://localhost:3000",
                 "https://stitch-study.site",
-                "https://frontend-kj67sfn1l-kangcheolungs-projects-b71609b6.vercel.app",  // 새 URL 추가
-                "https://frontend-blush-seven-57.vercel.app"  // 추가 도메인
+                "https://frontend-seven-chi-73.vercel.app"
                 ));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
