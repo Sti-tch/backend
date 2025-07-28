@@ -87,7 +87,7 @@ public class SecurityConfig {
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);
 
-        configuration.setExposedHeaders(Arrays.asList("Content-Type", "X-Requested-With", "Authorization"));
+        configuration.setExposedHeaders(Arrays.asList("Content-Type", "X-Requested-With", "Authorization","Set-Cookie"));
         configuration.setMaxAge(3600L); // 1시간 동안 preflight 요청 캐시
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
