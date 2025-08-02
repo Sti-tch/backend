@@ -1,10 +1,10 @@
 # 📖 Stitch - 대학생 스터디 매칭 서비스
 <div align="center">
-  <img src="https://private-user-images.githubusercontent.com/112637112/468477776-59a4cc9f-5849-4df4-b815-781706552d65.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTMwNzgzNjksIm5iZiI6MTc1MzA3ODA2OSwicGF0aCI6Ii8xMTI2MzcxMTIvNDY4NDc3Nzc2LTU5YTRjYzlmLTU4NDktNGRmNC1iODE1LTc4MTcwNjU1MmQ2NS5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNzIxJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDcyMVQwNjA3NDlaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1jZmJhMDEzZDM3NGU3ODBmMzNjZWE1MmI2NGRiZDNhM2Y2ZWVkOWNjMjFkMjEyYTJhOTU3NzAxOTcxOGUyYzVkJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.LaTsjG4ay3m_urELlgb0LOqJsrbr2swaNvH122W2VaY" alt="Stitch Logo" width="400">
+  <img src="./docs/images/logo.png" alt="Stitch Logo" width="400">
 </div>
 <div align="center">
   
-**데모 URL**: [https://stitch-study.vercel.app](https://stitch-study.vercel.app)
+**배포 URL**: [https://frontend-seven-chi-73.vercel.app](https://frontend-seven-chi-73.vercel.app)
 </div>
 
 ## 프로젝트 소개
