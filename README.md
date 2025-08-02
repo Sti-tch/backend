@@ -163,7 +163,7 @@ NTMwODI0NTNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1lMDk3ZDg4MGM0ZTA3MDg2
 
 ### 💬 댓글 생성 & 수정 & 삭제
 <div align="center">
-  <video src="./docs/images/comment.mov" width="300" controls></video>
+  <video src="https://github.com/user-attachments/assets/953846c3-3c36-4027-95ef-ecb12c3805a1" width="300" controls></video>
 </div>
 
 - **실시간 댓글**: 스터디에 대한 질문과 답변 실시간 소통
@@ -173,7 +173,7 @@ NTMwODI0NTNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1lMDk3ZDg4MGM0ZTA3MDg2
 
 ### 📝 스터디 가입 신청
 <div align="center">
-  <video src="./docs/images/apply.mov" width="300" controls></video>
+  <video src="https://github.com/user-attachments/assets/250fb2ff-b6af-4933-8fef-141de580f848" width="300" controls></video>
 </div>
 
 - **간편한 신청**: 원클릭으로 스터디 가입 신청
@@ -183,7 +183,7 @@ NTMwODI0NTNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1lMDk3ZDg4MGM0ZTA3MDg2
 
 ### ✅ 스터디 가입 승인 & 거절
 <div align="center">
-  <video src="./docs/images/approve.mov" width="300" controls></video>
+  <video src="https://github.com/user-attachments/assets/0ebaa8cf-0030-4bfb-9fb6-6fa20a14b049" width="300" controls></video>
 </div>
 
 - **리더 권한**: 스터디 생성자만 멤버 승인/거절 가능
@@ -192,7 +192,7 @@ NTMwODI0NTNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1lMDk3ZDg4MGM0ZTA3MDg2
 - **멤버 관리**: 승인된 멤버들의 역할 및 상태 관리
 
 <div align="center">
-  <video src="./docs/images/reject.mov" width="300" controls></video>
+  <video src="https://github.com/user-attachments/assets/0560666f-44fd-4c0e-9411-7e7ad0ca6f9b" width="300" controls></video>
 </div>
 
 - **정중한 거절**: 거절 사유를 포함한 알림 발송
@@ -200,7 +200,7 @@ NTMwODI0NTNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1lMDk3ZDg4MGM0ZTA3MDg2
 
 ### 👑 스터디 리더 변경
 <div align="center">
-  <video src="./docs/images/leaderChange.mov" width="300" controls></video>
+  <video src="https://github.com/user-attachments/assets/0f06bada-28d7-49c5-a27c-78867bef10e6" width="300" controls></video>
 </div>
 
 - **리더 위임**: 현재 리더가 다른 멤버에게 리더 권한 이양
@@ -210,7 +210,7 @@ NTMwODI0NTNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1lMDk3ZDg4MGM0ZTA3MDg2
 
 ### 🚪 스터디 탈퇴 & 로그아웃
 <div align="center">
-  <video src="./docs/images/leaveStudy.mov" width="300" controls></video>
+  <video src="https://github.com/user-attachments/assets/739c0aa2-fb1a-4b31-bbdd-7cb8d2028730" width="300" controls></video>
 </div>
 
 - **자유로운 탈퇴**: 언제든지 스터디에서 나갈 수 있음
