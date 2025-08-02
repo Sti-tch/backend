@@ -111,7 +111,7 @@
 
 ### 🔐 로그인 및 인증
 <div align="center">
-  <img src="https://private-user-images.githubusercontent.com/112637112/468495472-493c4a79-e98f-4d78-be9e-823e796faec2.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTMwODI3NTMsIm5iZiI6MTc1MzA4MjQ1MywicGF0aCI6Ii8xMTI2MzcxMTIvNDY4NDk1NDcyLTQ5M2M0YTc5LWU5OGYtNGQ3OC1iZTllLTgyM2U3OTZmYWVjMi5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNzIxJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDcyMVQwNzIwNTNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT05ODYzYWExMjQ5MGU5NjU4YTVjNWEyMTc5ZWMzMWJiNmNlM2NjOThmNmZjYTYwNDY0ZDMxOGMwMWQ3OTRkOTA0JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.QXVnlZBBK1Z9GQwKBY7DEjZWwHBG-GJWCvKCnxzN0V8" alt="로그인 페이지" width="300">
+  <img src="./docs/images/login.png" alt="로그인 페이지" width="300">
 </div>
 
 - **카카오 소셜 로그인**: 간편한 OAuth2 기반 로그인
@@ -120,7 +120,7 @@
 
 ### 👤 마이페이지
 <div align="center">
-  <img src="https://private-user-images.githubusercontent.com/112637112/468495514-1c046020-ab5e-4390-a1de-a0674faa0b48.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTMwODI3NTMsIm5iZiI6MTc1MzA4MjQ1MywicGF0aCI6Ii8xMTI2MzcxMTIvNDY4NDk1NTE0LTFjMDQ2MDIwLWFiNWUtNDM5MC1hMWRlLWEwNjc0ZmFhMGI0OC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNzIxJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDcyMVQwNzIwNTNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0xODIzNmI4OGNhM2MyYzRhZGQxMmViZGQxZDhmZTk2NTJjNDVmZmJlMThhMWNlNjljMTBkZWNiNWYzNWE5MzYzJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.d2LS_G-C2wbt7roHVaXdYyC7oG0TSnkf1HT8y_fMrs4" alt="마이페이지" width="500">
+  <img src="./docs/images/mypage.png" alt="마이페이지" width="500">
 </div>
 
 - **프로필 관리**: 개인정보 및 프로필 사진 수정
@@ -128,56 +128,62 @@
 - **활동 내역**: 스터디 참여 기록 및 통계
 - **설정**: 알림 설정 및 계정 관리
 
-### 🚪 로그아웃
-<div align="center">
-  <video src="https://private-user-images.githubusercontent.com/112637112/468495624-8de96740-ec78-4c47-bb94-8b023aa047ff.mov?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTMwODI3NTMsIm5iZiI6MTc1MzA4MjQ1MywicGF0aCI6Ii8xMTI2MzcxMTIvNDY4NDk1NjI0LThkZTk2NzQwLWVjNzgtNGM0Ny1iYjk0LThiMDIzYWEwNDdmZi5tb3Y_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNzIxJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDcyMVQwNzIwNTNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1hZmE3OGYzMWM1Y2MxMWVmY2Y3OTJmODJmNjc3MWVjODNjMDNjYjBjZGM1MjVhYTNhNTk1OWY3Y2IxM2MxOWYzJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.0HYuApY7n-P-75HAm055hlp4AxdmNNF3-fBlPA4eer8" width="300" controls></video>
-</div>
-
-- **안전한 로그아웃**: 토큰 무효화 및 세션 정리
-- **사용자 친화적 UI**: 직관적인 로그아웃 프로세스
-
-### 🔍 스터디 찾기
-<div align="center">
-  <video src="https://private-user-images.githubusercontent.com/112637112/468495704-0b2d7b09-0254-4bd6-8995-89cd84b0b0da.mov?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTMwODI3NTMsIm5iZiI6MTc1MzA4MjQ1MywicGF0aCI6Ii8xMTI2MzcxMTIvNDY4NDk1NzA0LTBiMmQ3YjA5LTAyNTQtNGJkNi04OTk1LTg5Y2Q4NGIwYjBkYS5tb3Y_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNzIxJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDcyMVQwNzIwNTNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT02MGM2ODEwODgzMzg4YzFiZmI0Y2QzZWFkZTkzYmY5ZjVhYmRmOWJkMDhjZWJmOTQ1NWVlMjVkNjdjNzFlNzM3JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.9LSU7Ub-q0ZvpmK782WvSH-g3JeGeJrARXTwyzQRpWM" width="300" controls></video>
-</div>
-
-- **키워드 검색**: 스터디 제목, 내용 기반 검색
-- **필터링**: 카테고리, 모집 상태, 지역별 필터
-- **실시간 업데이트**: 새로운 스터디 자동 갱신
-- **상세 정보**: 스터디 상세 페이지에서 모든 정보 확인
-
-### ✨ 스터디 만들기
-<div align="center">
-  <video src="https://private-user-images.githubusercontent.com/112637112/468495812-85d809c1-0e82-4922-b223-5056210f6605.mov?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTMwODI3NTMsIm5iZiI6MTc1MzA4MjQ1MywicGF0aCI6Ii8xMTI2MzcxMTIvNDY4NDk1ODEyLTg1ZDgwOWMxLTBlODItNDkyMi1iMjIzLTUwNTYyMTBmNjYwNS5tb3Y_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNzIxJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDcyMVQwNzIwNTNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1jOGNmNjAzOWY1ZmQ3ZGRmNWZjYWYzZjI1NjVlM2EwZGY0Zjk1MGNkMjg1NTgxNjZlMWVlZGE3MWNhNjk0MTMwJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.li60ZKIPyWe4vOwteqwVZuK3XOMUUMo50qwEURdBj_o" width="300" controls></video>
-</div>
-
-- **직관적인 폼**: 제목, 내용, 카테고리 등 간편한 입력
-- **실시간 미리보기**: 작성 중인 내용을 실시간으로 확인
-- **모집 조건 설정**: 인원 수, 모집 기간, 참여 조건 설정
-- **즉시 게시**: 작성 완료 후 바로 다른 사용자들에게 노출
-
-### 🛠️ 스터디 수정 & 삭제
-<div align="center">
-  <video src="https://private-user-images.githubusercontent.com/112637112/468495863-77769b5a-5f8a-45db-bc60-f2bccb8cc549.mov?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTMwODI3NTMsIm5iZiI6MTc1MzA4MjQ1MywicGF0aCI6Ii8xMTI2MzcxMTIvNDY4NDk1ODYzLTc3NzY5YjVhLTVmOGEtNDVkYi1iYzYwLWYyYmNjYjhjYzU0OS5tb3Y_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNzIxJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0y
-
-
-NTMwODI0NTNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1lMDk3ZDg4MGM0ZTA3MDg2ZTg5ZWNkMjE3ZTRkNTk4MWU1MGYwMTNhZjdiYTQwYWU0MDMwOGFmM2MyMzZlMjI0JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.2aA4AOthJ7xAXyT3RvVFPPuzbrWiyZ1S9ASmLagaKtg" width="300" controls></video>
-</div>
-
-- **리더 권한**: 스터디 생성자만 수정/삭제 가능
-- **유연한 수정**: 내용, 모집 조건, 상태 등 언제든 수정
-- **안전한 삭제**: 확인 절차를 통한 신중한 삭제 처리
-- **멤버 관리**: 참여자 승인/거절, 역할 변경 기능
-
 ### 💬 댓글 생성 & 수정 & 삭제
 <div align="center">
-  <video src="https://private-user-images.githubusercontent.com/112637112/468495917-74ff511e-ca44-4a7c-82cc-66a93cb63a31.mov?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTMwODI3NTMsIm5iZiI6MTc1MzA4MjQ1MywicGF0aCI6Ii8xMTI2MzcxMTIvNDY4NDk1OTE3LTc0ZmY1MTFlLWNhNDQtNGE3Yy04MmNjLTY2YTkzY2I2M2EzMS5tb3Y_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNzIxJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDcyMVQwNzIwNTNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT05MGY1NTZkYzcwOWVmZTkzNzM4MjllODgwOWExOTg3ODA1YWYzZDZjZWJjN2RhNjU5Zjc3ODg3ZDU5ZDE4ZGQxJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.lWvlVFSLt2cKaWniu89ucFN3s4rMwfApy-Ut7oVWOmY" width="300" controls></video>
+  <video src="./docs/images/comment.mov" width="300" controls></video>
 </div>
 
 - **실시간 댓글**: 스터디에 대한 질문과 답변 실시간 소통
 - **인라인 편집**: 댓글 작성 후 바로 수정 가능
 - **작성자 권한**: 본인이 작성한 댓글만 수정/삭제 가능
 - **알림 연동**: 새 댓글 작성 시 스터디 멤버들에게 알림 발송
+
+### 📝 스터디 가입 신청
+<div align="center">
+  <video src="./docs/images/apply.mov" width="300" controls></video>
+</div>
+
+- **간편한 신청**: 원클릭으로 스터디 가입 신청
+- **신청 메시지**: 자기소개 및 참여 동기 작성
+- **실시간 알림**: 신청 즉시 스터디 리더에게 알림 전송
+- **신청 현황**: 내 신청 상태를 실시간으로 확인
+
+### ✅ 스터디 가입 승인 & 거절
+<div align="center">
+  <video src="./docs/images/approve.mov" width="300" controls></video>
+</div>
+
+- **리더 권한**: 스터디 생성자만 멤버 승인/거절 가능
+- **신청자 정보**: 지원자의 프로필과 신청 메시지 확인
+- **즉시 처리**: 승인/거절 즉시 신청자에게 알림 전송
+- **멤버 관리**: 승인된 멤버들의 역할 및 상태 관리
+
+<div align="center">
+  <video src="./docs/images/reject.mov" width="300" controls></video>
+</div>
+
+- **정중한 거절**: 거절 사유를 포함한 알림 발송
+- **재신청 가능**: 거절 후에도 재신청 기회 제공
+
+### 👑 스터디 리더 변경
+<div align="center">
+  <video src="./docs/images/leaderChange.mov" width="300" controls></video>
+</div>
+
+- **리더 위임**: 현재 리더가 다른 멤버에게 리더 권한 이양
+- **권한 이전**: 스터디 관리 권한이 새로운 리더에게 완전 이전
+- **알림 발송**: 모든 멤버에게 리더 변경 알림
+- **연속성 보장**: 스터디 운영의 지속성 확보
+
+### 🚪 스터디 탈퇴
+<div align="center">
+  <video src="./docs/images/leaveStudy.mov" width="300" controls></video>
+</div>
+
+- **자유로운 탈퇴**: 언제든지 스터디에서 나갈 수 있음
+- **확인 절차**: 실수 방지를 위한 탈퇴 확인 단계
+- **알림 처리**: 탈퇴 시 리더 및 멤버들에게 알림
+- **데이터 정리**: 탈퇴 후 개인정보 보호를 위한 데이터 처리
 
 ## ERD
 ```mermaid
