@@ -104,6 +104,15 @@
   - 새 댓글 알림
 - **알림 관리**: 읽음 처리, 삭제, 목록 조회
 
+**배포 & 인프라**
+- **Frontend (Vercel)**:
+  - 플랫폼: Vercel을 통한 자동 배포
+  - 도메인: 커스텀 도메인 연결 (`stitch-study.site`)
+- **Backend (AWS)**:
+  - 인스턴스: Amazon EC2 Linux 서버 운영
+  - 데이터베이스: AWS RDS MySQL 연동
+
+
 ## 주요 기능
 
 ### 🔐 로그인 및 인증
