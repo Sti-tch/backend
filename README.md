@@ -136,7 +136,7 @@
 
 ### 🔍 스터디 찾기
 <div align="center">
-  <video src="https://private-user-images.githubusercontent.com/112637112/468495704-0b2d7b09-0254-4bd6-8995-89cd84b0b0da.mov?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTMwODI3NTMsIm5iZiI6MTc1MzA4MjQ1MywicGF0aCI6Ii8xMTI2MzcxMTIvNDY4NDk1NzA0LTBiMmQ3YjA5LTAyNTQtNGJkNi04OTk1LTg5Y2Q4NGIwYjBkYS5tb3Y_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNzIxJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDcyMVQwNzIwNTNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT02MGM2ODEwODgzMzg4YzFiZmI0Y2QzZWFkZTkzYmY5ZjVhYmRmOWJkMDhjZWJmOTQ1NWVlMjVkNjdjNzFlNzM3JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.9LSU7Ub-q0ZvpmK782WvSH-g3JeGeJrARXTwyzQRpWM" width="300" controls></video>
+ <video src="https://github.com/user-attachments/assets/8a04b77d-855d-4191-85e5-875bc053f20d" width="300" controls></video>
 </div>
 
 - **키워드 검색**: 스터디 제목, 내용 기반 검색
@@ -146,7 +146,7 @@
 
 ### ✨ 스터디 만들기
 <div align="center">
-  <video src="https://private-user-images.githubusercontent.com/112637112/468495812-85d809c1-0e82-4922-b223-5056210f6605.mov?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTMwODI3NTMsIm5iZiI6MTc1MzA4MjQ1MywicGF0aCI6Ii8xMTI2MzcxMTIvNDY4NDk1ODEyLTg1ZDgwOWMxLTBlODItNDkyMi1iMjIzLTUwNTYyMTBmNjYwNS5tb3Y_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNzIxJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDI1MDcyMVQwNzIwNTNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1jOGNmNjAzOWY1ZmQ3ZGRmNWZjYWYzZjI1NjVlM2EwZGY0Zjk1MGNkMjg1NTgxNjZlMWVlZGE3MWNhNjk0MTMwJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.li60ZKIPyWe4vOwteqwVZuK3XOMUUMo50qwEURdBj_o" width="300" controls></video>
+ <video src="https://github.com/user-attachments/assets/6616c60b-7d3b-49cb-978c-594a7ab2f381" width="300" controls></video>
 </div>
 
 - **직관적인 폼**: 제목, 내용, 카테고리 등 간편한 입력
@@ -156,10 +156,8 @@
 
 ### 🛠️ 스터디 수정 & 삭제
 <div align="center">
-  <video src="https://private-user-images.githubusercontent.com/112637112/468495863-77769b5a-5f8a-45db-bc60-f2bccb8cc549.mov?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NTMwODI3NTMsIm5iZiI6MTc1MzA4MjQ1MywicGF0aCI6Ii8xMTI2MzcxMTIvNDY4NDk1ODYzLTc3NzY5YjVhLTVmOGEtNDVkYi1iYzYwLWYyYmNjYjhjYzU0OS5tb3Y_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBVkNPRFlMU0E1M1BRSzRaQSUyRjIwMjUwNzIxJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0y
-
-
-NTMwODI0NTNaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT1lMDk3ZDg4MGM0ZTA3MDg2ZTg5ZWNkMjE3ZTRkNTk4MWU1MGYwMTNhZjdiYTQwYWU0MDMwOGFmM2MyMzZlMjI0JlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCJ9.2aA4AOthJ7xAXyT3RvVFPPuzbrWiyZ1S9ASmLagaKtg" width="300" controls></video>
+ <video src="https://github.com/user-attachments/assets/79a01cc6-269f-4557-ac84-e5e04179e179" width="300" controls></video>
+ <video src="https://github.com/user-attachments/assets/95997bda-12d4-4c11-803d-3029b9351523" width="300" controls></video>
 </div>
 
 - **리더 권한**: 스터디 생성자만 수정/삭제 가능
