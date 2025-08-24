@@ -101,17 +101,7 @@ public class StudyMemberController {
         return CommonResponse.ok(responses);
     }
 
-    @Operation(summary = "내가 신청한 스터디 목록", description = "내가 신청한 모든 스터디 목록을 조회합니다.")
-    @GetMapping("/my-applications")
-    public CommonResponse<List<MyStudyResponse>> getMyApplications(
-            @Parameter(description = "학교 인증자 ID", required = true, example = "1")
-            @RequestParam("userCamInfoId") Long userCamInfoId
-    ) {
-        List<MyStudyResponse> responses = studyMemberService.getMyApplications(userCamInfoId);
-        return CommonResponse.ok(responses);
-    }
-
-    @Operation(summary = "내가 속한 스터디 목록", description = "내가 속한 승인된 스터디 목록을 조회합니다.")
+    @Operation(summary = "내가 관련된 모든 스터디 목록", description = "내가 관련된 모든 스터디 목록을 조회합니다. (신청, 승인 상태 모두 포함)")
     @GetMapping("/my-studies")
     public CommonResponse<List<MyStudyResponse>> getMyStudies(
             @Parameter(description = "학교 인증자 ID", required = true, example = "1")

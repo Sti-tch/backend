@@ -223,31 +223,15 @@ public class StudyMemberService {
     }
 
     /*
-     * 내가 신청한 스터디 목록 조회
-     */
-    @Transactional(readOnly = true)
-    public List<MyStudyResponse> getMyApplications(Long userCamInfoId) {
-        UserCamInfo userCamInfo = userCamInfoRepository.findById(userCamInfoId)
-                .orElseThrow(UserCamInfoException.UserCamNotFoundException::new);
-
-        return studyMemberRepository.findByUserCamInfo(userCamInfo)
-                .stream()
-                .map(MyStudyResponse::from)
-                .toList();
-    }
-
-    /*
-     * 내가 속한 스터디 목록 조회(승인된 스터디만)
+     * 내가 관련된 모든 스터디 목록 조회 (신청, 승인 상태 모두 포함)
      */
     @Transactional(readOnly = true)
     public List<MyStudyResponse> getMyJoinedStudies(Long userCamInfoId) {
         UserCamInfo userCamInfo = userCamInfoRepository.findById(userCamInfoId)
                 .orElseThrow(UserCamInfoException.UserCamNotFoundException::new);
 
-        List<StudyMember> joinedStudies = studyMemberRepository.findByUserCamInfoAndMemberStatus(
-                userCamInfo, MemberStatus.APPROVED);
-
-        return joinedStudies.stream()
+        return studyMemberRepository.findByUserCamInfo(userCamInfo)
+                .stream()
                 .map(MyStudyResponse::from)
                 .toList();
     }
