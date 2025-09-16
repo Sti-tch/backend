@@ -1,10 +1,13 @@
 # 📖 Stitch - 대학생 스터디 매칭 서비스
+
 <div align="center">
   <img src="./docs/images/logo.png" alt="Stitch Logo" width="400">
 </div>
+
 <div align="center">
   
-**배포 URL**: [https://frontend-seven-chi-73.vercel.app](https://frontend-seven-chi-73.vercel.app)
+**배포 URL**: [https://stitch-study.site](https://stitch-study.site)
+
 </div>
 
 ## 프로젝트 소개
@@ -14,6 +17,7 @@
 - 학교 인증을 통해 대학생들만이 안전하게 이용할 수 있는 서비스입니다.
 
 ## 팀원 구성
+
 <div align="center">
 
 ### Frontend
@@ -43,8 +47,15 @@
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring_Boot-6DB33F?style=for-the-badge&logo=spring-boot&logoColor=white)
 ![Spring Data JPA](https://img.shields.io/badge/Spring_Data_JPA-6DB33F?style=for-the-badge&logo=spring&logoColor=white)
+![Spring Security](https://img.shields.io/badge/Spring_Security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 ![H2 Database](https://img.shields.io/badge/H2-1021FF?style=for-the-badge&logo=h2&logoColor=white)
+
+### DevOps & CI/CD
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![GitHub Actions](https://img.shields.io/badge/GitHub_Actions-2088FF?style=for-the-badge&logo=github-actions&logoColor=white)
+![AWS ECR](https://img.shields.io/badge/AWS_ECR-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white)
+![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white)
 
 ### API & 문서화
 ![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=black)
@@ -53,12 +64,29 @@
 ### 배포 & 인프라
 ![AWS](https://img.shields.io/badge/AWS-FF9900?style=for-the-badge&logo=amazon-aws&logoColor=white)
 ![Amazon EC2](https://img.shields.io/badge/Amazon_EC2-FF9900?style=for-the-badge&logo=amazon-ec2&logoColor=white)
+![Amazon RDS](https://img.shields.io/badge/Amazon_RDS-527FFF?style=for-the-badge&logo=amazon-rds&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)
 
 ### 개발 도구
 ![Gradle](https://img.shields.io/badge/Gradle-02303A?style=for-the-badge&logo=gradle&logoColor=white)
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
 ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)
+
+## CI/CD 아키텍처
+
+### 완전 자동화된 배포 파이프라인
+```mermaid
+graph LR
+    A[개발자] -->|git push| B[GitHub Repository]
+    B -->|Trigger| C[GitHub Actions]
+    C -->|Docker Build| D[Docker Image]
+    D -->|Push| E[AWS ECR]
+    C -->|SSH Deploy| F[EC2 Server]
+    F -->|Pull Image| E
+    F -->|Run Container| G[Running Service]
+    G -->|HTTPS| H[사용자]
+```
+
 
 ## 역할 분담
 
@@ -79,9 +107,10 @@
 - **검색 알고리즘**: 스터디 검색 및 필터링 로직 구현
 - **매칭 알고리즘**: 사용자 선호도 기반 스터디 추천 시스템
 
-### 👨‍💻 강철웅 (Backend)
+### 👨‍💻 강철웅 (Backend & DevOps)
 **인증 및 사용자 관리**
-- **OAuth2 인증**: 카카오 소셜 로그인 연동
+- **OAuth2 인증**: 카카오, 구글, 네이버 소셜 로그인 연동
+- **JWT 토큰**: 토큰 기반 인증 시스템 구현
 - **대학교 인증**: 이메일 인증을 통한 대학생 검증 시스템
 - **사용자 정보 관리**: User, UserCamInfo 도메인 설계 및 구현
 - **전공/캠퍼스 관리**: 대학교 및 전공 정보 관리 시스템
@@ -103,6 +132,18 @@
   - 새 댓글 알림
 - **알림 관리**: 읽음 처리, 삭제, 목록 조회
 
+**DevOps & CI/CD**
+- **Docker 컨테이너화**: 
+  - 멀티스테이지 Dockerfile 작성으로 이미지 크기 최적화
+  - 환경변수 기반 설정 관리로 개발/운영 환경 분리
+- **GitHub Actions CI/CD**: 
+  - 완전 자동화된 배포 파이프라인 구축
+  - 코드 푸시 시 자동 빌드, 테스트, 배포 수행
+- **AWS ECR**: Docker 이미지 저장소 관리 및 버전 관리
+- **보안 관리**: 
+  - GitHub Secrets을 통한 민감정보 암호화 관리
+  - SSH 키 기반 서버 인증 시스템
+
 **배포 & 인프라**
 - **Frontend (Vercel)**:
   - 플랫폼: Vercel을 통한 자동 배포
@@ -110,7 +151,8 @@
 - **Backend (AWS)**:
   - 인스턴스: Amazon EC2 Linux 서버 운영
   - 데이터베이스: AWS RDS MySQL 연동
-
+  - 웹 서버: Nginx 리버스 프록시 설정
+  - SSL 인증서: Let's Encrypt를 통한 HTTPS 보안 연결
 
 ## 주요 기능
 
@@ -119,7 +161,7 @@
   <img src="./docs/images/login.png" alt="로그인 페이지" width="300">
 </div>
 
-- **카카오 소셜 로그인**: 간편한 OAuth2 기반 로그인
+- **소셜 로그인**: 카카오, 구글, 네이버 OAuth2 기반 로그인
 - **대학교 이메일 인증**: 학생 신분 확인을 위한 이메일 인증 시스템
 - **보안**: JWT 토큰 기반 인증 및 권한 관리
 
@@ -228,7 +270,7 @@
 - **안전한 로그아웃**: 토큰 무효화 및 세션 정리
 - **사용자 친화적 UI**: 직관적인 로그아웃 프로세스
 
-- ### 🎓 기타 핵심 기능
+### 🎓 기타 핵심 기능
 - **대학교 이메일 인증**: SMTP 기반 실시간 이메일 인증으로 대학생 신분 확인
 - **실시간 알림 시스템**: SSE(Server-Sent Events) 기반 즉시 알림 전달 서비스
 - **스터디 매칭 알고리즘**: 전공, 캠퍼스, 관심분야 기반 맞춤형 스터디 추천 시스템
