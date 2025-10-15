@@ -1,14 +1,48 @@
-name: Deploy to ECR and EC2
+name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main, develop ]  # develop 추가
   pull_request:
-    branches: [ main ]
+    branches: [ develop, main ]  # develop 추가
 
 jobs:
-  deploy:
+  # ========================================
+  # Job 1: PR 생성 시 테스트 실행
+  # ========================================
+  test:
+    name: Run Tests
     runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'gradle'
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Run tests
+        run: ./gradlew test --no-daemon
+
+      - name: Test Results
+        run: echo "✅ All tests passed! Ready for code review."
+
+  # ========================================
+  # Job 2: develop 또는 main 머지 시 배포
+  # ========================================
+  deploy:
+    name: Deploy to EC2
+    runs-on: ubuntu-latest
+    # develop 또는 main에 push될 때만 실행
+    if: (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main') && github.event_name == 'push'
 
     steps:
       - name: Checkout code
@@ -90,3 +124,13 @@ jobs:
             # 애플리케이션 시작 대기 및 로그 확인
             sleep 30
             docker logs stitch-api-container --tail 10
+            
+            # 배포 완료 메시지
+            PUBLIC_IP=$(curl -s ifconfig.me)
+            echo "======================================"
+            echo "🚀 Deployment Completed!"
+            echo "======================================"
+            echo "Branch: ${{ github.ref_name }}"
+            echo "Swagger UI: http://${PUBLIC_IP}:8080/swagger-ui.html"
+            echo "Website: https://stitch-study.site"
+            echo "======================================"
