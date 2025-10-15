@@ -32,4 +32,17 @@ public class CustomOAuth2User implements OAuth2User {
     }
 
     public String getEmail() {return user.getEmail();}
+
+    // 추가적인 사용자 정보 메서드
+    public Long getUserCamInfoId() {
+        if (user.getUserCamInfo() != null) {
+            return user.getUserCamInfo().getId();
+        }
+        return null;
+    }
+
+    // 추가적인 사용자 정보 메서드(학교 인증 관련)
+    public boolean isCampusCertified() {
+        return user.isCampusCertified();
+    }
 }
