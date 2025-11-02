@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import se.sowl.stitchapi.exception.MajorException;
 import se.sowl.stitchapi.exception.UserException;
-import se.sowl.stitchapi.major.dto.request.MajorRequest;
 import se.sowl.stitchapi.major.dto.response.MajorDetailResponse;
 import se.sowl.stitchapi.major.dto.response.MajorListResponse;
 import se.sowl.stitchapi.major.dto.response.MajorResponse;
@@ -43,8 +42,8 @@ public class MajorService {
 
 
     @Transactional
-    public MajorResponse selectMajor(MajorRequest request) {
-        User user = userRepository.findById(request.getUserId())
+    public MajorResponse selectMajor(Long majorId, Long userId) {
+        User user = userRepository.findById(userId)
                 .orElseThrow(UserException.UserNotFoundException::new);
 
         if (!user.isCampusCertified()) {
@@ -54,7 +53,7 @@ public class MajorService {
         UserCamInfo userCamInfo = userCamInfoRepository.findByUser(user)
                 .orElseThrow(UserException.UserCamInfoNotFoundException::new);
 
-        Major newMajor = findMajorById(request.getMajorId());
+        Major newMajor = findMajorById(majorId);
 
 
         // 새 전공 설정
