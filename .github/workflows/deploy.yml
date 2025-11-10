@@ -1,14 +1,16 @@
-name: Deploy to ECR and EC2
+name: CI/CD Pipeline
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    branches: [ main, develop ]
 
 jobs:
+
   deploy:
+    name: Deploy to EC2
     runs-on: ubuntu-latest
+    # develop 또는 main에 푸시될 때만 실행
+    if: github.event_name == 'push'
 
     steps:
       - name: Checkout code
@@ -43,17 +45,10 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # ECR 로그인
             aws ecr get-login-password --region ap-northeast-2 | docker login --username AWS --password-stdin ${{ steps.login-ecr.outputs.registry }}
-            
-            # 최신 이미지 pull
             docker pull ${{ steps.login-ecr.outputs.registry }}/stitch-api:latest
-            
-            # 기존 컨테이너 중지 및 제거
             docker stop stitch-api-container || true
             docker rm stitch-api-container || true
-            
-            # 새 컨테이너 실행
             docker run -d \
               --name stitch-api-container \
               -p 8080:8080 \
@@ -72,8 +67,6 @@ jobs:
               -e SPRING_MAIL_PASSWORD="${{ secrets.SPRING_MAIL_PASSWORD }}" \
               -e UNIVCERT_API_KEY="${{ secrets.UNIVCERT_API_KEY }}" \
               ${{ steps.login-ecr.outputs.registry }}/stitch-api:latest
-            
-            # 컨테이너 시작 확인
             sleep 10
             docker logs stitch-api-container --tail 20
 
@@ -84,9 +77,14 @@ jobs:
           username: ubuntu
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            # 컨테이너 상태 확인
             docker ps -f name=stitch-api-container
-            
-            # 애플리케이션 시작 대기 및 로그 확인
             sleep 30
             docker logs stitch-api-container --tail 10
+            PUBLIC_IP=$(curl -s ifconfig.me)
+            echo "======================================"
+            echo "🚀 Deployment Completed!"
+            echo "======================================"
+            echo "Branch: ${{ github.ref_name }}"
+            echo "Swagger UI: http://${PUBLIC_IP}:8080/swagger-ui.html"
+            echo "Website: https://stitch-study.site"
+            echo "======================================"

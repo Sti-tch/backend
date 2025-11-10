@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import se.sowl.stitchapi.common.CommonResponse;
 import se.sowl.stitchapi.study.dto.request.StudyPostRequest;
@@ -12,6 +13,7 @@ import se.sowl.stitchapi.study.dto.response.StudyPostDetailResponse;
 import se.sowl.stitchapi.study.dto.response.StudyPostListResponse;
 import se.sowl.stitchapi.study.dto.response.StudyPostResponse;
 import se.sowl.stitchapi.study.service.StudyPostService;
+import se.sowl.stitchdomain.user.domain.CustomOAuth2User;
 
 import java.util.List;
 
@@ -24,55 +26,48 @@ public class StudyPostController {
     private final StudyPostService studyPostService;
 
     @Operation(summary = "스터디 게시글 생성")
-    @PostMapping("/create")
+    @PostMapping
     public CommonResponse<StudyPostResponse> createStudyPost(
             @RequestBody StudyPostRequest studyPostRequest,
-            @Parameter(description = "학교 인증자 ID", required = true, example = "1")
-            @RequestParam("userCamInfoId") Long userCamInfoId
-    ){
-        StudyPostResponse response = studyPostService.createStudyPost(studyPostRequest, userCamInfoId);
+            @AuthenticationPrincipal CustomOAuth2User currentUser
+            ){
+        StudyPostResponse response = studyPostService.createStudyPost(studyPostRequest, currentUser.getUserCamInfoId());
         return CommonResponse.ok(response);
     }
 
     @Operation(summary = "스터디 게시글 상세 조회")
-    @GetMapping("/detail")
+    @GetMapping("/{studyPostId}")
     public CommonResponse<StudyPostDetailResponse> getStudyPostDetail(
-            @Parameter(description = "스터디 게시글 ID", required = true, example = "1")
-            @RequestParam("studyPostId") Long studyPostId,
-            @Parameter(description = "학교 인증자 ID", required = true, example = "1")
-            @RequestParam("userCamInfoId") Long userCamInfoId
+            @PathVariable Long studyPostId,
+            @AuthenticationPrincipal CustomOAuth2User currentUser
     ){
-        StudyPostDetailResponse response = studyPostService.getStudyPostDetail(studyPostId, userCamInfoId);
+        StudyPostDetailResponse response = studyPostService.getStudyPostDetail(studyPostId, currentUser.getUserCamInfoId());
         return CommonResponse.ok(response);
     }
 
     @Operation(summary = "스터디 게시글 수정")
-    @PostMapping("/update")
+    @PutMapping("/{studyPostId}")
     public CommonResponse<StudyPostResponse> updateStudyPost(
+            @PathVariable Long studyPostId,
             @RequestBody StudyPostRequest studyPostRequest,
-            @Parameter(description = "스터디 게시글 ID", required = true, example = "1")
-            @RequestParam("studyPostId") Long studyPostId,
-            @Parameter(description = "학교 인증자 ID", required = true, example = "1")
-            @RequestParam("userCamInfoId") Long userCamInfoId
+            @AuthenticationPrincipal CustomOAuth2User currentUser
     ){
-        StudyPostResponse response = studyPostService.updateStudyPost(studyPostRequest, studyPostId ,userCamInfoId);
+        StudyPostResponse response = studyPostService.updateStudyPost(studyPostRequest, studyPostId , currentUser.getUserCamInfoId());
         return CommonResponse.ok(response);
     }
 
     @Operation(summary = "스터디 게시글 삭제")
-    @PostMapping("/delete")
+    @DeleteMapping("/{studyPostId}")
     public CommonResponse<Void> deleteStudyPost(
-            @Parameter(description = "스터디 게시글 ID", required = true, example = "1")
-            @RequestParam("studyPostId") Long studyPostId,
-            @Parameter(description = "학교 인증자 ID", required = true, example = "1")
-            @RequestParam("userCamInfoId") Long userCamInfoId
+            @PathVariable Long studyPostId,
+            @AuthenticationPrincipal CustomOAuth2User currentUser
     ){
-        studyPostService.deleteStudyPost(studyPostId, userCamInfoId);
+        studyPostService.deleteStudyPost(studyPostId, currentUser.getUserCamInfoId());
         return CommonResponse.ok(null);
     }
 
     @Operation(summary = "스터디 게시글 목록 조회")
-    @GetMapping("/list")
+    @GetMapping
     @PreAuthorize("isAuthenticated()")
     public CommonResponse<List<StudyPostListResponse>> getStudyPostList(){
         List<StudyPostListResponse> postLists = studyPostService.getStudyPostLists();

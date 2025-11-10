@@ -21,7 +21,7 @@ public class CampusController {
     private final CampusService campusService;
 
     @Operation(summary = "캠퍼스 목록 조회", description = "모든 캠퍼스의 목록을 조회합니다.")
-    @GetMapping("/list")
+    @GetMapping
     public CommonResponse<List<CampusListResponse>> getCampusList(){
         List<CampusListResponse> campusListResponse = campusService.getAllCampuses();
         return CommonResponse.ok(campusListResponse);
