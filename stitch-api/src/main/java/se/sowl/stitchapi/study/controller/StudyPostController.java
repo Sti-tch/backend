@@ -25,6 +25,7 @@ public class StudyPostController {
 
     private final StudyPostService studyPostService;
 
+
     @Operation(summary = "스터디 게시글 생성")
     @PostMapping
     public CommonResponse<StudyPostResponse> createStudyPost(
